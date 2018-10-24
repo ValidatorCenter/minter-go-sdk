@@ -16,14 +16,14 @@ Actual for Minter version 0.5.0
 	- [GetTransaction](#gettransaction)
 	- [GetCandidate](#getcandidate)
 	- [GetCandidates](#getcandidates)
-	- [SendCoin](#example-3)
-	- [SellCoinTx](#example-4)
-	- [SellAllCoin](#example-5)
-	- [BuyCoinTx](#example-6)
-	- [CreateCoin](#example-7)
-	- [DeclareCandidacy](#example-8)
-	- [Delegate](#example-9)
-	- [SetCandidateOn](#example-10)
+	- [SendCoin](#example-2)
+	- [SellCoinTx](#example-3)
+	- [SellAllCoin](#example-4)
+	- [BuyCoinTx](#example-5)
+	- [CreateCoin](#example-6)
+	- [DeclareCandidacy](#example-7)
+	- [Delegate](#example-8)
+	- [SetCandidate](#example-9)
   
 
 ## Installing
