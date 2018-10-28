@@ -4,6 +4,7 @@ Minter Blockchain Golang SDK https://minter.network
 Actual for Minter version 0.5.0
 
 * [Installation](#installing)
+* [Updating](#updating)
 * [Minter SDK](#using-minter)
 	- [GetBalance](#getbalance)
 	- [GetNonce](#getnonce)
@@ -16,6 +17,8 @@ Actual for Minter version 0.5.0
 	- [GetTransaction](#gettransaction)
 	- [GetCandidate](#getcandidate)
 	- [GetCandidates](#getcandidates)
+	- [NewMnemonic](#newmnemonic)
+	- [AuthMnemonic](#authmnemonic)
 	- [SendCoin](#example-2)
 	- [SellCoinTx](#example-3)
 	- [SellAllCoin](#example-4)
@@ -30,6 +33,12 @@ Actual for Minter version 0.5.0
 
 ```bash
 go get github.com/ValidatorCenter/minter-go-sdk
+```
+
+## Updating
+
+```bash
+go get -u github.com/ValidatorCenter/minter-go-sdk
 ```
 
 ## Using Minter
@@ -148,6 +157,21 @@ Returns list of candidates
 GetCandidates(): struct
 ``
 
+### NewMnemonic
+
+Returns new seed-phrase
+
+``
+NewMnemonic(): string
+``
+
+### AuthMnemonic
+
+Authorization by seed-phrase
+
+``
+AuthMnemonic("seed-phrase" string): "address" string, "private-key" string, error
+``
 
 ### Sign transaction
 
