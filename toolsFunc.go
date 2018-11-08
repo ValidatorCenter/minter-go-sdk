@@ -2,6 +2,8 @@ package mintersdk
 
 import (
 	"crypto/ecdsa"
+	"encoding/hex"
+
 	//"errors"
 	"fmt"
 	"math/big"
@@ -55,6 +57,19 @@ func AuthMnemonic(seedPhr string) (string, string, error) {
 	return addrss, privKeyStr, nil
 }
 
+// Получение адреса по приватному ключу
+func GetAddressPrivateKey(privateKey string) (string, error) {
+	privKey2, err := H2ECDSA(privateKey)
+	if err != nil {
+		return "", err
+	}
+	addr2 := crypto.PubkeyToAddress(privKey2.PublicKey)
+	return addr2.String(), nil
+	/* // получаем приватный ключ из объекта ECDSA
+	b2 := crypto.FromECDSA(privKey2)
+	v2 := encodeHex(b2)*/
+}
+
 // конфертирование строки в число с плавающей точкой и коррекция на 18
 func cnvStr2Float_18(amntTokenStr string) float32 {
 	var fAmntToken float32 = 0.0
@@ -71,6 +86,14 @@ func cnvStr2Float_18(amntTokenStr string) float32 {
 // HexToECDSA parses a secp256k1 private key.
 func H2ECDSA(AccPrivateKey string) (*ecdsa.PrivateKey, error) {
 	return crypto.HexToECDSA(AccPrivateKey)
+}
+
+// Encode encodes b as a hex string with 0x prefix.
+func encodeHex(b []byte) string {
+	enc := make([]byte, len(b)*2+2)
+	copy(enc, "0x")
+	hex.Encode(enc[2:], b)
+	return string(enc)
 }
 
 // Возвращает базовую монету

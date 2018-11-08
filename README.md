@@ -19,6 +19,7 @@ Actual for Minter version 0.5.0
 	- [GetCandidates](#getcandidates)
 	- [NewMnemonic](#newmnemonic)
 	- [AuthMnemonic](#authmnemonic)
+	- [GetAddressPrivateKey](#getaddressprivatekey)
 	- [SendCoin](#example-2)
 	- [SellCoinTx](#example-3)
 	- [SellAllCoin](#example-4)
@@ -171,6 +172,14 @@ Authorization by seed-phrase
 
 ``
 AuthMnemonic("seed-phrase" string): "address" string, "private-key" string, error
+``
+
+### GetAddressPrivateKey
+
+Returns address of the wallet by provided private key.
+
+``
+GetAddressPrivateKey("private-key" string): "Mx..." string, error
 ``
 
 ### Sign transaction
