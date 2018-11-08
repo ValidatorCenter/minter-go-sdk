@@ -23,7 +23,9 @@ type result_valid struct {
 
 // type candidate_info struct --- в apiGetCandidates.go
 
-// Возвращает список валидаторов в память
+// TODO: Возвращает список валидаторов по номеру блока
+
+// Возвращает список валидаторов
 func (c *SDK) GetValidators() []result_valid {
 	url := fmt.Sprintf("%s/api/validators", c.MnAddress)
 	res, err := http.Get(url)
