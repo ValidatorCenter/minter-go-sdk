@@ -4,7 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"math/big"
+
+	//"math/big"
 	"net/http"
 	"time"
 )
@@ -22,41 +23,60 @@ type BlockResponse struct {
 	NumTxs       int64                      `json:"num_txs"`
 	TotalTxs     int64                      `json:"total_txs"`
 	Transactions []BlockTransactionResponse `json:"transactions"`
+	Events       []BlockEventsResponse      `json:"events"`
 	Precommits   []BlockPrecommitResponse   `json:"precommits"`
 	BlockReward  string                     `json:"block_reward"`
+	Size         int                        `json:"size"`
 }
 
 type BlockPrecommitResponse struct {
-	ValidatorAddress string `json:"validator_address"`
-	ValidatorIndex   string `json:"validator_index"`
-	Height           string `json:"height"`
-	Round            string `json:"round"`
-	Timestamp        string `json:"timestamp"`
-	Type             int    `json:"type"`
-	Signature        string `json:"signature"`
-	/*block_id {
-	string hash	"E3822B41EFE536BA5FA6FCC832B7D21D6B1638B7"
-	parts {
-		string total	"1"
-		string hash	"9103B3C507E59A9C34EA470E057F8ED96766CF10"
-		}
-	}*/
+	ValidatorAddress string      `json:"validator_address"`
+	ValidatorIndex   string      `json:"validator_index"`
+	Height           string      `json:"height"`
+	Round            string      `json:"round"`
+	Timestamp        string      `json:"timestamp"`
+	Type             int         `json:"type"`
+	Signature        string      `json:"signature"`
+	BlockID          BlockIDData `json:"block_id"`
+}
 
+type BlockIDData struct {
+	Hash  string    `json:"hash"`
+	Parts PartsData `json:"parts"`
+}
+
+type PartsData struct {
+	Total string `json:"total"`
+	Hash  string `json:"hash"`
+}
+
+type BlockEventsResponse struct {
+	Type  string         `json:"type"`
+	Value EventValueData `json:"value"`
+}
+
+type EventValueData struct {
+	Role            string `json:"role"`
+	Address         string `json:"address"`
+	Amount          string `json:"amount"`
+	ValidatorPubKey string `json:"validator_pub_key"`
 }
 
 type BlockTransactionResponse struct {
-	Hash        string            `json:"hash"`
-	RawTx       string            `json:"raw_tx"`
-	From        string            `json:"from"`
-	Nonce       uint64            `json:"nonce"`
-	GasPrice    *big.Int          `json:"gas_price"`
-	Type        byte              `json:"type"`
-	Data        TransactionData   `json:"data"`
-	Payload     []byte            `json:"payload"`
-	ServiceData []byte            `json:"service_data"`
-	Gas         int64             `json:"gas"`
-	GasCoin     CoinSymbol        `json:"gas_coin"`
-	TxResult    ResponseDeliverTx `json:"tx_result"`
+	Hash        string          `json:"hash"`
+	RawTx       string          `json:"raw_tx"`
+	From        string          `json:"from"`
+	Nonce       int             `json:"nonce"`
+	GasPrice    int             `json:"gas_price"`
+	Type        int             `json:"type"`
+	Data        TransactionData `json:"data"`
+	Payload     []byte          `json:"payload"`
+	ServiceData []byte          `json:"service_data"`
+	Gas         int             `json:"gas"`
+	GasCoin     string          `json:"gas_coin"`
+	GasUsed     int             `json:"gas_used"`
+	//TxResult    ResponseDeliverTx `json:"tx_result"` // TODO: del
+	//Tags    TagKeyValue2 `json:"tags"` // TODO: нет необходимости в нём
 }
 
 type TransactionData struct {
