@@ -10,7 +10,7 @@ import (
 type TxBuyCoinData struct {
 	CoinToSell string
 	CoinToBuy  string
-	ValueToBuy int64
+	ValueToBuy float32
 	// Gas
 	GasCoin  string
 	GasPrice int64
@@ -21,10 +21,10 @@ func (c *SDK) TxBuyCoin(t *TxBuyCoinData) (string, error) {
 	coinBuy := GetStrCoin(t.CoinToBuy)
 	coinSell := GetStrCoin(t.CoinToSell)
 	coinGas := GetStrCoin(t.GasCoin)
-	value := Bip2Pip_i64(t.ValueToBuy)
+	value := Bip2Pip_f64(float64(t.ValueToBuy))
 	valueGas := big.NewInt(t.GasPrice)
 
-	privateKey, err := H2ECDSA(c.AccPrivateKey)
+	privateKey, err := h2ECDSA(c.AccPrivateKey)
 	if err != nil {
 		return "", err
 	}

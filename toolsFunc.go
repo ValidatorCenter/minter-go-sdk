@@ -59,7 +59,7 @@ func AuthMnemonic(seedPhr string) (string, string, error) {
 
 // Получение адреса по приватному ключу
 func GetAddressPrivateKey(privateKey string) (string, error) {
-	privKey2, err := H2ECDSA(privateKey)
+	privKey2, err := h2ECDSA(privateKey)
 	if err != nil {
 		return "", err
 	}
@@ -70,21 +70,8 @@ func GetAddressPrivateKey(privateKey string) (string, error) {
 	v2 := encodeHex(b2)*/
 }
 
-// конфертирование строки в число с плавающей точкой и коррекция на 18
-func cnvStr2Float_18(amntTokenStr string) float32 {
-	var fAmntToken float32 = 0.0
-	if amntTokenStr != "" {
-		fAmntToken64, err := strconv.ParseFloat(amntTokenStr, 64)
-		if err != nil {
-			panic(err.Error())
-		}
-		fAmntToken = float32(fAmntToken64 / 1000000000000000000)
-	}
-	return fAmntToken
-}
-
 // HexToECDSA parses a secp256k1 private key.
-func H2ECDSA(AccPrivateKey string) (*ecdsa.PrivateKey, error) {
+func h2ECDSA(AccPrivateKey string) (*ecdsa.PrivateKey, error) {
 	return crypto.HexToECDSA(AccPrivateKey)
 }
 
@@ -118,6 +105,10 @@ func GetStrAddress(addr string) types.Address {
 	return adrA
 }
 
+/////////////////////////////////////////////////
+// Преобразование Bip в Pip и Pip в Bip
+//-----------------------------------------------
+
 // Целое число в формат pip (18нулей)
 func Bip2Pip_i64(value int64) *big.Int {
 	return helpers.BipToPip(big.NewInt(value)) // pip в bip(mnt) (!)=косяк, только целочисленные
@@ -137,6 +128,21 @@ func Bip2Pip_f64(value float64) *big.Int {
 
 	return amntBInt1
 }
+
+// конфертирование строки в число с плавающей точкой и коррекция на 18
+func PipStr2Bip_f32(amntTokenStr string) float32 {
+	var fAmntToken float32 = 0.0
+	if amntTokenStr != "" {
+		fAmntToken64, err := strconv.ParseFloat(amntTokenStr, 64)
+		if err != nil {
+			panic(err.Error())
+		}
+		fAmntToken = float32(fAmntToken64 / 1000000000000000000)
+	}
+	return fAmntToken
+}
+
+//-----------------------------------------------
 
 // Публичный ключ в массив байтов
 func PublicKey2Byte(strPublicKey string) []byte {

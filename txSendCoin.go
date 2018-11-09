@@ -10,7 +10,7 @@ import (
 type TxSendCoinData struct {
 	Coin      string
 	ToAddress string
-	Value     int64
+	Value     float32
 	// Gas
 	GasCoin  string
 	GasPrice int64
@@ -21,12 +21,12 @@ func (c *SDK) TxSendCoin(t *TxSendCoinData) (string, error) {
 
 	to := GetStrAddress(t.ToAddress)
 	coin := GetStrCoin(t.Coin)
-	value := Bip2Pip_i64(t.Value)
+	value := Bip2Pip_f64(float64(t.Value))
 
 	coinGas := GetStrCoin(t.GasCoin)
 	valueGas := big.NewInt(t.GasPrice)
 
-	privateKey, err := H2ECDSA(c.AccPrivateKey)
+	privateKey, err := h2ECDSA(c.AccPrivateKey)
 	if err != nil {
 		return "", err
 	}

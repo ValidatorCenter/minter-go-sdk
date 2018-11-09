@@ -16,7 +16,7 @@ func main() {
 	passphrase := "password"
 
 	coin := sdk.GetBaseCoin()
-	privateKey, err := sdk.H2ECDSA(AccPrivateKey)
+	privateKey, err := sdk.H2ECDSA(AccPrivateKey) // FIXME: rename H2ECDSA->h2ECDSA
 	if err != nil {
 		panic(err)
 	}

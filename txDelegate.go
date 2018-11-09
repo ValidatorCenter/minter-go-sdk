@@ -10,7 +10,7 @@ import (
 type TxDelegateData struct {
 	PubKey string
 	Coin   string
-	Stake  int64
+	Stake  float32
 	// Gas
 	GasCoin  string
 	GasPrice int64
@@ -20,10 +20,10 @@ type TxDelegateData struct {
 func (c *SDK) TxDelegate(t *TxDelegateData) (string, error) {
 	coin := GetStrCoin(t.Coin)
 	coinGas := GetStrCoin(t.GasCoin)
-	value := Bip2Pip_i64(t.Stake)
+	value := Bip2Pip_f64(float64(t.Stake))
 	valueGas := big.NewInt(t.GasPrice)
 	pubkey := PublicKey2Byte(t.PubKey)
-	privateKey, err := H2ECDSA(c.AccPrivateKey)
+	privateKey, err := h2ECDSA(c.AccPrivateKey)
 	if err != nil {
 		return "", err
 	}

@@ -26,7 +26,7 @@ func (c *SDK) TxCreateCoin(t *TxCreateCoinData) (string, error) {
 	coinGas := GetStrCoin(t.GasCoin)
 	valueGas := big.NewInt(t.GasPrice)
 
-	privateKey, err := H2ECDSA(c.AccPrivateKey)
+	privateKey, err := h2ECDSA(c.AccPrivateKey)
 	if err != nil {
 		return "", err
 	}
