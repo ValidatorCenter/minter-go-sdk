@@ -17,7 +17,7 @@ type BlnctResponse struct {
 }
 
 // узнаем баланс
-// TODO: map[string]float32 <- cnvStr2Float_18
+// TODO: map[string]float32 <- PipStr2Bip_f32
 func (c *SDK) GetBalance(usrAddr string) map[string]string {
 	url := fmt.Sprintf("%s/api/balance/%s", c.MnAddress, usrAddr)
 	res, err := http.Get(url)
