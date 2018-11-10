@@ -1,3 +1,6 @@
+# Minter Golang SDK
+![](minter-go.svg)
+
 ## About
 Minter Blockchain Golang SDK https://minter.network
 
