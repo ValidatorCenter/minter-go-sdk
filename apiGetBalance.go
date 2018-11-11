@@ -9,11 +9,11 @@ import (
 
 // Результат выполнения получения баланас пользователя
 type blnc_usr struct {
-	Code   int           `json:"code"`
-	Result BlnctResponse `json:"result"`
+	Code   int
+	Result BlnctResponse
 }
 type BlnctResponse struct {
-	Balance map[string]string `json:"balance"`
+	Balance map[string]string `json:"balance" bson:"balance" gorm:"balance"`
 }
 
 // узнаем баланс

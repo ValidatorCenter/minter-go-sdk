@@ -15,10 +15,10 @@ type node_validators struct {
 
 // результат по валидаторам
 type result_valid struct {
-	AccumulatedReward   string `json:"accumulated_reward"`
+	AccumulatedReward   string `json:"accumulated_reward" bson:"accumulated_reward" gorm:"accumulated_reward"`
 	AccumulatedReward32 float32
-	AbsentTimes         int `json:"absent_times"`
-	Candidate           candidate_info
+	AbsentTimes         int            `json:"absent_times" bson:"absent_times" gorm:"absent_times"`
+	Candidate           candidate_info `json:"candidate" bson:"candidate" gorm:"candidate"`
 }
 
 // type candidate_info struct --- в apiGetCandidates.go

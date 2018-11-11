@@ -14,7 +14,7 @@ type node_candidate struct {
 }
 
 type result_candidate struct {
-	Candidate candidate_info
+	Candidate candidate_info `json:"candidate" bson:"candidate" gorm:"candidate"`
 }
 
 // type candidate_info struct --- в apiGetCandidates.go

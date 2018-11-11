@@ -13,7 +13,7 @@ type node_basecoincol struct {
 }
 
 type base_volume struct {
-	Volume string `json:"volume"`
+	Volume string `json:"volume" bson:"volume" gorm:"volume"`
 }
 
 // Возвращает количество базовой монеты (BIP или MNT), существующей в сети.

@@ -14,9 +14,9 @@ type node_estimate struct {
 
 // для запроса о стоимости монет
 type EstimateResponse struct {
-	WillPay    string `json:"will_pay"`
-	WillGet    string `json:"will_get"`
-	Commission string `json:"commission"`
+	WillPay    string `json:"will_pay" bson:"will_pay" gorm:"will_pay"`
+	WillGet    string `json:"will_get" bson:"will_get" gorm:"will_get"`
+	Commission string `json:"commission" bson:"commission" gorm:"commission"`
 }
 
 // Стоимость покупки value монет

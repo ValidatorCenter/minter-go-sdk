@@ -13,12 +13,12 @@ type node_coininfo struct {
 }
 
 type CoinInfoResponse struct {
-	Name           string `json:"name"`
-	Symbol         string `json:"symbol"`
-	Volume         string `json:"volume"`
-	CRR            int    `json:"crr"`
-	ReserveBalance string `json:"reserve_balance"`
-	Creator        string `json:"creator"`
+	Name           string `json:"name" bson:"name" gorm:"name"`
+	Symbol         string `json:"symbol" bson:"symbol" gorm:"symbol"`
+	Volume         string `json:"volume" bson:"volume" gorm:"volume"`
+	CRR            int    `json:"crr" bson:"crr" gorm:"crr"`
+	ReserveBalance string `json:"reserve_balance" bson:"reserve_balance" gorm:"reserve_balance"`
+	Creator        string `json:"creator" bson:"creator" gorm:"creator"`
 }
 
 // получение доп.данных о монете: volume, reserve_balance

@@ -9,11 +9,11 @@ import (
 
 // Результат выполнения получения номера операции
 type count_transaction struct {
-	Code   int                `json:"code"`
-	Result TransCountResponse `json:"result"`
+	Code   int
+	Result TransCountResponse
 }
 type TransCountResponse struct {
-	Count int `json:"count"`
+	Count int `json:"count" bson:"count" gorm:"count"`
 }
 
 // Возвращает количество исходящих транзакций с данной учетной записи.

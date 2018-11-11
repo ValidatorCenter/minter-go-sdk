@@ -16,47 +16,26 @@ type node_transaction struct {
 }
 
 type TransResponse struct {
-	Hash     string      `json:"hash"`
-	RawTx    string      `json:"raw_tx"`
-	Height   int         `json:"height"`
-	Index    int         `json:"index"`
-	From     string      `json:"from"`
-	Nonce    int         `json:"nonce"`
-	GasPrice int         `json:"gas_price"`
-	GasCoin  string      `json:"gas_coin"`
-	GasUsed  int         `json:"gas_used"`
-	Type     int         `json:"type"`
-	DataTx   TransData   `json:"data"`
-	Data     interface{} `json:"-"`
-	Payload  string      `json:"payload"`
-	//Tags     TagKeyValue2 `json:"tags"` // TODO: нет необходимости в нём
-	Code int    `json:"code"` // (!)не везде
-	Log  string `json:"log"`  // (!)не везде
+	Hash     string      `json:"hash" bson:"hash" gorm:"hash"`
+	RawTx    string      `json:"raw_tx" bson:"raw_tx" gorm:"raw_tx"`
+	Height   int         `json:"height" bson:"height" gorm:"height"`
+	Index    int         `json:"index" bson:"index" gorm:"index"`
+	From     string      `json:"from" bson:"from" gorm:"from"`
+	Nonce    int         `json:"nonce" bson:"nonce" gorm:"nonce"`
+	GasPrice int         `json:"gas_price" bson:"gas_price" gorm:"gas_price"`
+	GasCoin  string      `json:"gas_coin" bson:"gas_coin" gorm:"gas_coin"`
+	GasUsed  int         `json:"gas_used" bson:"gas_used" gorm:"gas_used"`
+	Type     int         `json:"type" bson:"type" gorm:"type"`
+	DataTx   TransData   `json:"data" bson:"-" gorm:"-"`
+	Data     interface{} `json:"-" bson:"data" gorm:"data"`
+	Payload  string      `json:"payload" bson:"payload" gorm:"payload"`
+	//Tags     TagKeyValue2 `json:"tags" bson:"tags" gorm:"tags"` // TODO: нет необходимости в нём
+	Code int    `json:"code" bson:"code" gorm:"code"` // (!)не везде
+	Log  string `json:"log" bson:"log" gorm:"log"`    // (!)не везде
 }
 
 // УБРАЛ:
 //TxResult ResponseDeliverTx `json:"tx_result"` // TODO: del
-
-/*
-tags(send-1):
-tx.coin	"MNT"
-tx.from	"74996099dfc1aef51761bd6fc52f4e6f6fd75cab"
-tx.to	"198208eb4d11d4b389ff262ac52494d920770879"
-tx.type	"01"
-
-tx3SellAllCoinData:
-tx.coin_to_buy	"CINEMACOIN"
-tx.coin_to_sell	"MNT"
-tx.from	"3c57a889ec01714f26477f3758ee3b5c08bcabd3"
-tx.return	"511368399233653912755"
-tx.sell_amount	"968023591980876730077"
-tx.type	"02"
-
-tx5CreateCoinData:
-tx.coin	"DOGECOIN"
-tx.from	"89f5395a03847826d6b48bb02dbde64376945a20"
-tx.type	"05"
-*/
 
 /*
 TODO: del
@@ -67,76 +46,76 @@ type ResponseDeliverTx struct {
 }*/
 
 type TagKeyValue2 struct {
-	TxCoinToBuy  string `json:"tx.coin_to_buy"`
-	TxCoinToSell string `json:"tx.coin_to_sell"`
-	TxFrom       string `json:"tx.from"`
-	TxReturn     string `json:"tx.return"`
-	TxSellAmount string `json:"tx.sell_amount"`
+	TxCoinToBuy  string `json:"tx.coin_to_buy" bson:"tx_coin_to_buy" gorm:"tx_coin_to_buy"`
+	TxCoinToSell string `json:"tx.coin_to_sell" bson:"tx_coin_to_sell" gorm:"tx_coin_to_sell"`
+	TxFrom       string `json:"tx.from" bson:"tx_from" gorm:"tx_from"`
+	TxReturn     string `json:"tx.return" bson:"tx_return" gorm:"tx_return"`
+	TxSellAmount string `json:"tx.sell_amount" bson:"tx_sell_amount" gorm:"tx_sell_amount"`
 	//tx.type	"\u0002"
 }
 
 type tx1SendData struct {
-	Coin  string `json:"coin"`
-	To    string `json:"to"`
-	Value string `json:"value"`
+	Coin  string `json:"coin" bson:"coin" gorm:"coin"`
+	To    string `json:"to" bson:"to" gorm:"to"`
+	Value string `json:"value" bson:"value" gorm:"value"`
 }
 
 type tx2SellCoinData struct {
-	CoinToSell  string `json:"coin_to_sell"`
-	ValueToSell string `json:"value_to_sell"`
-	CoinToBuy   string `json:"coin_to_buy"`
+	CoinToSell  string `json:"coin_to_sell" bson:"coin_to_sell" gorm:"coin_to_sell"`
+	ValueToSell string `json:"value_to_sell" bson:"value_to_sell" gorm:"value_to_sell"`
+	CoinToBuy   string `json:"coin_to_buy" bson:"coin_to_buy" gorm:"coin_to_buy"`
 }
 
 type tx3SellAllCoinData struct {
-	CoinToSell string `json:"coin_to_sell"`
-	CoinToBuy  string `json:"coin_to_buy"`
+	CoinToSell string `json:"coin_to_sell" bson:"coin_to_sell" gorm:"coin_to_sell"`
+	CoinToBuy  string `json:"coin_to_buy" bson:"coin_to_buy" gorm:"coin_to_buy"`
 }
 
 type tx4BuyCoinData struct {
-	CoinToBuy  string `json:"coin_to_buy"`
-	ValueToBuy string `json:"value_to_buy"`
-	CoinToSell string `json:"coin_to_sell"`
+	CoinToBuy  string `json:"coin_to_buy" bson:"coin_to_buy" gorm:"coin_to_buy"`
+	ValueToBuy string `json:"value_to_buy" bson:"value_to_buy" gorm:"value_to_buy"`
+	CoinToSell string `json:"coin_to_sell" bson:"coin_to_sell" gorm:"coin_to_sell"`
 }
 
 type tx5CreateCoinData struct {
-	Name                 string `json:"name"`
-	CoinSymbol           string `json:"coin_symbol"`
-	InitialAmount        string `json:"initial_amount"`
-	InitialReserve       string `json:"initial_reserve"`
-	ConstantReserveRatio int    `json:"constant_reserve_ratio"`
+	Name                 string `json:"name" bson:"name" gorm:"name"`
+	CoinSymbol           string `json:"coin_symbol" bson:"coin_symbol" gorm:"coin_symbol"`
+	InitialAmount        string `json:"initial_amount" bson:"initial_amount" gorm:"initial_amount"`
+	InitialReserve       string `json:"initial_reserve" bson:"initial_reserve" gorm:"initial_reserve"`
+	ConstantReserveRatio int    `json:"constant_reserve_ratio" bson:"constant_reserve_ratio" gorm:"constant_reserve_ratio"`
 }
 
 type tx6DeclareCandidacyData struct {
-	Address    string `json:"address"`
-	PubKey     string `json:"pub_key"`
-	Commission int    `json:"commission"`
-	Coin       string `json:"coin"`
-	Stake      string `json:"stake"`
+	Address    string `json:"address" bson:"address" gorm:"address"`
+	PubKey     string `json:"pub_key" bson:"pub_key" gorm:"pub_key"`
+	Commission int    `json:"commission" bson:"commission" gorm:"commission"`
+	Coin       string `json:"coin" bson:"coin" gorm:"coin"`
+	Stake      string `json:"stake" bson:"stake" gorm:"stake"`
 }
 
 type tx7DelegateDate struct {
-	PubKey string `json:"pub_key"`
-	Coin   string `json:"coin"`
-	Stake  string `json:"stake"`
+	PubKey string `json:"pub_key" bson:"pub_key" gorm:"pub_key"`
+	Coin   string `json:"coin" bson:"coin" gorm:"coin"`
+	Stake  string `json:"stake" bson:"stake" gorm:"stake"`
 }
 
 type tx8UnbondData struct {
-	PubKey string `json:"pub_key"`
-	Coin   string `json:"coin"`
-	Value  string `json:"value"`
+	PubKey string `json:"pub_key" bson:"pub_key" gorm:"pub_key"`
+	Coin   string `json:"coin" bson:"coin" gorm:"coin"`
+	Value  string `json:"value" bson:"value" gorm:"value"`
 }
 
 type tx9RedeemCheckData struct {
-	RawCheck string `json:"raw_check"`
-	Proof    string `json:"proof"`
+	RawCheck string `json:"raw_check" bson:"raw_check" gorm:"raw_check"`
+	Proof    string `json:"proof" bson:"proof" gorm:"proof"`
 }
 
 type tx10SetCandidateOnData struct {
-	PubKey string `json:"pub_key"`
+	PubKey string `json:"pub_key" bson:"pub_key" gorm:"pub_key"`
 }
 
 type tx11SetCandidateOffData struct {
-	PubKey string `json:"pub_key"`
+	PubKey string `json:"pub_key" bson:"pub_key" gorm:"pub_key"`
 }
 
 type tx12CreateMultisigData struct {
@@ -145,6 +124,7 @@ type tx12CreateMultisigData struct {
 	Addresses [][20]byte*/
 }
 
+// Не заносится в БД
 type TransData struct {
 	//=== type1 - TYPE_SEND
 	To string `json:"to"`

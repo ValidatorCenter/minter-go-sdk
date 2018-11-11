@@ -57,6 +57,8 @@ sdk := m.SDK{
 }
 ```
 
+Structures for receiving data from the blockchain already have tags: json, bson and gorm. This means that you can immediately write them correctly to a database that uses one of these tags.
+
 ### GetBalance
 
 Returns coins list and balance of an address.

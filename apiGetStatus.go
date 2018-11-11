@@ -15,10 +15,10 @@ type node_status struct {
 // TODO: Преобразовать из string в int
 type result_node struct {
 	Version           string
-	LatestBlockHash   string `json:"latest_block_hash"`
-	LatestAppHash     string `json:"latest_app_hash"`
-	LatestBlockHeight string `json:"latest_block_height"`
-	LatestBlockTime   string `json:"latest_block_time"`
+	LatestBlockHash   string `json:"latest_block_hash" bson:"latest_block_hash" gorm:"latest_block_hash"`
+	LatestAppHash     string `json:"latest_app_hash" bson:"latest_app_hash" gorm:"latest_app_hash"`
+	LatestBlockHeight string `json:"latest_block_height" bson:"latest_block_height" gorm:"latest_block_height"`
+	LatestBlockTime   string `json:"latest_block_time" bson:"latest_block_time" gorm:"latest_block_time"`
 }
 
 // получение сколько всего блоков в сети

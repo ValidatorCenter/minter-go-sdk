@@ -15,12 +15,12 @@ import (
 
 // Ответ транзакции
 type send_transaction struct {
-	Code   int               `json:"code"`
-	Result TransSendResponse `json:"result"`
-	Log    string            `json:"log"`
+	Code   int
+	Result TransSendResponse
+	Log    string
 }
 type TransSendResponse struct {
-	Hash string `json:"hash"`
+	Hash string `json:"hash" bson:"hash" gorm:"hash"`
 }
 
 // Исполнение транзакции закодированной RLP
