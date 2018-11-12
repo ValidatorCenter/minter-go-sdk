@@ -18,10 +18,10 @@ type TxBuyCoinData struct {
 
 // Транзакция - Купить монету
 func (c *SDK) TxBuyCoin(t *TxBuyCoinData) (string, error) {
-	coinBuy := GetStrCoin(t.CoinToBuy)
-	coinSell := GetStrCoin(t.CoinToSell)
-	coinGas := GetStrCoin(t.GasCoin)
-	value := Bip2Pip_f64(float64(t.ValueToBuy))
+	coinBuy := getStrCoin(t.CoinToBuy)
+	coinSell := getStrCoin(t.CoinToSell)
+	coinGas := getStrCoin(t.GasCoin)
+	value := bip2pip_f64(float64(t.ValueToBuy))
 	valueGas := big.NewInt(t.GasPrice)
 
 	privateKey, err := h2ECDSA(c.AccPrivateKey)
@@ -35,7 +35,7 @@ func (c *SDK) TxBuyCoin(t *TxBuyCoinData) (string, error) {
 		CoinToBuy:  coinBuy,
 	}
 
-	encodedData, err := SerializeData(data)
+	encodedData, err := serializeData(data)
 	if err != nil {
 		return "", err
 	}

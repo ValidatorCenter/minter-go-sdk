@@ -84,19 +84,22 @@ func encodeHex(b []byte) string {
 }
 
 // Возвращает базовую монету
-func GetBaseCoin() types.CoinSymbol {
+func GetBaseCoin() string {
+	return types.GetBaseCoin().String()
+}
+func getBaseCoin() types.CoinSymbol {
 	return types.GetBaseCoin()
 }
 
 // Преобразует строку в монету
-func GetStrCoin(coin string) types.CoinSymbol {
+func getStrCoin(coin string) types.CoinSymbol {
 	var mntV types.CoinSymbol
 	copy(mntV[:], []byte(coin))
 	return mntV
 }
 
 // Преобразует строку в адрес
-func GetStrAddress(addr string) types.Address {
+func getStrAddress(addr string) types.Address {
 	// Remove Minter wallet prefix and convert hex string to binary
 	addrB := types.Hex2Bytes(strings.TrimLeft(addr, "Mx"))
 
@@ -110,12 +113,12 @@ func GetStrAddress(addr string) types.Address {
 //-----------------------------------------------
 
 // Целое число в формат pip (18нулей)
-func Bip2Pip_i64(value int64) *big.Int {
+func bip2pip_i64(value int64) *big.Int {
 	return helpers.BipToPip(big.NewInt(value)) // pip в bip(mnt) (!)=косяк, только целочисленные
 }
 
 // Число с точкой в формат pip (18нулей)
-func Bip2Pip_f64(value float64) *big.Int {
+func bip2pip_f64(value float64) *big.Int {
 	// FIXME: возможно есть более простая реализация
 	mng18 := big.NewInt(1000000000000000) // убрал 000 (3-нуля)
 	mng000 := big.NewFloat(1000)          // вот тут 000 (3-нуля)
@@ -130,7 +133,7 @@ func Bip2Pip_f64(value float64) *big.Int {
 }
 
 // конфертирование строки в число с плавающей точкой и коррекция на 18
-func PipStr2Bip_f32(amntTokenStr string) float32 {
+func pipStr2bip_f32(amntTokenStr string) float32 {
 	var fAmntToken float32 = 0.0
 	if amntTokenStr != "" {
 		fAmntToken64, err := strconv.ParseFloat(amntTokenStr, 64)
@@ -145,10 +148,10 @@ func PipStr2Bip_f32(amntTokenStr string) float32 {
 //-----------------------------------------------
 
 // Публичный ключ в массив байтов
-func PublicKey2Byte(strPublicKey string) []byte {
+func publicKey2Byte(strPublicKey string) []byte {
 	return types.Hex2Bytes(strings.TrimLeft(strPublicKey, "Mp"))
 }
 
-func SerializeData(data interface{}) ([]byte, error) {
+func serializeData(data interface{}) ([]byte, error) {
 	return rlp.EncodeToBytes(data)
 }

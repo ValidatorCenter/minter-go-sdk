@@ -9,20 +9,26 @@ import (
 
 type node_estimate struct {
 	Code   int
-	Result EstimateResponse
+	Result _estimateResponse
+}
+
+type _estimateResponse struct {
+	WillPay    string `json:"will_pay"`
+	WillGet    string `json:"will_get"`
+	Commission string `json:"commission"`
 }
 
 // для запроса о стоимости монет
 type EstimateResponse struct {
-	WillPay    string `json:"will_pay" bson:"will_pay" gorm:"will_pay"`
-	WillGet    string `json:"will_get" bson:"will_get" gorm:"will_get"`
-	Commission string `json:"commission" bson:"commission" gorm:"commission"`
+	WillPay    float32 `json:"will_pay" bson:"will_pay" gorm:"will_pay"`
+	WillGet    float32 `json:"will_get" bson:"will_get" gorm:"will_get"`
+	Commission float32 `json:"commission" bson:"commission" gorm:"commission"`
 }
 
 // Стоимость покупки value монет
-func (c *SDK) EstimateCoinBuy(coinSmbl string, coinSmbl2 string, value int64) EstimateResponse {
-	pip18 := Bip2Pip_i64(value).String() // монета в pip
-	urlB := fmt.Sprintf("%s/api/estimateCoinBuy?coin_to_sell=%s&value_to_buy=%s&coin_to_buy=%s", c.MnAddress, coinSmbl2, pip18, coinSmbl)
+func (c *SDK) EstimateCoinBuy(coinBuy string, coinSell string, valueBuy int64) EstimateResponse {
+	pip18 := bip2pip_i64(valueBuy).String() // монета в pip
+	urlB := fmt.Sprintf("%s/api/estimateCoinBuy?coin_to_sell=%s&value_to_buy=%s&coin_to_buy=%s", c.MnAddress, coinSell, pip18, coinBuy)
 
 	resB, err := http.Get(urlB)
 	if err != nil {
@@ -38,13 +44,17 @@ func (c *SDK) EstimateCoinBuy(coinSmbl string, coinSmbl2 string, value int64) Es
 	var dataB node_estimate
 	json.Unmarshal(bodyB, &dataB)
 
-	return dataB.Result
+	return EstimateResponse{
+		WillPay:    pipStr2bip_f32(dataB.Result.WillPay),
+		WillGet:    pipStr2bip_f32(dataB.Result.WillGet),
+		Commission: pipStr2bip_f32(dataB.Result.Commission),
+	}
 }
 
 // Стоимость продажи value монет
-func (c *SDK) EstimateCoinSell(coinSmbl string, coinSmbl2 string, value int64) EstimateResponse {
-	pip18 := Bip2Pip_i64(value).String() // монета в pip
-	urlS := fmt.Sprintf("%s/api/estimateCoinSell?coin_to_sell=%s&value_to_sell=%s&coin_to_buy=%s", c.MnAddress, coinSmbl, pip18, coinSmbl2)
+func (c *SDK) EstimateCoinSell(coinSell string, coinBuy string, valueSell int64) EstimateResponse {
+	pip18 := bip2pip_i64(valueSell).String() // монета в pip
+	urlS := fmt.Sprintf("%s/api/estimateCoinSell?coin_to_sell=%s&value_to_sell=%s&coin_to_buy=%s", c.MnAddress, coinSell, pip18, coinBuy)
 
 	resS, err := http.Get(urlS)
 	if err != nil {
@@ -60,5 +70,9 @@ func (c *SDK) EstimateCoinSell(coinSmbl string, coinSmbl2 string, value int64) E
 	var dataS node_estimate
 	json.Unmarshal(bodyS, &dataS)
 
-	return dataS.Result
+	return EstimateResponse{
+		WillPay:    pipStr2bip_f32(dataS.Result.WillPay),
+		WillGet:    pipStr2bip_f32(dataS.Result.WillGet),
+		Commission: pipStr2bip_f32(dataS.Result.Commission),
+	}
 }

@@ -13,13 +13,12 @@ type node_basecoincol struct {
 }
 
 type base_volume struct {
-	Volume string `json:"volume" bson:"volume" gorm:"volume"`
+	Volume string `json:"volume" bson:"-" gorm:"-"`
 }
 
 // Возвращает количество базовой монеты (BIP или MNT), существующей в сети.
 // Он подсчитывает награды блоков, премиальные и ретранслируемые награды.
-// FIXME: переделать на возврат числа
-func (c *SDK) GetBaseCoinVolume(height int) string {
+func (c *SDK) GetBaseCoinVolume(height int) float32 {
 	url := fmt.Sprintf("%s/api/bipVolume?height=%d", c.MnAddress, height)
 	res, err := http.Get(url)
 	if err != nil {
@@ -35,5 +34,5 @@ func (c *SDK) GetBaseCoinVolume(height int) string {
 	var data node_basecoincol
 	json.Unmarshal(body, &data)
 
-	return data.Result.Volume
+	return pipStr2bip_f32(data.Result.Volume)
 }

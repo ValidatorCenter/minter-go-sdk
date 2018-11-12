@@ -19,11 +19,11 @@ type TxSendCoinData struct {
 // Транзакция - Продажи монет
 func (c *SDK) TxSendCoin(t *TxSendCoinData) (string, error) {
 
-	to := GetStrAddress(t.ToAddress)
-	coin := GetStrCoin(t.Coin)
-	value := Bip2Pip_f64(float64(t.Value))
+	to := getStrAddress(t.ToAddress)
+	coin := getStrCoin(t.Coin)
+	value := bip2pip_f64(float64(t.Value))
 
-	coinGas := GetStrCoin(t.GasCoin)
+	coinGas := getStrCoin(t.GasCoin)
 	valueGas := big.NewInt(t.GasPrice)
 
 	privateKey, err := h2ECDSA(c.AccPrivateKey)
@@ -37,7 +37,7 @@ func (c *SDK) TxSendCoin(t *TxSendCoinData) (string, error) {
 		Value: value,
 	}
 
-	encodedData, err := SerializeData(data)
+	encodedData, err := serializeData(data)
 	if err != nil {
 		return "", err
 	}

@@ -19,12 +19,12 @@ type TxDeclareCandidacyData struct {
 
 // Транзакция - Декларирования мастерноды в кандидаты
 func (c *SDK) TxDeclareCandidacy(t *TxDeclareCandidacyData) (string, error) {
-	myAddrss := GetStrAddress(c.AccAddress)
-	coin := GetStrCoin(t.Coin)
-	value := Bip2Pip_i64(t.Stake)
-	pubkey := PublicKey2Byte(t.PubKey)
+	myAddrss := getStrAddress(c.AccAddress)
+	coin := getStrCoin(t.Coin)
+	value := bip2pip_i64(t.Stake)
+	pubkey := publicKey2Byte(t.PubKey)
 
-	coinGas := GetStrCoin(t.GasCoin)
+	coinGas := getStrCoin(t.GasCoin)
 	valueGas := big.NewInt(t.GasPrice)
 	privateKey, err := h2ECDSA(c.AccPrivateKey)
 	if err != nil {
@@ -39,7 +39,7 @@ func (c *SDK) TxDeclareCandidacy(t *TxDeclareCandidacyData) (string, error) {
 		Stake:      value,
 	}
 
-	encodedData, err := SerializeData(data)
+	encodedData, err := serializeData(data)
 	if err != nil {
 		return "", err
 	}

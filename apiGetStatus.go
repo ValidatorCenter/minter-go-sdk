@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"time"
 )
 
 type node_status struct {
@@ -12,17 +13,18 @@ type node_status struct {
 	Result result_node
 }
 
-// TODO: Преобразовать из string в int
 type result_node struct {
-	Version           string
-	LatestBlockHash   string `json:"latest_block_hash" bson:"latest_block_hash" gorm:"latest_block_hash"`
-	LatestAppHash     string `json:"latest_app_hash" bson:"latest_app_hash" gorm:"latest_app_hash"`
-	LatestBlockHeight string `json:"latest_block_height" bson:"latest_block_height" gorm:"latest_block_height"`
-	LatestBlockTime   string `json:"latest_block_time" bson:"latest_block_time" gorm:"latest_block_time"`
+	Version             string
+	LatestBlockHash     string    `json:"latest_block_hash" bson:"-" gorm:"-"`
+	LatestAppHash       string    `json:"latest_app_hash" bson:"-" gorm:"-"`
+	LatestBlockHeightTx string    `json:"latest_block_height" bson:"-" gorm:"-"`
+	LatestBlockHeight   int       `json:"latest_block_height_i32" bson:"latest_block_height_i32" gorm:"latest_block_height_i32"`
+	LatestBlockTime     time.Time `json:"latest_block_time" bson:"-" gorm:"-"`
+	// tm_status {...}
 }
 
 // получение сколько всего блоков в сети
-func (c *SDK) GetStatus() result_node {
+func (c *SDK) GetStatus() ResultNetwork {
 	url := fmt.Sprintf("%s/api/status", c.MnAddress)
 	res, err := http.Get(url)
 	if err != nil {
@@ -37,10 +39,11 @@ func (c *SDK) GetStatus() result_node {
 
 	var data node_status
 	json.Unmarshal(body, &data)
-	/*latestBlcs, err := strconv.Atoi(data.Result.LatestBlockHeight)
+
+	data.Result.LatestBlockHeight, err = strconv.Atoi(data.Result.LatestBlockHeightTx)
 	if err != nil {
 		panic(err.Error())
-	}*/
+	}
 
 	return data.Result
 }

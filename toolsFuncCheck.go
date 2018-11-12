@@ -17,7 +17,7 @@ import (
 
 func CreateCheck(passphrase string, amntMoney int64, coinStr string, privateKey *ecdsa.PrivateKey) ([]byte, [65]byte, error) {
 
-	coin := GetStrCoin(coinStr)
+	coin := getStrCoin(coinStr)
 
 	passphraseHash := sha256.Sum256([]byte(passphrase))
 	passphrasePk, err := crypto.ToECDSA(passphraseHash[:])
@@ -26,7 +26,7 @@ func CreateCheck(passphrase string, amntMoney int64, coinStr string, privateKey 
 		return []byte{}, [65]byte{}, err
 	}
 
-	checkValue := Bip2Pip_i64(amntMoney)
+	checkValue := bip2pip_i64(amntMoney)
 
 	check := c.Check{
 		Nonce:    0,      //uint64(sdk.GetNonce(AccAddress) + 1), // Уникальный ID чека. Используется для выдачи нескольких одинаковых чеков.

@@ -15,13 +15,13 @@ type node_validators struct {
 
 // результат по валидаторам
 type result_valid struct {
-	AccumulatedReward   string `json:"accumulated_reward" bson:"accumulated_reward" gorm:"accumulated_reward"`
-	AccumulatedReward32 float32
-	AbsentTimes         int            `json:"absent_times" bson:"absent_times" gorm:"absent_times"`
-	Candidate           candidate_info `json:"candidate" bson:"candidate" gorm:"candidate"`
+	AccumulatedRewardTx string        `json:"accumulated_reward" bson:"-" gorm:"-"`
+	AccumulatedReward   float32       `json:"accumulated_reward_f32" bson:"accumulated_reward_f32" gorm:"accumulated_reward_f32"`
+	AbsentTimes         int           `json:"absent_times" bson:"absent_times" gorm:"absent_times"`
+	Candidate           CandidateInfo `json:"candidate" bson:"candidate" gorm:"candidate"`
 }
 
-// type candidate_info struct --- в apiGetCandidates.go
+// type CandidateInfo struct --- в apiGetCandidates.go
 
 // TODO: Возвращает список валидаторов по номеру блока
 
@@ -41,5 +41,16 @@ func (c *SDK) GetValidators() []result_valid {
 
 	var data node_validators
 	json.Unmarshal(body, &data)
+
+	for i1, _ := range data.Result {
+		data.Result[i1].AccumulatedReward = pipStr2bip_f32(data.Result[i1].AccumulatedRewardTx)
+		data.Result[i1].Candidate.TotalStake = pipStr2bip_f32(data.Result[i1].Candidate.TotalStakeTx)
+
+		for i2, _ := range data.Result[i1].Candidate.Stakes {
+			data.Result[i1].Candidate.Stakes[i2].Value = pipStr2bip_f32(data.Result[i1].Candidate.Stakes[i2].ValueTx)
+			data.Result[i1].Candidate.Stakes[i2].BipValue = pipStr2bip_f32(data.Result[i1].Candidate.Stakes[i2].BipValueTx)
+		}
+	}
+
 	return data.Result
 }

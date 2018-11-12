@@ -18,11 +18,11 @@ type TxDelegateData struct {
 
 // Транзакция - Делегирование
 func (c *SDK) TxDelegate(t *TxDelegateData) (string, error) {
-	coin := GetStrCoin(t.Coin)
-	coinGas := GetStrCoin(t.GasCoin)
-	value := Bip2Pip_f64(float64(t.Stake))
+	coin := getStrCoin(t.Coin)
+	coinGas := getStrCoin(t.GasCoin)
+	value := bip2pip_f64(float64(t.Stake))
 	valueGas := big.NewInt(t.GasPrice)
-	pubkey := PublicKey2Byte(t.PubKey)
+	pubkey := publicKey2Byte(t.PubKey)
 	privateKey, err := h2ECDSA(c.AccPrivateKey)
 	if err != nil {
 		return "", err
@@ -34,7 +34,7 @@ func (c *SDK) TxDelegate(t *TxDelegateData) (string, error) {
 		Stake:  value,
 	}
 
-	encodedData, err := SerializeData(data)
+	encodedData, err := serializeData(data)
 	if err != nil {
 		return "", err
 	}

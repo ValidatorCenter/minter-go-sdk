@@ -17,10 +17,10 @@ type TxSellAllCoinData struct {
 
 // Транзакция - Продажи всех монет
 func (c *SDK) TxSellAllCoin(t *TxSellAllCoinData) (string, error) {
-	coinBuy := GetStrCoin(t.CoinToBuy)
-	coinSell := GetStrCoin(t.CoinToSell)
+	coinBuy := getStrCoin(t.CoinToBuy)
+	coinSell := getStrCoin(t.CoinToSell)
 
-	coinGas := GetStrCoin(t.GasCoin)
+	coinGas := getStrCoin(t.GasCoin)
 	valueGas := big.NewInt(t.GasPrice)
 
 	privateKey, err := h2ECDSA(c.AccPrivateKey)
@@ -33,7 +33,7 @@ func (c *SDK) TxSellAllCoin(t *TxSellAllCoinData) (string, error) {
 		CoinToBuy:  coinBuy,
 	}
 
-	encodedData, err := SerializeData(data)
+	encodedData, err := serializeData(data)
 	if err != nil {
 		return "", err
 	}
