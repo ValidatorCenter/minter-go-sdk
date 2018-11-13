@@ -5,15 +5,16 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 	"time"
 )
 
 type node_status struct {
 	Code   int
-	Result result_node
+	Result ResultNetwork
 }
 
-type result_node struct {
+type ResultNetwork struct {
 	Version             string
 	LatestBlockHash     string    `json:"latest_block_hash" bson:"-" gorm:"-"`
 	LatestAppHash       string    `json:"latest_app_hash" bson:"-" gorm:"-"`

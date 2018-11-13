@@ -37,7 +37,7 @@ func (c *SDK) GetCandidate(candidateHash string) CandidateInfo {
 	json.Unmarshal(body, &data)
 
 	data.Result.Candidate.TotalStake = pipStr2bip_f32(data.Result.Candidate.TotalStakeTx)
-	for i2, _ := range data.Result[i1].Stakes {
+	for i2, _ := range data.Result.Candidate.Stakes {
 		data.Result.Candidate.Stakes[i2].Value = pipStr2bip_f32(data.Result.Candidate.Stakes[i2].ValueTx)
 		data.Result.Candidate.Stakes[i2].BipValue = pipStr2bip_f32(data.Result.Candidate.Stakes[i2].BipValueTx)
 	}

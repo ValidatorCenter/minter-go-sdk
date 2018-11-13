@@ -46,12 +46,13 @@ type ResponseDeliverTx struct {
 }*/
 
 type tagKeyValue2 struct {
-	TxCoinToBuy  string  `json:"tx.coin_to_buy" bson:"tx_coin_to_buy" gorm:"tx_coin_to_buy"`
-	TxCoinToSell string  `json:"tx.coin_to_sell" bson:"tx_coin_to_sell" gorm:"tx_coin_to_sell"`
-	TxFrom       string  `json:"tx.from" bson:"tx_from" gorm:"tx_from"`
-	TxReturnTx   string  `json:"tx.return" bson:"-" gorm:"-"`
-	TxReturn     float32 `json:"tx.return_f32" bson:"tx_return_f32" gorm:"tx_return_f32"`
-	TxSellAmount string  `json:"tx.sell_amount" bson:"tx_sell_amount" gorm:"tx_sell_amount"`
+	TxCoinToBuy    string  `json:"tx.coin_to_buy" bson:"tx_coin_to_buy" gorm:"tx_coin_to_buy"`
+	TxCoinToSell   string  `json:"tx.coin_to_sell" bson:"tx_coin_to_sell" gorm:"tx_coin_to_sell"`
+	TxFrom         string  `json:"tx.from" bson:"tx_from" gorm:"tx_from"`
+	TxReturnTx     string  `json:"tx.return" bson:"-" gorm:"-"`
+	TxReturn       float32 `json:"tx.return_f32" bson:"tx_return_f32" gorm:"tx_return_f32"`
+	TxSellAmountTx string  `json:"tx.sell_amount" bson:"-" gorm:"-"`
+	TxSellAmount   float32 `json:"tx.sell_amount_f32" bson:"tx_sell_amount_f32" gorm:"tx_sell_amount_f32"`
 	//tx.type	"\u0002"
 }
 
@@ -210,12 +211,14 @@ func (c *SDK) GetTransaction(hash string) TransResponse {
 			CoinToBuy:   data.Result.DataTx.CoinToBuy,
 		}
 		data.Result.Tags.TxReturn = pipStr2bip_f32(data.Result.Tags.TxReturnTx)
+		data.Result.Tags.TxSellAmount = pipStr2bip_f32(data.Result.Tags.TxSellAmountTx)
 	} else if data.Result.Type == TX_SellAllCoinData {
 		data.Result.Data = tx3SellAllCoinData{
 			CoinToSell: data.Result.DataTx.CoinToSell,
 			CoinToBuy:  data.Result.DataTx.CoinToBuy,
 		}
 		data.Result.Tags.TxReturn = pipStr2bip_f32(data.Result.Tags.TxReturnTx)
+		data.Result.Tags.TxSellAmount = pipStr2bip_f32(data.Result.Tags.TxSellAmountTx)
 	} else if data.Result.Type == TX_BuyCoinData {
 		data.Result.Data = tx4BuyCoinData{
 			CoinToBuy:  data.Result.DataTx.CoinToBuy,
@@ -223,6 +226,7 @@ func (c *SDK) GetTransaction(hash string) TransResponse {
 			CoinToSell: data.Result.DataTx.CoinToSell,
 		}
 		data.Result.Tags.TxReturn = pipStr2bip_f32(data.Result.Tags.TxReturnTx)
+		data.Result.Tags.TxSellAmount = pipStr2bip_f32(data.Result.Tags.TxSellAmountTx)
 	} else if data.Result.Type == TX_CreateCoinData {
 		data.Result.Data = tx5CreateCoinData{
 			Name:                 data.Result.DataTx.Name,
