@@ -16,7 +16,7 @@ type TxSendCoinData struct {
 	GasPrice int64
 }
 
-// Транзакция - Продажи монет
+// Транзакция - Передача монет
 func (c *SDK) TxSendCoin(t *TxSendCoinData) (string, error) {
 
 	to := getStrAddress(t.ToAddress)
