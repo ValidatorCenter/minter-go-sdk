@@ -16,22 +16,22 @@ type node_transaction struct {
 }
 
 type TransResponse struct {
-	Hash     string      `json:"hash" bson:"hash" gorm:"hash"`
-	RawTx    string      `json:"raw_tx" bson:"raw_tx" gorm:"raw_tx"`
-	Height   int         `json:"height" bson:"height" gorm:"height"`
-	Index    int         `json:"index" bson:"index" gorm:"index"`
-	From     string      `json:"from" bson:"from" gorm:"from"`
-	Nonce    int         `json:"nonce" bson:"nonce" gorm:"nonce"`
-	GasPrice int         `json:"gas_price" bson:"gas_price" gorm:"gas_price"`
-	GasCoin  string      `json:"gas_coin" bson:"gas_coin" gorm:"gas_coin"`
-	GasUsed  int         `json:"gas_used" bson:"gas_used" gorm:"gas_used"`
-	Type     int         `json:"type" bson:"type" gorm:"type"`
-	DataTx   TransData   `json:"data" bson:"-" gorm:"-"`
-	Data     interface{} `json:"-" bson:"data" gorm:"data"`
-	Payload  string      `json:"payload" bson:"payload" gorm:"payload"`
-	//Tags     TagKeyValue2 `json:"tags" bson:"tags" gorm:"tags"` // TODO: нет необходимости в нём
-	Code int    `json:"code" bson:"code" gorm:"code"` // (!)не везде
-	Log  string `json:"log" bson:"log" gorm:"log"`    // (!)не везде
+	Hash     string       `json:"hash" bson:"hash" gorm:"hash"`
+	RawTx    string       `json:"raw_tx" bson:"raw_tx" gorm:"raw_tx"`
+	Height   int          `json:"height" bson:"height" gorm:"height"`
+	Index    int          `json:"index" bson:"index" gorm:"index"`
+	From     string       `json:"from" bson:"from" gorm:"from"`
+	Nonce    int          `json:"nonce" bson:"nonce" gorm:"nonce"`
+	GasPrice int          `json:"gas_price" bson:"gas_price" gorm:"gas_price"`
+	GasCoin  string       `json:"gas_coin" bson:"gas_coin" gorm:"gas_coin"`
+	GasUsed  int          `json:"gas_used" bson:"gas_used" gorm:"gas_used"`
+	Type     int          `json:"type" bson:"type" gorm:"type"`
+	DataTx   TransData    `json:"data" bson:"-" gorm:"-"`
+	Data     interface{}  `json:"-" bson:"data" gorm:"data"`
+	Payload  string       `json:"payload" bson:"payload" gorm:"payload"`
+	Tags     tagKeyValue2 `json:"tags" bson:"tags" gorm:"tags"` // TODO: нет необходимости в нём, пока из Покупки/Продажи результат обмена tx.return не вынесут на уровень выше
+	Code     int          `json:"code" bson:"code" gorm:"code"` // (!)не везде
+	Log      string       `json:"log" bson:"log" gorm:"log"`    // (!)не везде
 }
 
 // УБРАЛ:
@@ -45,25 +45,29 @@ type ResponseDeliverTx struct {
 	Tags      TagKeyValue2 `json:"tags" bson:"tags"`
 }*/
 
-type TagKeyValue2 struct {
-	TxCoinToBuy  string `json:"tx.coin_to_buy" bson:"tx_coin_to_buy" gorm:"tx_coin_to_buy"`
-	TxCoinToSell string `json:"tx.coin_to_sell" bson:"tx_coin_to_sell" gorm:"tx_coin_to_sell"`
-	TxFrom       string `json:"tx.from" bson:"tx_from" gorm:"tx_from"`
-	TxReturn     string `json:"tx.return" bson:"tx_return" gorm:"tx_return"`
-	TxSellAmount string `json:"tx.sell_amount" bson:"tx_sell_amount" gorm:"tx_sell_amount"`
+type tagKeyValue2 struct {
+	TxCoinToBuy    string  `json:"tx.coin_to_buy" bson:"tx_coin_to_buy" gorm:"tx_coin_to_buy"`
+	TxCoinToSell   string  `json:"tx.coin_to_sell" bson:"tx_coin_to_sell" gorm:"tx_coin_to_sell"`
+	TxFrom         string  `json:"tx.from" bson:"tx_from" gorm:"tx_from"`
+	TxReturnTx     string  `json:"tx.return" bson:"-" gorm:"-"`
+	TxReturn       float32 `json:"tx.return_f32" bson:"tx_return_f32" gorm:"tx_return_f32"`
+	TxSellAmountTx string  `json:"tx.sell_amount" bson:"-" gorm:"-"`
+	TxSellAmount   float32 `json:"tx.sell_amount_f32" bson:"tx_sell_amount_f32" gorm:"tx_sell_amount_f32"`
 	//tx.type	"\u0002"
 }
 
 type tx1SendData struct {
-	Coin  string `json:"coin" bson:"coin" gorm:"coin"`
-	To    string `json:"to" bson:"to" gorm:"to"`
-	Value string `json:"value" bson:"value" gorm:"value"`
+	Coin string `json:"coin" bson:"coin" gorm:"coin"`
+	To   string `json:"to" bson:"to" gorm:"to"`
+	//ValueTx string  `json:"value" bson:"-" gorm:"-"`
+	Value float32 `json:"value_f32" bson:"value_f32" gorm:"value_f32"`
 }
 
 type tx2SellCoinData struct {
-	CoinToSell  string `json:"coin_to_sell" bson:"coin_to_sell" gorm:"coin_to_sell"`
-	ValueToSell string `json:"value_to_sell" bson:"value_to_sell" gorm:"value_to_sell"`
-	CoinToBuy   string `json:"coin_to_buy" bson:"coin_to_buy" gorm:"coin_to_buy"`
+	CoinToSell string `json:"coin_to_sell" bson:"coin_to_sell" gorm:"coin_to_sell"`
+	CoinToBuy  string `json:"coin_to_buy" bson:"coin_to_buy" gorm:"coin_to_buy"`
+	//ValueToSellTx string  `json:"value_to_sell" bson:"-" gorm:"-"`
+	ValueToSell float32 `json:"value_to_sell_f32" bson:"value_to_sell_f32" gorm:"value_to_sell_f32"`
 }
 
 type tx3SellAllCoinData struct {
@@ -73,16 +77,19 @@ type tx3SellAllCoinData struct {
 
 type tx4BuyCoinData struct {
 	CoinToBuy  string `json:"coin_to_buy" bson:"coin_to_buy" gorm:"coin_to_buy"`
-	ValueToBuy string `json:"value_to_buy" bson:"value_to_buy" gorm:"value_to_buy"`
 	CoinToSell string `json:"coin_to_sell" bson:"coin_to_sell" gorm:"coin_to_sell"`
+	//ValueToBuyTx string  `json:"value_to_buy" bson:"-" gorm:"-"`
+	ValueToBuy float32 `json:"value_to_buy_f32" bson:"value_to_buy_f32" gorm:"value_to_buy_f32"`
 }
 
 type tx5CreateCoinData struct {
-	Name                 string `json:"name" bson:"name" gorm:"name"`
-	CoinSymbol           string `json:"coin_symbol" bson:"coin_symbol" gorm:"coin_symbol"`
-	InitialAmount        string `json:"initial_amount" bson:"initial_amount" gorm:"initial_amount"`
-	InitialReserve       string `json:"initial_reserve" bson:"initial_reserve" gorm:"initial_reserve"`
-	ConstantReserveRatio int    `json:"constant_reserve_ratio" bson:"constant_reserve_ratio" gorm:"constant_reserve_ratio"`
+	Name       string `json:"name" bson:"name" gorm:"name"`
+	CoinSymbol string `json:"coin_symbol" bson:"coin_symbol" gorm:"coin_symbol"`
+	//InitialAmountTx      string  `json:"initial_amount" bson:"-" gorm:"-"`
+	//InitialReserveTx     string  `json:"initial_reserve" bson:"-" gorm:"-"`
+	ConstantReserveRatio int     `json:"constant_reserve_ratio" bson:"constant_reserve_ratio" gorm:"constant_reserve_ratio"`
+	InitialAmount        float32 `json:"initial_amount_f32" bson:"initial_amount_f32" gorm:"initial_amount_f32"`
+	InitialReserve       float32 `json:"initial_reserve_f32" bson:"initial_reserve_f32" gorm:"initial_reserve_f32"`
 }
 
 type tx6DeclareCandidacyData struct {
@@ -90,19 +97,22 @@ type tx6DeclareCandidacyData struct {
 	PubKey     string `json:"pub_key" bson:"pub_key" gorm:"pub_key"`
 	Commission int    `json:"commission" bson:"commission" gorm:"commission"`
 	Coin       string `json:"coin" bson:"coin" gorm:"coin"`
-	Stake      string `json:"stake" bson:"stake" gorm:"stake"`
+	//StakeTx    string  `json:"stake" bson:"-" gorm:"-"`
+	Stake float32 `json:"stake_f32" bson:"stake_f32" gorm:"stake_f32"`
 }
 
 type tx7DelegateDate struct {
 	PubKey string `json:"pub_key" bson:"pub_key" gorm:"pub_key"`
 	Coin   string `json:"coin" bson:"coin" gorm:"coin"`
-	Stake  string `json:"stake" bson:"stake" gorm:"stake"`
+	//StakeTx string  `json:"stake" bson:"-" gorm:"-"`
+	Stake float32 `json:"stake_f32" bson:"stake_f32" gorm:"stake_f32"`
 }
 
 type tx8UnbondData struct {
 	PubKey string `json:"pub_key" bson:"pub_key" gorm:"pub_key"`
 	Coin   string `json:"coin" bson:"coin" gorm:"coin"`
-	Value  string `json:"value" bson:"value" gorm:"value"`
+	//ValueTx string  `json:"value" bson:"-" gorm:"-"`
+	Value float32 `json:"value_f32" bson:"value_f32" gorm:"value_f32"`
 }
 
 type tx9RedeemCheckData struct {
@@ -119,9 +129,11 @@ type tx11SetCandidateOffData struct {
 }
 
 type tx12CreateMultisigData struct {
-	/*Threshold uint
+	/**
+	Threshold uint
 	Weights   []uint
-	Addresses [][20]byte*/
+	Addresses [][20]byte
+	**/
 }
 
 // Не заносится в БД
@@ -186,71 +198,77 @@ func (c *SDK) GetTransaction(hash string) TransResponse {
 	json.Unmarshal(body, &data)
 	fmt.Println(string(body))
 
-	if data.Result.Type == 1 {
+	if data.Result.Type == TX_SendData {
 		data.Result.Data = tx1SendData{
 			Coin:  data.Result.DataTx.Coin,
 			To:    data.Result.DataTx.To,
-			Value: data.Result.DataTx.Value,
+			Value: pipStr2bip_f32(data.Result.DataTx.Value),
 		}
-	} else if data.Result.Type == 2 {
+	} else if data.Result.Type == TX_SellCoinData {
 		data.Result.Data = tx2SellCoinData{
 			CoinToSell:  data.Result.DataTx.CoinToSell,
-			ValueToSell: data.Result.DataTx.ValueToSell,
+			ValueToSell: pipStr2bip_f32(data.Result.DataTx.ValueToSell),
 			CoinToBuy:   data.Result.DataTx.CoinToBuy,
 		}
-	} else if data.Result.Type == 3 {
+		data.Result.Tags.TxReturn = pipStr2bip_f32(data.Result.Tags.TxReturnTx)
+		data.Result.Tags.TxSellAmount = pipStr2bip_f32(data.Result.Tags.TxSellAmountTx)
+	} else if data.Result.Type == TX_SellAllCoinData {
 		data.Result.Data = tx3SellAllCoinData{
 			CoinToSell: data.Result.DataTx.CoinToSell,
 			CoinToBuy:  data.Result.DataTx.CoinToBuy,
 		}
-	} else if data.Result.Type == 4 {
+		data.Result.Tags.TxReturn = pipStr2bip_f32(data.Result.Tags.TxReturnTx)
+		data.Result.Tags.TxSellAmount = pipStr2bip_f32(data.Result.Tags.TxSellAmountTx)
+	} else if data.Result.Type == TX_BuyCoinData {
 		data.Result.Data = tx4BuyCoinData{
 			CoinToBuy:  data.Result.DataTx.CoinToBuy,
-			ValueToBuy: data.Result.DataTx.ValueToBuy,
+			ValueToBuy: pipStr2bip_f32(data.Result.DataTx.ValueToBuy),
 			CoinToSell: data.Result.DataTx.CoinToSell,
 		}
-	} else if data.Result.Type == 5 {
+		data.Result.Tags.TxReturn = pipStr2bip_f32(data.Result.Tags.TxReturnTx)
+		data.Result.Tags.TxSellAmount = pipStr2bip_f32(data.Result.Tags.TxSellAmountTx)
+	} else if data.Result.Type == TX_CreateCoinData {
 		data.Result.Data = tx5CreateCoinData{
 			Name:                 data.Result.DataTx.Name,
 			CoinSymbol:           data.Result.DataTx.CoinSymbol,
-			InitialAmount:        data.Result.DataTx.InitialAmount,
-			InitialReserve:       data.Result.DataTx.InitialReserve,
+			InitialAmount:        pipStr2bip_f32(data.Result.DataTx.InitialAmount),
+			InitialReserve:       pipStr2bip_f32(data.Result.DataTx.InitialReserve),
 			ConstantReserveRatio: data.Result.DataTx.ConstantReserveRatio,
 		}
-	} else if data.Result.Type == 6 {
+	} else if data.Result.Type == TX_DeclareCandidacyData {
 		data.Result.Data = tx6DeclareCandidacyData{
 			Address:    data.Result.DataTx.Address,
 			PubKey:     data.Result.DataTx.PubKey,
 			Commission: data.Result.DataTx.Commission,
 			Coin:       data.Result.DataTx.Coin,
-			Stake:      data.Result.DataTx.Stake,
+			Stake:      pipStr2bip_f32(data.Result.DataTx.Stake),
 		}
-	} else if data.Result.Type == 7 {
+	} else if data.Result.Type == TX_DelegateDate {
 		data.Result.Data = tx7DelegateDate{
 			PubKey: data.Result.DataTx.PubKey,
 			Coin:   data.Result.DataTx.Coin,
-			Stake:  data.Result.DataTx.Stake,
+			Stake:  pipStr2bip_f32(data.Result.DataTx.Stake),
 		}
-	} else if data.Result.Type == 8 {
+	} else if data.Result.Type == TX_UnbondData {
 		data.Result.Data = tx8UnbondData{
 			PubKey: data.Result.DataTx.PubKey,
 			Coin:   data.Result.DataTx.Coin,
-			Value:  data.Result.DataTx.Value,
+			Value:  pipStr2bip_f32(data.Result.DataTx.Value),
 		}
-	} else if data.Result.Type == 9 {
+	} else if data.Result.Type == TX_RedeemCheckData {
 		data.Result.Data = tx9RedeemCheckData{
 			RawCheck: data.Result.DataTx.RawCheck,
 			Proof:    data.Result.DataTx.Proof,
 		}
-	} else if data.Result.Type == 10 {
+	} else if data.Result.Type == TX_SetCandidateOnData {
 		data.Result.Data = tx10SetCandidateOnData{
 			PubKey: data.Result.DataTx.PubKey,
 		}
-	} else if data.Result.Type == 11 {
+	} else if data.Result.Type == TX_SetCandidateOffData {
 		data.Result.Data = tx11SetCandidateOffData{
 			PubKey: data.Result.DataTx.PubKey,
 		}
-	} //else if data.Result.Type == 12 {}
+	} //else if data.Result.Type == TX_CreateMultisigData {}
 
 	return data.Result
 }

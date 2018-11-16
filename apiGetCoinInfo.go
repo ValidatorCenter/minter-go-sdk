@@ -13,12 +13,14 @@ type node_coininfo struct {
 }
 
 type CoinInfoResponse struct {
-	Name           string `json:"name" bson:"name" gorm:"name"`
-	Symbol         string `json:"symbol" bson:"symbol" gorm:"symbol"`
-	Volume         string `json:"volume" bson:"volume" gorm:"volume"`
-	CRR            int    `json:"crr" bson:"crr" gorm:"crr"`
-	ReserveBalance string `json:"reserve_balance" bson:"reserve_balance" gorm:"reserve_balance"`
-	Creator        string `json:"creator" bson:"creator" gorm:"creator"`
+	Name             string  `json:"name" bson:"name" gorm:"name"`
+	Symbol           string  `json:"symbol" bson:"symbol" gorm:"symbol"`
+	VolumeTx         string  `json:"volume" bson:"-" gorm:"-"`
+	Volume           float32 `json:"volume_f32" bson:"volume_f32" gorm:"volume_f32"`
+	CRR              int     `json:"crr" bson:"crr" gorm:"crr"`
+	ReserveBalanceTx string  `json:"reserve_balance" bson:"-" gorm:"-"`
+	ReserveBalance   float32 `json:"reserve_balance_f32" bson:"reserve_balance_f32" gorm:"reserve_balance_f32"`
+	//Creator          string  `json:"creator" bson:"creator" gorm:"creator"` // TODO: del, нету
 }
 
 // получение доп.данных о монете: volume, reserve_balance
@@ -37,6 +39,9 @@ func (c *SDK) GetCoinInfo(coinSmbl string) CoinInfoResponse {
 
 	var data node_coininfo
 	json.Unmarshal(body, &data)
+
+	data.Result.Volume = pipStr2bip_f32(data.Result.VolumeTx)
+	data.Result.ReserveBalance = pipStr2bip_f32(data.Result.ReserveBalanceTx)
 
 	return data.Result
 }

@@ -14,12 +14,12 @@ type node_candidate struct {
 }
 
 type result_candidate struct {
-	Candidate candidate_info `json:"candidate" bson:"candidate" gorm:"candidate"`
+	Candidate CandidateInfo `json:"candidate" bson:"candidate" gorm:"candidate"`
 }
 
-// type candidate_info struct --- в apiGetCandidates.go
+// type CandidateInfo struct --- в apiGetCandidates.go
 
-func (c *SDK) GetCandidate(candidateHash string) candidate_info {
+func (c *SDK) GetCandidate(candidateHash string) CandidateInfo {
 	url := fmt.Sprintf("%s/api/candidate/%s", c.MnAddress, candidateHash)
 	res, err := http.Get(url)
 	if err != nil {
@@ -35,5 +35,12 @@ func (c *SDK) GetCandidate(candidateHash string) candidate_info {
 
 	var data node_candidate
 	json.Unmarshal(body, &data)
+
+	data.Result.Candidate.TotalStake = pipStr2bip_f32(data.Result.Candidate.TotalStakeTx)
+	for i2, _ := range data.Result.Candidate.Stakes {
+		data.Result.Candidate.Stakes[i2].Value = pipStr2bip_f32(data.Result.Candidate.Stakes[i2].ValueTx)
+		data.Result.Candidate.Stakes[i2].BipValue = pipStr2bip_f32(data.Result.Candidate.Stakes[i2].BipValueTx)
+	}
+
 	return data.Result.Candidate
 }

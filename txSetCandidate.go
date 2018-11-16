@@ -17,9 +17,9 @@ type TxSetCandidateData struct {
 
 // Транзакция - Вкл./выкл мастерноду в валидаторы
 func (c *SDK) TxSetCandidate(t *TxSetCandidateData) (string, error) {
-	pubkey := PublicKey2Byte(t.PubKey)
+	pubkey := publicKey2Byte(t.PubKey)
 
-	coinGas := GetStrCoin(t.GasCoin)
+	coinGas := getStrCoin(t.GasCoin)
 	valueGas := big.NewInt(t.GasPrice)
 
 	privateKey, err := h2ECDSA(c.AccPrivateKey)
@@ -42,7 +42,7 @@ func (c *SDK) TxSetCandidate(t *TxSetCandidateData) (string, error) {
 		typeTx = tr.TypeSetCandidateOffline
 	}
 
-	encodedData, err := SerializeData(data)
+	encodedData, err := serializeData(data)
 	if err != nil {
 		return "", err
 	}

@@ -24,13 +24,14 @@ Actual for Minter version 0.5.0
 	- [AuthMnemonic](#authmnemonic)
 	- [GetAddressPrivateKey](#getaddressprivatekey)
 	- [SendCoin](#example-2)
-	- [SellCoinTx](#example-3)
-	- [SellAllCoin](#example-4)
-	- [BuyCoinTx](#example-5)
-	- [CreateCoin](#example-6)
-	- [DeclareCandidacy](#example-7)
-	- [Delegate](#example-8)
-	- [SetCandidate](#example-9)
+	- [MultiSendCoin](#example-3)
+	- [SellCoinTx](#example-4)
+	- [SellAllCoin](#example-5)
+	- [BuyCoinTx](#example-6)
+	- [CreateCoin](#example-7)
+	- [DeclareCandidacy](#example-8)
+	- [Delegate](#example-9)
+	- [SetCandidate](#example-10)
   
 
 ## Installing
@@ -220,6 +221,57 @@ func main() {
 	}
 
 	resHash, err := sdk.TxSendCoin(&sndDt)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(resHash)
+
+}
+```
+
+###### Example
+
+* Sign the <b>MultiSendCoin</b> transaction
+
+```golang
+package main
+
+import (
+	"fmt"
+
+	m "github.com/ValidatorCenter/minter-go-sdk"
+)
+
+func main() {
+	sdk := m.SDK{
+		MnAddress:     "https://minter-node-1.testnet.minter.network",
+		AccAddress:    "Mx...",
+		AccPrivateKey: "...",
+	}
+
+	cntList := []m.TxOneSendCoinData{}
+
+	// First address
+	cntList = append(cntList, TxOneSendCoinData{
+		Coin:      "MNT",
+		ToAddress: "Mxe64baa7d71c72e6914566b79ac361d139be22dc7", //Кому переводим
+		Value:     10,
+	})
+
+	// Second address
+	cntList = append(cntList, TxOneSendCoinData{
+		Coin:      "VALIDATOR",
+		ToAddress: "Mxe64baa7d71c72e6914566b79ac361d139be22dc7", //Кому переводим
+		Value:     16,
+	})
+
+	mSndDt := m.TxMultiSendCoinData{
+		List:     cntList,
+		GasCoin:  "MNT",
+		GasPrice: 1,
+	}
+
+	resHash, err := sdk.TxMultiSendCoin(&mSndDt)
 	if err != nil {
 		panic(err)
 	}

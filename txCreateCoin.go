@@ -20,10 +20,10 @@ type TxCreateCoinData struct {
 
 // Транзакция - Создание монеты
 func (c *SDK) TxCreateCoin(t *TxCreateCoinData) (string, error) {
-	toCreate := GetStrCoin(t.Symbol)
-	reserve := Bip2Pip_i64(t.InitialReserve)
-	amount := Bip2Pip_i64(t.InitialAmount)
-	coinGas := GetStrCoin(t.GasCoin)
+	toCreate := getStrCoin(t.Symbol)
+	reserve := bip2pip_i64(t.InitialReserve)
+	amount := bip2pip_i64(t.InitialAmount)
+	coinGas := getStrCoin(t.GasCoin)
 	valueGas := big.NewInt(t.GasPrice)
 
 	privateKey, err := h2ECDSA(c.AccPrivateKey)
@@ -39,7 +39,7 @@ func (c *SDK) TxCreateCoin(t *TxCreateCoinData) (string, error) {
 		ConstantReserveRatio: t.ConstantReserveRatio,
 	}
 
-	encodedData, err := SerializeData(data)
+	encodedData, err := serializeData(data)
 	if err != nil {
 		return "", err
 	}

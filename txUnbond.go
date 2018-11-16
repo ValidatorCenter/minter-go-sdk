@@ -19,11 +19,11 @@ type TxUnbondData struct {
 // Транзакция - Отозвать монеты из делегированных в валидатора
 func (c *SDK) TxUnbond(t *TxUnbondData) (string, error) {
 
-	pubkey := PublicKey2Byte(t.PubKey)
-	coin := GetStrCoin(t.Coin)
-	value := Bip2Pip_i64(t.Value)
+	pubkey := publicKey2Byte(t.PubKey)
+	coin := getStrCoin(t.Coin)
+	value := bip2pip_i64(t.Value)
 
-	coinGas := GetStrCoin(t.GasCoin)
+	coinGas := getStrCoin(t.GasCoin)
 	valueGas := big.NewInt(t.GasPrice)
 
 	privateKey, err := h2ECDSA(c.AccPrivateKey)
@@ -37,7 +37,7 @@ func (c *SDK) TxUnbond(t *TxUnbondData) (string, error) {
 		Value:  value,
 	}
 
-	encodedData, err := SerializeData(data)
+	encodedData, err := serializeData(data)
 	if err != nil {
 		return "", err
 	}
