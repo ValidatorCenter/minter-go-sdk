@@ -83,6 +83,8 @@ type BlockTransactionResponse struct {
 	GasUsed     int         `json:"gas_used" bson:"gas_used" gorm:"gas_used"`
 	//TxResult    ResponseDeliverTx `json:"tx_result"` // TODO: del
 	//Tags    TagKeyValue2 `json:"tags" bson:"tags" gorm:"tags"` // TODO: нет необходимости в нём
+	Code int    `json:"code" bson:"code" gorm:"code"` // если не 0, то ОШИБКА, читаем лог(Log)
+	Log  string `json:"log" bson:"log" gorm:"log"`
 }
 
 // type TransData struct --- в apiGetTransaction.go

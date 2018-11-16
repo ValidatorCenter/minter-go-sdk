@@ -30,8 +30,8 @@ type TransResponse struct {
 	Data     interface{}  `json:"-" bson:"data" gorm:"data"`
 	Payload  string       `json:"payload" bson:"payload" gorm:"payload"`
 	Tags     tagKeyValue2 `json:"tags" bson:"tags" gorm:"tags"` // TODO: нет необходимости в нём, пока из Покупки/Продажи результат обмена tx.return не вынесут на уровень выше
-	Code     int          `json:"code" bson:"code" gorm:"code"` // (!)не везде
-	Log      string       `json:"log" bson:"log" gorm:"log"`    // (!)не везде
+	Code     int          `json:"code" bson:"code" gorm:"code"` // если не 0, то ОШИБКА, читаем лог(Log)
+	Log      string       `json:"log" bson:"log" gorm:"log"`
 }
 
 // УБРАЛ:
