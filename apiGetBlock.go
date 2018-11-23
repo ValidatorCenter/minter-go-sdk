@@ -76,7 +76,7 @@ type BlockTransactionResponse struct {
 	Type        int         `json:"type" bson:"type" gorm:"type"`
 	DataTx      TransData   `json:"data" bson:"-" gorm:"-"`
 	Data        interface{} `json:"-" bson:"data" gorm:"data"`
-	Payload     []byte      `json:"payload" bson:"payload" gorm:"payload"`
+	Payload     string      `json:"payload" bson:"payload" gorm:"payload"`
 	ServiceData []byte      `json:"service_data" bson:"service_data" gorm:"service_data"`
 	Gas         int         `json:"gas" bson:"gas" gorm:"gas"`
 	GasCoin     string      `json:"gas_coin" bson:"gas_coin" gorm:"gas_coin"`
