@@ -24,6 +24,7 @@ type result_valid struct {
 // type CandidateInfo struct --- в apiGetCandidates.go
 
 // TODO: Возвращает список валидаторов по номеру блока
+// url := fmt.Sprintf("%s/api/validators?height=%d", c.MnAddress, blockN)
 
 // Возвращает список валидаторов
 func (c *SDK) GetValidators() []result_valid {
@@ -46,10 +47,11 @@ func (c *SDK) GetValidators() []result_valid {
 		data.Result[i1].AccumulatedReward = pipStr2bip_f32(data.Result[i1].AccumulatedRewardTx)
 		data.Result[i1].Candidate.TotalStake = pipStr2bip_f32(data.Result[i1].Candidate.TotalStakeTx)
 
-		for i2, _ := range data.Result[i1].Candidate.Stakes {
+		// В новом API нет у "candidates" Стэка!!!
+		/*for i2, _ := range data.Result[i1].Candidate.Stakes {
 			data.Result[i1].Candidate.Stakes[i2].Value = pipStr2bip_f32(data.Result[i1].Candidate.Stakes[i2].ValueTx)
 			data.Result[i1].Candidate.Stakes[i2].BipValue = pipStr2bip_f32(data.Result[i1].Candidate.Stakes[i2].BipValueTx)
-		}
+		}*/
 	}
 
 	return data.Result

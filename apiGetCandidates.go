@@ -22,7 +22,7 @@ type CandidateInfo struct {
 	Commission       int           `json:"commission" bson:"commission" gorm:"commission"`
 	CreatedAtBlock   int           `json:"created_at_block" bson:"created_at_block" gorm:"created_at_block"`
 	StatusInt        int           `json:"status" bson:"status" gorm:"status"` // числовое значение статуса: 1 - Offline, 2 - Online
-	Stakes           []stakes_info `json:"stakes" bson:"stakes" gorm:"stakes"`
+	Stakes           []stakes_info `json:"stakes" bson:"stakes" gorm:"stakes"` // Только у: Candidate(по PubKey)
 }
 
 // стэк делегатов
@@ -55,10 +55,11 @@ func (c *SDK) GetCandidates() []CandidateInfo {
 
 	for i1, _ := range data.Result {
 		data.Result[i1].TotalStake = pipStr2bip_f32(data.Result[i1].TotalStakeTx)
-		for i2, _ := range data.Result[i1].Stakes {
+		// В новом API нет у "candidates" Стэка!!!
+		/*for i2, _ := range data.Result[i1].Stakes {
 			data.Result[i1].Stakes[i2].Value = pipStr2bip_f32(data.Result[i1].Stakes[i2].ValueTx)
 			data.Result[i1].Stakes[i2].BipValue = pipStr2bip_f32(data.Result[i1].Stakes[i2].BipValueTx)
-		}
+		}*/
 	}
 	return data.Result
 }
