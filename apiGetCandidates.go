@@ -25,7 +25,7 @@ type CandidateInfo struct {
 	Stakes           []stakes_info `json:"stakes" bson:"stakes" gorm:"stakes"` // Только у: Candidate(по PubKey)
 }
 
-// стэк делегатов
+// стэк кандидата/валидатора в каких монетах
 type stakes_info struct {
 	Owner      string  `json:"owner" bson:"owner" gorm:"owner"`
 	Coin       string  `json:"coin" bson:"coin" gorm:"coin"`
