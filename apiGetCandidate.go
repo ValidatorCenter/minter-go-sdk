@@ -19,18 +19,18 @@ type result_candidate struct {
 
 // type CandidateInfo struct --- в apiGetCandidates.go
 
-func (c *SDK) GetCandidate(candidateHash string) CandidateInfo {
+func (c *SDK) GetCandidate(candidateHash string) (CandidateInfo, error) {
 	url := fmt.Sprintf("%s/api/candidate/%s", c.MnAddress, candidateHash)
 	res, err := http.Get(url)
 	if err != nil {
-		panic(err.Error())
+		return CandidateInfo{}, err
 	}
 
 	defer res.Body.Close()
 
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		panic(err.Error())
+		return CandidateInfo{}, err
 	}
 
 	var data node_candidate
@@ -42,5 +42,5 @@ func (c *SDK) GetCandidate(candidateHash string) CandidateInfo {
 		data.Result.Candidate.Stakes[i2].BipValue = pipStr2bip_f32(data.Result.Candidate.Stakes[i2].BipValueTx)
 	}
 
-	return data.Result.Candidate
+	return data.Result.Candidate, nil
 }

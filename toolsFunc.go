@@ -138,7 +138,8 @@ func pipStr2bip_f32(amntTokenStr string) float32 {
 	if amntTokenStr != "" {
 		fAmntToken64, err := strconv.ParseFloat(amntTokenStr, 64)
 		if err != nil {
-			panic(err.Error())
+			//panic(err.Error())
+			return 0.0
 		}
 		fAmntToken = float32(fAmntToken64 / 1000000000000000000)
 	}

@@ -24,17 +24,17 @@ type CoinInfoResponse struct {
 }
 
 // получение доп.данных о монете: volume, reserve_balance
-func (c *SDK) GetCoinInfo(coinSmbl string) CoinInfoResponse {
+func (c *SDK) GetCoinInfo(coinSmbl string) (CoinInfoResponse, error) {
 	url := fmt.Sprintf("%s/api/coinInfo/%s", c.MnAddress, coinSmbl)
 	res, err := http.Get(url)
 	if err != nil {
-		panic(err.Error())
+		return CoinInfoResponse{}, err
 	}
 	defer res.Body.Close()
 
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		panic(err.Error())
+		return CoinInfoResponse{}, err
 	}
 
 	var data node_coininfo
@@ -43,5 +43,5 @@ func (c *SDK) GetCoinInfo(coinSmbl string) CoinInfoResponse {
 	data.Result.Volume = pipStr2bip_f32(data.Result.VolumeTx)
 	data.Result.ReserveBalance = pipStr2bip_f32(data.Result.ReserveBalanceTx)
 
-	return data.Result
+	return data.Result, nil
 }

@@ -17,26 +17,26 @@ type BlnctResponse struct {
 }
 
 // узнаем баланс
-func (c *SDK) GetBalance(usrAddr string) map[string]float32 {
+func (c *SDK) GetBalance(usrAddr string) (map[string]float32, error) {
 	url := fmt.Sprintf("%s/api/balance/%s", c.MnAddress, usrAddr)
+	retDt := map[string]float32{}
 	res, err := http.Get(url)
 	if err != nil {
-		panic(err.Error())
+		return retDt, err
 	}
 	defer res.Body.Close()
 
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		panic(err.Error())
+		return retDt, err
 	}
 
 	var data blnc_usr
 	json.Unmarshal(body, &data)
 
-	retDt := map[string]float32{}
 	for iS, vD := range data.Result.Balance {
 		retDt[iS] = pipStr2bip_f32(vD)
 	}
 
-	return retDt
+	return retDt, nil
 }

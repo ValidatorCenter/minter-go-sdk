@@ -36,18 +36,18 @@ type stakes_info struct {
 }
 
 // Возвращает список нод валидаторов и кандидатов
-func (c *SDK) GetCandidates() []CandidateInfo {
+func (c *SDK) GetCandidates() ([]CandidateInfo, error) {
 	url := fmt.Sprintf("%s/api/candidates", c.MnAddress)
 	res, err := http.Get(url)
 	if err != nil {
-		panic(err.Error())
+		return []CandidateInfo{}, err
 	}
 
 	defer res.Body.Close()
 
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		panic(err.Error())
+		return []CandidateInfo{}, err
 	}
 
 	var data node_candidates
@@ -61,5 +61,5 @@ func (c *SDK) GetCandidates() []CandidateInfo {
 			data.Result[i1].Stakes[i2].BipValue = pipStr2bip_f32(data.Result[i1].Stakes[i2].BipValueTx)
 		}*/
 	}
-	return data.Result
+	return data.Result, nil
 }

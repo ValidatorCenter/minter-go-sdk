@@ -44,8 +44,13 @@ func (c *SDK) TxCreateCoin(t *TxCreateCoinData) (string, error) {
 		return "", err
 	}
 
+	nowNonce, err := c.GetNonce(c.AccAddress)
+	if err != nil {
+		return "", err
+	}
+
 	tx := tr.Transaction{
-		Nonce:         uint64(c.GetNonce(c.AccAddress) + 1),
+		Nonce:         uint64(nowNonce + 1),
 		GasPrice:      valueGas,
 		GasCoin:       coinGas,
 		Type:          tr.TypeCreateCoin,

@@ -65,13 +65,13 @@ Structures for receiving data from the blockchain already have tags: json, bson 
 Returns coins list and balance of an address.
 
 ``
-GetBalance("Mx...MinterAddress" string): map[string]string
+GetBalance("Mx...MinterAddress" string): map[string]string, error
 ``
 
 ###### Example
 
 ```golang
-blnc := sdk.GetBalance("Mxdc7fcc63930bf81ebdce12b3bcef57b93e99a157")
+blnc, err := sdk.GetBalance("Mxdc7fcc63930bf81ebdce12b3bcef57b93e99a157")
 
 // result: {MTN: 1000000, TESTCOIN: 2000000}
 ```
@@ -81,13 +81,13 @@ blnc := sdk.GetBalance("Mxdc7fcc63930bf81ebdce12b3bcef57b93e99a157")
 Returns current nonce of an address.
 
 ``
-GetNonce("Mx...MinterAddress" string): int
+GetNonce("Mx...MinterAddress" string): int, error
 ``
 
 ###### Example
 
 ```golang
-lastNmb := sdk.GetNonce("Mxdc7fcc63930bf81ebdce12b3bcef57b93e99a157")
+lastNmb, err := sdk.GetNonce("Mxdc7fcc63930bf81ebdce12b3bcef57b93e99a157")
 
 // 5
 ```
@@ -97,7 +97,7 @@ lastNmb := sdk.GetNonce("Mxdc7fcc63930bf81ebdce12b3bcef57b93e99a157")
 Returns node status info
 
 ``
-GetStatus(): struct
+GetStatus(): struct, error
 ``
 
 ### GetValidators
@@ -105,7 +105,7 @@ GetStatus(): struct
 Returns list of active validators
 
 ``
-GetValidators(): struct
+GetValidators(): struct, error
 ``
 
 ### EstimateCoinBuy
@@ -113,7 +113,7 @@ GetValidators(): struct
 Return estimate of buy coin transaction
 
 ``
-EstimateCoinBuy("coinToBuy" string, "coinToSell" coinToBuy, "valueToBuy" int64): struct
+EstimateCoinBuy("coinToBuy" string, "coinToSell" coinToBuy, "valueToBuy" int64): struct, error
 ``
 
 ### EstimateCoinSell
@@ -121,7 +121,7 @@ EstimateCoinBuy("coinToBuy" string, "coinToSell" coinToBuy, "valueToBuy" int64):
 Return estimate of sell coin transaction
 
 ``
-EstimateCoinSell("coinToSell" string, "coinToBuy" string, "valueToSell" int64): struct
+EstimateCoinSell("coinToSell" string, "coinToBuy" string, "valueToSell" int64): struct, error
 ``
 
 ### GetCoinInfo
@@ -129,7 +129,7 @@ EstimateCoinSell("coinToSell" string, "coinToBuy" string, "valueToSell" int64): 
 Returns information about coin.
 
 ``
-GetCoinInfo("COIN_SYMBOL" string): struct
+GetCoinInfo("COIN_SYMBOL" string): struct, error
 ``
 
 ### GetBlock
@@ -137,7 +137,7 @@ GetCoinInfo("COIN_SYMBOL" string): struct
 Returns block data at given height.
 
 ``
-GetBlock("height" int): struct
+GetBlock("height" int): struct, error
 ``
 
 ### GetTransaction
@@ -145,7 +145,7 @@ GetBlock("height" int): struct
 Returns transaction info
 
 ``
-GetTransaction("Mt...hash" string): struct
+GetTransaction("Mt...hash" string): struct, error
 ``
 
 ### GetCandidate
@@ -153,7 +153,7 @@ GetTransaction("Mt...hash" string): struct
 Returns candidate’s info by provided public_key. It will respond with 404 code if candidate is not found.
 
 ``
-GetCandidate("Mp..." string): struct
+GetCandidate("Mp..." string): struct, error
 ``
 
 ### GetCandidates
@@ -161,7 +161,7 @@ GetCandidate("Mp..." string): struct
 Returns list of candidates
 
 ``
-GetCandidates(): struct
+GetCandidates(): struct, error
 ``
 
 ### NewMnemonic
@@ -169,7 +169,7 @@ GetCandidates(): struct
 Returns new seed-phrase
 
 ``
-NewMnemonic(): string
+NewMnemonic(): string, error
 ``
 
 ### AuthMnemonic

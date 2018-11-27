@@ -90,17 +90,17 @@ type BlockTransactionResponse struct {
 // type ResponseDeliverTx struct --- в apiGetTransaction.go // TODO: del
 
 // получаем содержимое блока по его ID
-func (c *SDK) GetBlock(id int) BlockResponse {
+func (c *SDK) GetBlock(id int) (BlockResponse, error) {
 	url := fmt.Sprintf("%s/api/block/%d", c.MnAddress, id)
 	res, err := http.Get(url)
 	if err != nil {
-		panic(err.Error())
+		return BlockResponse{}, err
 	}
 	defer res.Body.Close()
 
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		panic(err.Error())
+		return BlockResponse{}, err
 	}
 
 	var data node_block
@@ -200,5 +200,5 @@ func (c *SDK) GetBlock(id int) BlockResponse {
 		}
 	}
 
-	return data.Result
+	return data.Result, nil
 }

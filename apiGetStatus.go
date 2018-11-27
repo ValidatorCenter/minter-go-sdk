@@ -25,17 +25,17 @@ type ResultNetwork struct {
 }
 
 // получение сколько всего блоков в сети
-func (c *SDK) GetStatus() ResultNetwork {
+func (c *SDK) GetStatus() (ResultNetwork, error) {
 	url := fmt.Sprintf("%s/api/status", c.MnAddress)
 	res, err := http.Get(url)
 	if err != nil {
-		panic(err.Error())
+		return ResultNetwork{}, err
 	}
 	defer res.Body.Close()
 
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		panic(err.Error())
+		return ResultNetwork{}, err
 	}
 
 	var data node_status
@@ -43,8 +43,9 @@ func (c *SDK) GetStatus() ResultNetwork {
 
 	data.Result.LatestBlockHeight, err = strconv.Atoi(data.Result.LatestBlockHeightTx)
 	if err != nil {
-		panic(err.Error())
+		// пусть и не полностью
+		return data.Result, err
 	}
 
-	return data.Result
+	return data.Result, nil
 }
