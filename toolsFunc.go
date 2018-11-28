@@ -2,6 +2,7 @@ package mintersdk
 
 import (
 	"crypto/ecdsa"
+	"crypto/sha256"
 	"encoding/hex"
 
 	//"errors"
@@ -68,6 +69,22 @@ func GetAddressPrivateKey(privateKey string) (string, error) {
 	/* // получаем приватный ключ из объекта ECDSA
 	b2 := crypto.FromECDSA(privKey2)
 	v2 := encodeHex(b2)*/
+}
+
+// Получение адреса валидатора по открытому ключу
+func GetVAddressPubKey(pubkey string) string {
+	//pubkey = strings.ToUpper(pubkey)
+	// убираем Mp
+	if pubkey[0:2] == "Mp" {
+		pubkey = strings.TrimLeft(pubkey, "Mp")
+	}
+
+	h, _ := hex.DecodeString(pubkey)
+	h256 := sha256.Sum256(h)
+	address := hex.EncodeToString(h256[:])
+	address = strings.ToUpper(address[:40])
+
+	return address
 }
 
 // HexToECDSA parses a secp256k1 private key.

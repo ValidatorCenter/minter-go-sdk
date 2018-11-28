@@ -188,6 +188,14 @@ Returns address of the wallet by provided private key.
 GetAddressPrivateKey("private-key" string): "Mx..." string, error
 ``
 
+### GetVAddressPubKey
+
+Returns validator-address by provided public key.
+
+``
+GetVAddressPubKey("Mp..." string): string
+``
+
 ### Sign transaction
 
 Returns a signed tx
