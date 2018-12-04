@@ -9,7 +9,7 @@ Actual for Minter version 0.5.0.
 * [Installation](#installing)
 * [Updating](#updating)
 * [Minter SDK](#using-minter)
-	- [GetBalance](#getbalance)
+	- [GetAddress](#getaddress)
 	- [GetNonce](#getnonce)
 	- [GetStatus](#getstatus)
 	- [GetValidators](#getvalidators)
@@ -63,36 +63,21 @@ sdk := m.SDK{
 
 Structures for receiving data from the blockchain already have tags: json, bson and gorm. This means that you can immediately write them correctly to a database that uses one of these tags.
 
-### GetBalance
+### GetAddress
 
-Returns coins list and balance of an address.
-
-``
-GetBalance("Mx...MinterAddress" string): map[string]string, error
-``
-
-###### Example
-
-```golang
-blnc, err := sdk.GetBalance("Mxdc7fcc63930bf81ebdce12b3bcef57b93e99a157")
-
-// result: {MTN: 1000000, TESTCOIN: 2000000}
-```
-
-### GetNonce
-
-Returns current nonce of an address.
+Returns the balance of given account and the number of outgoing transaction.
 
 ``
-GetNonce("Mx...MinterAddress" string): int, error
+GetAddress("Mx...MinterAddress" string): map[string]float32, int, error
 ``
 
 ###### Example
 
 ```golang
-lastNmb, err := sdk.GetNonce("Mxdc7fcc63930bf81ebdce12b3bcef57b93e99a157")
+blnc, amnTx, err := sdk.GetAddress("Mxdc7fcc63930bf81ebdce12b3bcef57b93e99a157")
 
-// 5
+// result blnc: {MTN: 1000000, TESTCOIN: 2000000}
+// result amnTx: 134
 ```
 
 ### GetStatus

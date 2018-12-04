@@ -1,6 +1,7 @@
 package mintersdk
 
 import (
+	b64 "encoding/base64"
 	"math/big"
 
 	tr "github.com/MinterTeam/minter-go-node/core/transaction"
@@ -11,6 +12,8 @@ type TxUnbondData struct {
 	PubKey string
 	Coin   string
 	Value  int64
+	// Other
+	Payload string
 	// Gas
 	GasCoin  string
 	GasPrice int64
@@ -31,6 +34,11 @@ func (c *SDK) TxUnbond(t *TxUnbondData) (string, error) {
 		return "", err
 	}
 
+	payComment := ""
+	if t.Payload != "" {
+		payComment = b64.StdEncoding.EncodeToString([]byte(t.Payload))
+	}
+
 	data := tr.UnbondData{
 		PubKey: pubkey,
 		Coin:   coin,
@@ -42,7 +50,7 @@ func (c *SDK) TxUnbond(t *TxUnbondData) (string, error) {
 		return "", err
 	}
 
-	nowNonce, err := c.GetNonce(c.AccAddress)
+	_, nowNonce, err := c.Address(c.AccAddress)
 	if err != nil {
 		return "", err
 	}
@@ -53,6 +61,7 @@ func (c *SDK) TxUnbond(t *TxUnbondData) (string, error) {
 		GasCoin:       coinGas,
 		Type:          tr.TypeUnbond,
 		Data:          encodedData,
+		Payload:       payComment,
 		SignatureType: tr.SigTypeSingle,
 	}
 

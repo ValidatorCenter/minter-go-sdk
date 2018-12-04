@@ -1,6 +1,7 @@
 package mintersdk
 
 import (
+	b64 "encoding/base64"
 	"math/big"
 
 	tr "github.com/MinterTeam/minter-go-node/core/transaction"
@@ -10,6 +11,8 @@ import (
 type TxSetCandidateData struct {
 	PubKey   string
 	Activate bool // Вкл./выкл мастерноду
+	// Other
+	Payload string
 	// Gas
 	GasCoin  string
 	GasPrice int64
@@ -25,6 +28,11 @@ func (c *SDK) TxSetCandidate(t *TxSetCandidateData) (string, error) {
 	privateKey, err := h2ECDSA(c.AccPrivateKey)
 	if err != nil {
 		return "", err
+	}
+
+	payComment := ""
+	if t.Payload != "" {
+		payComment = b64.StdEncoding.EncodeToString([]byte(t.Payload))
 	}
 
 	var typeTx byte
@@ -47,7 +55,7 @@ func (c *SDK) TxSetCandidate(t *TxSetCandidateData) (string, error) {
 		return "", err
 	}
 
-	nowNonce, err := c.GetNonce(c.AccAddress)
+	_, nowNonce, err := c.Address(c.AccAddress)
 	if err != nil {
 		return "", err
 	}
@@ -58,6 +66,7 @@ func (c *SDK) TxSetCandidate(t *TxSetCandidateData) (string, error) {
 		GasCoin:       coinGas,
 		Type:          typeTx,
 		Data:          encodedData,
+		Payload:       payComment,
 		SignatureType: tr.SigTypeSingle,
 	}
 

@@ -12,7 +12,8 @@ type TxSendCoinData struct {
 	Coin      string
 	ToAddress string
 	Value     float32
-	Payload   string
+	// Other
+	Payload string
 	// Gas
 	GasCoin  string
 	GasPrice int64
@@ -49,23 +50,10 @@ func (c *SDK) TxSendCoin(t *TxSendCoinData) (string, error) {
 		return "", err
 	}
 
-	nowNonce, err := c.GetNonce(c.AccAddress)
+	_, nowNonce, err := c.Address(c.AccAddress)
 	if err != nil {
 		return "", err
 	}
-
-	/*
-	   Nonce - int, used for prevent transaction reply.
-	   Gas Price - big int, used for managing transaction fees.
-	   Gas Coin - 10 bytes, symbol of a coin to pay fee
-	   Type - type of transaction (see below).
-	   Data - data of transaction (depends on transaction type).
-	   Payload (arbitrary bytes) - arbitrary user-defined bytes.
-	   Service Data - reserved field.
-	   Signature Type - single or multisig transaction.
-	   Signature Data - digital signature of transaction.
-	*/
-	// TODO: b64 "encoding/base64" Payload шифрование сообщения
 
 	tx := tr.Transaction{
 		Nonce:         uint64(nowNonce + 1),
