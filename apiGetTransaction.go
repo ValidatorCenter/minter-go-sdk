@@ -1,18 +1,17 @@
 package mintersdk
 
 import (
+	b64 "encoding/base64"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-
-	//"math/big"
 	"net/http"
 )
 
-//curl -s 'localhost:8841/api/transaction/{hash}'
 type node_transaction struct {
-	Code   int
-	Result TransResponse
+	JSONRPC string `json:"jsonrpc"`
+	ID      string `json:"id"`
+	Result  TransResponse
 }
 
 type TransResponse struct {
@@ -182,7 +181,7 @@ type TransData struct {
 
 // получаем содержимое транзакции по её хэшу
 func (c *SDK) GetTransaction(hash string) (TransResponse, error) {
-	url := fmt.Sprintf("%s/api/transaction/%s", c.MnAddress, hash)
+	url := fmt.Sprintf("%s/transaction?hash=%s", c.MnAddress, hash)
 	res, err := http.Get(url)
 	if err != nil {
 		return TransResponse{}, err
@@ -270,6 +269,13 @@ func (c *SDK) GetTransaction(hash string) (TransResponse, error) {
 		}
 	} else if data.Result.Type == TX_CreateMultisigData {
 		// TODO: реализовать
+	}
+
+	// Расшифровываем сообщение
+	if data.Result.Payload != "" {
+		// комментарий, расшифровать base64
+		sDec, _ := b64.StdEncoding.DecodeString(data.Result.Payload)
+		data.Result.Payload = string(sDec)
 	}
 
 	return data.Result, nil

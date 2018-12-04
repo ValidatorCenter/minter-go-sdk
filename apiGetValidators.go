@@ -9,8 +9,9 @@ import (
 
 // запрос по валидаторам
 type node_validators struct {
-	Code   int
-	Result []result_valid
+	JSONRPC string `json:"jsonrpc"`
+	ID      string `json:"id"`
+	Result  []result_valid
 }
 
 // результат по валидаторам
@@ -25,7 +26,7 @@ type result_valid struct {
 
 // Возвращает список валидаторов по номеру блока (у мастерноды должен быть включен keep_state_history)
 func (c *SDK) GetValidatorsBlock(blockN int) ([]result_valid, error) {
-	url := fmt.Sprintf("%s/api/validators?height=%d", c.MnAddress, blockN)
+	url := fmt.Sprintf("%s/validators?height=%d", c.MnAddress, blockN)
 	res, err := http.Get(url)
 	if err != nil {
 		return []result_valid{}, err
@@ -50,7 +51,7 @@ func (c *SDK) GetValidatorsBlock(blockN int) ([]result_valid, error) {
 
 // Возвращает список валидаторов
 func (c *SDK) GetValidators() ([]result_valid, error) {
-	url := fmt.Sprintf("%s/api/validators", c.MnAddress)
+	url := fmt.Sprintf("%s/validators", c.MnAddress)
 	res, err := http.Get(url)
 	if err != nil {
 		return []result_valid{}, err
@@ -68,12 +69,7 @@ func (c *SDK) GetValidators() ([]result_valid, error) {
 	for i1, _ := range data.Result {
 		data.Result[i1].AccumulatedReward = pipStr2bip_f32(data.Result[i1].AccumulatedRewardTx)
 		data.Result[i1].Candidate.TotalStake = pipStr2bip_f32(data.Result[i1].Candidate.TotalStakeTx)
-
 		// В новом API нет у "candidates" Стэка!!!
-		/*for i2, _ := range data.Result[i1].Candidate.Stakes {
-			data.Result[i1].Candidate.Stakes[i2].Value = pipStr2bip_f32(data.Result[i1].Candidate.Stakes[i2].ValueTx)
-			data.Result[i1].Candidate.Stakes[i2].BipValue = pipStr2bip_f32(data.Result[i1].Candidate.Stakes[i2].BipValueTx)
-		}*/
 	}
 
 	return data.Result, nil

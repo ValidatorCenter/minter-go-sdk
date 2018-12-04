@@ -15,11 +15,14 @@ import (
 
 // Ответ транзакции
 type send_transaction struct {
-	Code   int
-	Result TransSendResponse
-	Log    string
+	JSONRPC string `json:"jsonrpc"`
+	ID      string `json:"id"`
+	Result  TransSendResponse
 }
 type TransSendResponse struct {
+	Code int    `json:"code" bson:"code" gorm:"code"`
+	Log  string `json:"log" bson:"log" gorm:"log"`
+	Data string `json:"data" bson:"data" gorm:"data"`
 	Hash string `json:"hash" bson:"hash" gorm:"hash"`
 }
 
@@ -44,10 +47,13 @@ func (c *SDK) SetTransaction(tx *tr.Transaction) (string, error) {
 		return "", err
 	}
 
-	url := fmt.Sprintf("%s/api/sendTransaction", c.MnAddress)
-	res, err := http.Post(url, "application/json", bytes.NewBuffer(bytesRepresentation))
+	/*url := fmt.Sprintf("%s/api/sendTransaction", c.MnAddress)
+	res, err := http.Post(url, "application/json", bytes.NewBuffer(bytesRepresentation))*/
+	url := fmt.Sprintf("%s/send_transaction?tx=%s", c.MnAddress, string(bytesRepresentation))
+	res, err := http.Get(url)
 	if err != nil {
-		fmt.Println("ERROR: TxSign::http.Post")
+		//fmt.Println("ERROR: TxSign::http.Post")
+		fmt.Println("ERROR: TxSign::http.Get")
 		return "", err
 	}
 	defer res.Body.Close()
@@ -61,10 +67,10 @@ func (c *SDK) SetTransaction(tx *tr.Transaction) (string, error) {
 	var data send_transaction
 	json.Unmarshal(body, &data)
 
-	if data.Code == 0 {
+	if data.Result.Code == 0 {
 		return data.Result.Hash, nil
 	} else {
 		fmt.Printf("ERROR: TxSign: %#v\n", data)
-		return data.Log, errors.New(fmt.Sprintf("Err:%d", data.Code))
+		return data.Result.Log, errors.New(fmt.Sprintf("Err:%d-%s", data.Result.Code, data.Result.Log))
 	}
 }

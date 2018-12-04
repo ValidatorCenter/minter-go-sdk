@@ -16,6 +16,7 @@ Actual for Minter version 0.5.0.
 	- [GetValidatorsBlock](#getvalidatorsblock)
 	- [EstimateCoinBuy](#estimatecoinbuy)
 	- [EstimateCoinSell](#estimatecoinsell)
+	- [EstimateTxCommission] (#estimatetxcommission)
 	- [GetCoinInfo](#getcoininfo)
 	- [GetBlock](#getblock)
 	- [GetTransaction](#gettransaction)
@@ -132,6 +133,14 @@ Return estimate of sell coin transaction.
 
 ``
 EstimateCoinSell("coinToSell" string, "coinToBuy" string, "valueToSell" int64): struct, error
+``
+
+### EstimateTxCommission
+
+Return estimate of commission in GasCoin.
+
+``
+EstimateTxCommission("Mt...hash" string): float32, error
 ``
 
 ### GetCoinInfo

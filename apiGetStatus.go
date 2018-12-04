@@ -10,8 +10,9 @@ import (
 )
 
 type node_status struct {
-	Code   int
-	Result ResultNetwork
+	JSONRPC string `json:"jsonrpc"`
+	ID      string `json:"id"`
+	Result  ResultNetwork
 }
 
 type ResultNetwork struct {
@@ -26,7 +27,7 @@ type ResultNetwork struct {
 
 // получение сколько всего блоков в сети
 func (c *SDK) GetStatus() (ResultNetwork, error) {
-	url := fmt.Sprintf("%s/api/status", c.MnAddress)
+	url := fmt.Sprintf("%s/status", c.MnAddress)
 	res, err := http.Get(url)
 	if err != nil {
 		return ResultNetwork{}, err

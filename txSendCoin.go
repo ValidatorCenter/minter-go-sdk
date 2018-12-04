@@ -1,6 +1,7 @@
 package mintersdk
 
 import (
+	b64 "encoding/base64"
 	"math/big"
 
 	tr "github.com/MinterTeam/minter-go-node/core/transaction"
@@ -11,6 +12,7 @@ type TxSendCoinData struct {
 	Coin      string
 	ToAddress string
 	Value     float32
+	Payload   string
 	// Gas
 	GasCoin  string
 	GasPrice int64
@@ -31,6 +33,11 @@ func (c *SDK) TxSendCoin(t *TxSendCoinData) (string, error) {
 		return "", err
 	}
 
+	payComment := ""
+	if t.Payload != "" {
+		payComment = b64.StdEncoding.EncodeToString([]byte(t.Payload))
+	}
+
 	data := tr.SendData{
 		Coin:  coin,
 		To:    to,
@@ -47,12 +54,26 @@ func (c *SDK) TxSendCoin(t *TxSendCoinData) (string, error) {
 		return "", err
 	}
 
+	/*
+	   Nonce - int, used for prevent transaction reply.
+	   Gas Price - big int, used for managing transaction fees.
+	   Gas Coin - 10 bytes, symbol of a coin to pay fee
+	   Type - type of transaction (see below).
+	   Data - data of transaction (depends on transaction type).
+	   Payload (arbitrary bytes) - arbitrary user-defined bytes.
+	   Service Data - reserved field.
+	   Signature Type - single or multisig transaction.
+	   Signature Data - digital signature of transaction.
+	*/
+	// TODO: b64 "encoding/base64" Payload шифрование сообщения
+
 	tx := tr.Transaction{
 		Nonce:         uint64(nowNonce + 1),
 		GasPrice:      valueGas,
 		GasCoin:       coinGas,
 		Type:          tr.TypeSend,
 		Data:          encodedData,
+		Payload:       payComment,
 		SignatureType: tr.SigTypeSingle,
 	}
 

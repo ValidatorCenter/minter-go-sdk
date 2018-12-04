@@ -11,8 +11,9 @@ import (
 
 // Содержимое блока
 type node_block struct {
-	Code   int
-	Result BlockResponse
+	JSONRPC string `json:"jsonrpc"`
+	ID      string `json:"id"`
+	Result  BlockResponse
 }
 
 type BlockResponse struct {
@@ -30,17 +31,17 @@ type BlockResponse struct {
 }
 
 type BlockPrecommitResponse struct {
-	ValidatorAddress string      `json:"validator_address" bson:"validator_address" gorm:"validator_address"`
-	ValidatorIndexTx string      `json:"validator_index" bson:"-" gorm:"-"`
-	ValidatorIndex   int         `json:"validator_index_i32" bson:"validator_index_i32" gorm:"validator_index_i32"`
+	Type             int         `json:"type" bson:"type" gorm:"type"`
 	HeightTx         string      `json:"height" bson:"-" gorm:"-"`
 	Height           int         `json:"height_i32" bson:"height_i32" gorm:"height_i32"`
 	RoundTx          string      `json:"round" bson:"-" gorm:"-"`
 	Round            int         `json:"round_i32" bson:"round_i32" gorm:"round_i32"`
 	Timestamp        time.Time   `json:"timestamp" bson:"timestamp" gorm:"timestamp"`
-	Type             int         `json:"type" bson:"type" gorm:"type"`
-	Signature        string      `json:"signature" bson:"signature" gorm:"signature"`
 	BlockID          BlockIDData `json:"block_id" bson:"block_id" gorm:"block_id"`
+	ValidatorAddress string      `json:"validator_address" bson:"validator_address" gorm:"validator_address"`
+	ValidatorIndexTx string      `json:"validator_index" bson:"-" gorm:"-"`
+	ValidatorIndex   int         `json:"validator_index_i32" bson:"validator_index_i32" gorm:"validator_index_i32"`
+	Signature        string      `json:"signature" bson:"signature" gorm:"signature"`
 }
 
 type BlockIDData struct {
@@ -93,7 +94,7 @@ type BlockTransactionResponse struct {
 
 // получаем содержимое блока по его ID
 func (c *SDK) GetBlock(id int) (BlockResponse, error) {
-	url := fmt.Sprintf("%s/api/block/%d", c.MnAddress, id)
+	url := fmt.Sprintf("%s/block?height=%d", c.MnAddress, id)
 	res, err := http.Get(url)
 	if err != nil {
 		return BlockResponse{}, err
