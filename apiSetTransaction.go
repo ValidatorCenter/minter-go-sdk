@@ -28,7 +28,8 @@ func (c *SDK) SetTransaction(tx *tr.Transaction) (string, error) {
 
 	encodedTx, err := tx.Serialize()
 	if err != nil {
-		panic(err)
+		fmt.Println("ERROR: SetCandidateTransaction::tx.Serialize")
+		return "", err
 	}
 
 	strTxRPL := hex.EncodeToString(encodedTx)

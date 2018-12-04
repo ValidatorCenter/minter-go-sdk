@@ -25,4 +25,5 @@ const (
 	TX_SetCandidateOnData                  //10
 	TX_SetCandidateOffData                 //11
 	TX_CreateMultisigData                  //12
+	TX_MultisendData                       //13
 )

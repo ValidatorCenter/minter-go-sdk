@@ -181,17 +181,17 @@ type TransData struct {
 }
 
 // получаем содержимое транзакции по её хэшу
-func (c *SDK) GetTransaction(hash string) TransResponse {
+func (c *SDK) GetTransaction(hash string) (TransResponse, error) {
 	url := fmt.Sprintf("%s/api/transaction/%s", c.MnAddress, hash)
 	res, err := http.Get(url)
 	if err != nil {
-		panic(err.Error())
+		return TransResponse{}, err
 	}
 	defer res.Body.Close()
 
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		panic(err.Error())
+		return TransResponse{}, err
 	}
 
 	var data node_transaction
@@ -268,7 +268,9 @@ func (c *SDK) GetTransaction(hash string) TransResponse {
 		data.Result.Data = tx11SetCandidateOffData{
 			PubKey: data.Result.DataTx.PubKey,
 		}
-	} //else if data.Result.Type == TX_CreateMultisigData {}
+	} else if data.Result.Type == TX_CreateMultisigData {
+		// TODO: реализовать
+	}
 
-	return data.Result
+	return data.Result, nil
 }

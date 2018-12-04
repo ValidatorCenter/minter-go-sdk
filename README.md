@@ -4,7 +4,7 @@
 ## About
 Minter Blockchain Golang SDK https://minter.network
 
-Actual for Minter version 0.5.0
+Actual for Minter version 0.5.0.
 
 * [Installation](#installing)
 * [Updating](#updating)
@@ -13,6 +13,7 @@ Actual for Minter version 0.5.0
 	- [GetNonce](#getnonce)
 	- [GetStatus](#getstatus)
 	- [GetValidators](#getvalidators)
+	- [GetValidatorsBlock](#getvalidatorsblock)
 	- [EstimateCoinBuy](#estimatecoinbuy)
 	- [EstimateCoinSell](#estimatecoinsell)
 	- [GetCoinInfo](#getcoininfo)
@@ -23,6 +24,7 @@ Actual for Minter version 0.5.0
 	- [NewMnemonic](#newmnemonic)
 	- [AuthMnemonic](#authmnemonic)
 	- [GetAddressPrivateKey](#getaddressprivatekey)
+	- [GetVAddressPubKey](#getvaddresspubkey)
 	- [SendCoin](#example-2)
 	- [MultiSendCoin](#example-3)
 	- [SellCoinTx](#example-4)
@@ -48,7 +50,7 @@ go get -u github.com/ValidatorCenter/minter-go-sdk
 
 ## Using Minter
 
-Create MinterSDK instance
+Create MinterSDK instance.
 
 ```golang
 import m "github.com/ValidatorCenter/minter-go-sdk"
@@ -65,13 +67,13 @@ Structures for receiving data from the blockchain already have tags: json, bson 
 Returns coins list and balance of an address.
 
 ``
-GetBalance("Mx...MinterAddress" string): map[string]string
+GetBalance("Mx...MinterAddress" string): map[string]string, error
 ``
 
 ###### Example
 
 ```golang
-blnc := sdk.GetBalance("Mxdc7fcc63930bf81ebdce12b3bcef57b93e99a157")
+blnc, err := sdk.GetBalance("Mxdc7fcc63930bf81ebdce12b3bcef57b93e99a157")
 
 // result: {MTN: 1000000, TESTCOIN: 2000000}
 ```
@@ -81,47 +83,55 @@ blnc := sdk.GetBalance("Mxdc7fcc63930bf81ebdce12b3bcef57b93e99a157")
 Returns current nonce of an address.
 
 ``
-GetNonce("Mx...MinterAddress" string): int
+GetNonce("Mx...MinterAddress" string): int, error
 ``
 
 ###### Example
 
 ```golang
-lastNmb := sdk.GetNonce("Mxdc7fcc63930bf81ebdce12b3bcef57b93e99a157")
+lastNmb, err := sdk.GetNonce("Mxdc7fcc63930bf81ebdce12b3bcef57b93e99a157")
 
 // 5
 ```
 
 ### GetStatus
 
-Returns node status info
+Returns node status info.
 
 ``
-GetStatus(): struct
+GetStatus(): struct, error
 ``
 
 ### GetValidators
 
-Returns list of active validators
+Returns list of active validators.
 
 ``
-GetValidators(): struct
+GetValidators(): struct, error
+``
+
+### GetValidatorsBlock
+
+Returns a list of validators of a block by its number.
+
+``
+GetValidatorsBlock("blockNumber" int): struct, error
 ``
 
 ### EstimateCoinBuy
 
-Return estimate of buy coin transaction
+Return estimate of buy coin transaction.
 
 ``
-EstimateCoinBuy("coinToBuy" string, "coinToSell" coinToBuy, "valueToBuy" int64): struct
+EstimateCoinBuy("coinToBuy" string, "coinToSell" coinToBuy, "valueToBuy" int64): struct, error
 ``
 
 ### EstimateCoinSell
 
-Return estimate of sell coin transaction
+Return estimate of sell coin transaction.
 
 ``
-EstimateCoinSell("coinToSell" string, "coinToBuy" string, "valueToSell" int64): struct
+EstimateCoinSell("coinToSell" string, "coinToBuy" string, "valueToSell" int64): struct, error
 ``
 
 ### GetCoinInfo
@@ -129,7 +139,7 @@ EstimateCoinSell("coinToSell" string, "coinToBuy" string, "valueToSell" int64): 
 Returns information about coin.
 
 ``
-GetCoinInfo("COIN_SYMBOL" string): struct
+GetCoinInfo("COIN_SYMBOL" string): struct, error
 ``
 
 ### GetBlock
@@ -137,15 +147,15 @@ GetCoinInfo("COIN_SYMBOL" string): struct
 Returns block data at given height.
 
 ``
-GetBlock("height" int): struct
+GetBlock("height" int): struct, error
 ``
 
 ### GetTransaction
 
-Returns transaction info
+Returns transaction info.
 
 ``
-GetTransaction("Mt...hash" string): struct
+GetTransaction("Mt...hash" string): struct, error
 ``
 
 ### GetCandidate
@@ -153,28 +163,28 @@ GetTransaction("Mt...hash" string): struct
 Returns candidate’s info by provided public_key. It will respond with 404 code if candidate is not found.
 
 ``
-GetCandidate("Mp..." string): struct
+GetCandidate("Mp..." string): struct, error
 ``
 
 ### GetCandidates
 
-Returns list of candidates
+Returns list of candidates.
 
 ``
-GetCandidates(): struct
+GetCandidates(): struct, error
 ``
 
 ### NewMnemonic
 
-Returns new seed-phrase
+Returns new seed-phrase.
 
 ``
-NewMnemonic(): string
+NewMnemonic(): string, error
 ``
 
 ### AuthMnemonic
 
-Authorization by seed-phrase
+Authorization by seed-phrase.
 
 ``
 AuthMnemonic("seed-phrase" string): "address" string, "private-key" string, error
@@ -188,13 +198,21 @@ Returns address of the wallet by provided private key.
 GetAddressPrivateKey("private-key" string): "Mx..." string, error
 ``
 
+### GetVAddressPubKey
+
+Returns validator-address by provided public key.
+
+``
+GetVAddressPubKey("Mp..." string): string
+``
+
 ### Sign transaction
 
 Returns a signed tx
 
 ###### Example
 
-* Sign the <b>SendCoin</b> transaction
+* Sign the <b>SendCoin</b> transaction.
 
 ```golang
 package main
@@ -231,7 +249,7 @@ func main() {
 
 ###### Example
 
-* Sign the <b>MultiSendCoin</b> transaction
+* Sign the <b>MultiSendCoin</b> transaction.
 
 ```golang
 package main
@@ -281,7 +299,7 @@ func main() {
 ```
 
 ###### Example
-* Sign the <b>SellCoin</b> transaction
+* Sign the <b>SellCoin</b> transaction.
 
 ```golang
 package main
@@ -317,7 +335,7 @@ func main() {
 ```
 
 ###### Example
-* Sign the <b>SellAllCoin</b> transaction
+* Sign the <b>SellAllCoin</b> transaction.
 
 ```golang
 package main
@@ -352,7 +370,7 @@ func main() {
 ```
 
 ###### Example
-* Sign the <b>BuyCoin</b> transaction
+* Sign the <b>BuyCoin</b> transaction.
 
 ```golang
 package main
@@ -390,7 +408,7 @@ func main() {
 ```
 
 ###### Example
-* Sign the <b>CreateCoin</b> transaction
+* Sign the <b>CreateCoin</b> transaction.
 
 ```golang
 package main
@@ -429,7 +447,7 @@ func main() {
 ```
 
 ###### Example
-* Sign the <b>DeclareCandidacy</b> transaction
+* Sign the <b>DeclareCandidacy</b> transaction.
 
 ```golang
 package main
@@ -466,7 +484,7 @@ func main() {
 ```
 
 ###### Example
-* Sign the <b>Delegate</b> transaction
+* Sign the <b>Delegate</b> transaction.
 
 ```golang
 package main
@@ -502,7 +520,7 @@ func main() {
 ```
 
 ###### Example
-* Sign the <b>SetCandidate</b> transaction
+* Sign the <b>SetCandidate</b> transaction.
 
 ```golang
 package main
@@ -537,7 +555,7 @@ func main() {
 ```
 
 ###### Example
-* Sign the <b>Unbound</b> transaction
+* Sign the <b>Unbound</b> transaction.
 
 ```golang
 package main
