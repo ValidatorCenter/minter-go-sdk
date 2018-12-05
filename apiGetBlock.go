@@ -24,10 +24,16 @@ type BlockResponse struct {
 	TotalTxs      int64                      `json:"total_txs" bson:"total_txs" gorm:"total_txs"`
 	Transactions  []BlockTransactionResponse `json:"transactions" bson:"transactions" gorm:"transactions"`
 	Events        []BlockEventsResponse      `json:"events" bson:"events" gorm:"events"`
-	Precommits    []BlockPrecommitResponse   `json:"precommits" bson:"precommits" gorm:"precommits"`
+	Precommits    []BlockPrecommitResponse   `json:"precommits" bson:"precommits" gorm:"precommits"` //TODO: будет или нет в новой версии?
 	BlockRewardTx string                     `json:"block_reward" bson:"-" gorm:"-"`
 	BlockReward   float32                    `json:"block_reward_f32" bson:"block_reward_f32" gorm:"block_reward_f32"`
 	Size          int                        `json:"size" bson:"size" gorm:"size"`
+	Validators    []BlockValidatorsResponse  `json:"validators" bson:"validators" gorm:"validators"`
+}
+
+type BlockValidatorsResponse struct {
+	PubKey string `json:"pubkey" bson:"pubkey" gorm:"pubkey"`
+	Signed bool   `json:"signed" bson:"signed" gorm:"signed"` // подписал-true, или пропустил false
 }
 
 type BlockPrecommitResponse struct {
