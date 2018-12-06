@@ -13,6 +13,7 @@ type node_status struct {
 	JSONRPC string `json:"jsonrpc"`
 	ID      string `json:"id"`
 	Result  ResultNetwork
+	Error   ErrorStruct
 }
 
 type ResultNetwork struct {

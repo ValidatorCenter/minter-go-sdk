@@ -12,6 +12,7 @@ type node_validators struct {
 	JSONRPC string `json:"jsonrpc"`
 	ID      string `json:"id"`
 	Result  []result_valid
+	Error   ErrorStruct
 }
 
 // результат по валидаторам

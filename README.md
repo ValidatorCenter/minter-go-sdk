@@ -10,7 +10,6 @@ Actual for Minter version 0.5.0.
 * [Updating](#updating)
 * [Minter SDK](#using-minter)
 	- [GetAddress](#getaddress)
-	- [GetNonce](#getnonce)
 	- [GetStatus](#getstatus)
 	- [GetValidators](#getvalidators)
 	- [GetValidatorsBlock](#getvalidatorsblock)
@@ -19,6 +18,7 @@ Actual for Minter version 0.5.0.
 	- [EstimateTxCommission] (#estimatetxcommission)
 	- [GetCoinInfo](#getcoininfo)
 	- [GetBlock](#getblock)
+	- [GetEvents](#getevents)
 	- [GetTransaction](#gettransaction)
 	- [GetCandidate](#getcandidate)
 	- [GetCandidates](#getcandidates)
@@ -142,6 +142,14 @@ Returns block data at given height.
 
 ``
 GetBlock("height" int): struct, error
+``
+
+### GetEvents
+
+Returns events at given height.
+
+``
+GetEvents("height" int): struct, error
 ``
 
 ### GetTransaction

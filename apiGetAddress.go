@@ -13,7 +13,9 @@ type addrss_usr struct {
 	JSONRPC string `json:"jsonrpc"`
 	ID      string `json:"id"`
 	Result  AddrssResponse
+	Error   ErrorStruct
 }
+
 type AddrssResponse struct {
 	Balance            map[string]string `json:"balance" bson:"balance" gorm:"balance"`
 	TransactionCountTx string            `json:"transaction_count" bson:"-" gorm:"-"`

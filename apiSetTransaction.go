@@ -18,6 +18,7 @@ type send_transaction struct {
 	JSONRPC string `json:"jsonrpc"`
 	ID      string `json:"id"`
 	Result  TransSendResponse
+	Error   ErrorStruct
 }
 type TransSendResponse struct {
 	Code int    `json:"code" bson:"code" gorm:"code"`

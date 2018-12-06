@@ -12,6 +12,7 @@ type node_candidate struct {
 	JSONRPC string `json:"jsonrpc"`
 	ID      string `json:"id"`
 	Result  result_candidate
+	Error   ErrorStruct
 }
 
 type result_candidate struct {

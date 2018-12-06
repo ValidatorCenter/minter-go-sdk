@@ -12,6 +12,7 @@ type node_transaction struct {
 	JSONRPC string `json:"jsonrpc"`
 	ID      string `json:"id"`
 	Result  TransResponse
+	Error   ErrorStruct
 }
 
 type TransResponse struct {
