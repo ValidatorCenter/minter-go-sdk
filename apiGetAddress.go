@@ -48,5 +48,5 @@ func (c *SDK) GetAddress(usrAddr string) (map[string]float32, uint32, error) {
 		return retDt, 0, err
 	}
 
-	return retDt, txCount, nil
+	return retDt, uint32(txCount), nil
 }

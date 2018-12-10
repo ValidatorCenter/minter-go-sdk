@@ -1,14 +1,13 @@
 package mintersdk
 
 import (
+	//"bytes"
+	"encoding/hex"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
-
-	"bytes"
-	"encoding/hex"
-	"errors"
 
 	tr "github.com/MinterTeam/minter-go-node/core/transaction"
 )
@@ -38,19 +37,9 @@ func (c *SDK) SetTransaction(tx *tr.Transaction) (string, error) {
 
 	strTxRPL := hex.EncodeToString(encodedTx)
 
-	message := map[string]interface{}{
-		"transaction": strTxRPL,
-	}
-
-	bytesRepresentation, err := json.Marshal(message)
-	if err != nil {
-		fmt.Println("ERROR: SetCandidateTransaction::json.Marshal")
-		return "", err
-	}
-
-	/*url := fmt.Sprintf("%s/api/sendTransaction", c.MnAddress)
-	res, err := http.Post(url, "application/json", bytes.NewBuffer(bytesRepresentation))*/
-	url := fmt.Sprintf("%s/send_transaction?tx=%s", c.MnAddress, string(bytesRepresentation))
+	strRlpEnc := string(strTxRPL)
+	fmt.Println("TX RLP:", strRlpEnc)
+	url := fmt.Sprintf("%s/send_transaction?tx=0x%s", c.MnAddress, strRlpEnc)
 	res, err := http.Get(url)
 	if err != nil {
 		//fmt.Println("ERROR: TxSign::http.Post")

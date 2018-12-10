@@ -52,7 +52,7 @@ func (c *SDK) TxCreateCoin(t *TxCreateCoinData) (string, error) {
 		return "", err
 	}
 
-	_, nowNonce, err := c.Address(c.AccAddress)
+	_, nowNonce, err := c.GetAddress(c.AccAddress)
 	if err != nil {
 		return "", err
 	}
@@ -63,7 +63,7 @@ func (c *SDK) TxCreateCoin(t *TxCreateCoinData) (string, error) {
 		GasCoin:       coinGas,
 		Type:          tr.TypeCreateCoin,
 		Data:          encodedData,
-		Payload:       payComment,
+		Payload:       []byte(payComment),
 		SignatureType: tr.SigTypeSingle,
 	}
 

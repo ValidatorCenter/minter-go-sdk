@@ -5,12 +5,10 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"strconv"
-	"time"
 )
 
 // Содержимое блока
-type node_block struct {
+type node_block_ev struct {
 	JSONRPC string `json:"jsonrpc"`
 	ID      string `json:"id"`
 	Result  BlockEvResponse
@@ -39,16 +37,16 @@ func (c *SDK) GetEvents(id int) (BlockEvResponse, error) {
 	url := fmt.Sprintf("%s/events?height=%d", c.MnAddress, id)
 	res, err := http.Get(url)
 	if err != nil {
-		return BlockResponse{}, err
+		return BlockEvResponse{}, err
 	}
 	defer res.Body.Close()
 
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		return BlockResponse{}, err
+		return BlockEvResponse{}, err
 	}
 
-	var data node_block
+	var data node_block_ev
 	json.Unmarshal(body, &data)
 
 	for iStep, _ := range data.Result.Events {

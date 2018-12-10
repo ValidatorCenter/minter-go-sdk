@@ -15,8 +15,8 @@ func main() {
 
 	delegDt := m.TxDelegateData{
 		Coin:     "MNT",
-		PubKey:   "Mp5c87d35a7adb055f54140ba03c0eed418ddc7c52ff7a63fc37a0e85611388610",
-		Stake:    100,
+		PubKey:   "Mp7555e8a7b2fea6e0c45dd92075338076dc330a6b3e09130720d9946a4421a97a",
+		Stake:    10,
 		GasCoin:  "MNT",
 		GasPrice: 1,
 	}
@@ -25,6 +25,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(resHash)
+	fmt.Println("HashTx:", resHash)
 
 }
