@@ -46,7 +46,7 @@ func (c *SDK) TxSellAllCoin(t *TxSellAllCoinData) (string, error) {
 		return "", err
 	}
 
-	_, nowNonce, err := c.Address(c.AccAddress)
+	_, nowNonce, err := c.GetAddress(c.AccAddress)
 	if err != nil {
 		return "", err
 	}
@@ -57,7 +57,7 @@ func (c *SDK) TxSellAllCoin(t *TxSellAllCoinData) (string, error) {
 		GasCoin:       coinGas,
 		Type:          tr.TypeSellAllCoin,
 		Data:          encodedData,
-		Payload:       payComment,
+		Payload:       []byte(payComment),
 		SignatureType: tr.SigTypeSingle,
 	}
 

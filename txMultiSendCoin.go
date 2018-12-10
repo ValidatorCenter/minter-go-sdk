@@ -60,7 +60,7 @@ func (c *SDK) TxMultiSendCoin(t *TxMultiSendCoinData) (string, error) {
 		return "", err
 	}
 
-	_, nowNonce, err := c.Address(c.AccAddress)
+	_, nowNonce, err := c.GetAddress(c.AccAddress)
 	if err != nil {
 		return "", err
 	}
@@ -71,7 +71,7 @@ func (c *SDK) TxMultiSendCoin(t *TxMultiSendCoinData) (string, error) {
 		GasCoin:       coinGas,
 		Type:          tr.TypeMultisend,
 		Data:          encodedData,
-		Payload:       payComment,
+		Payload:       []byte(payComment),
 		SignatureType: tr.SigTypeSingle,
 	}
 
