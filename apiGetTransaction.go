@@ -182,7 +182,7 @@ type TransData struct {
 
 // получаем содержимое транзакции по её хэшу
 func (c *SDK) GetTransaction(hash string) (TransResponse, error) {
-	url := fmt.Sprintf("%s/transaction?hash=%s", c.MnAddress, hash)
+	url := fmt.Sprintf("%s/transaction?hash=0x%s", c.MnAddress, hash)
 	res, err := http.Get(url)
 	if err != nil {
 		return TransResponse{}, err
@@ -196,7 +196,7 @@ func (c *SDK) GetTransaction(hash string) (TransResponse, error) {
 
 	var data node_transaction
 	json.Unmarshal(body, &data)
-	fmt.Println(string(body))
+	//fmt.Println(string(body))
 
 	if data.Result.Type == TX_SendData {
 		data.Result.Data = tx1SendData{

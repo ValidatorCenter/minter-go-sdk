@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 )
 
 type node_coininfo struct {
@@ -19,7 +20,8 @@ type CoinInfoResponse struct {
 	Symbol           string  `json:"symbol" bson:"symbol" gorm:"symbol"`
 	VolumeTx         string  `json:"volume" bson:"-" gorm:"-"`
 	Volume           float32 `json:"volume_f32" bson:"volume_f32" gorm:"volume_f32"`
-	CRR              int     `json:"crr" bson:"crr" gorm:"crr"`
+	CRRTx            string  `json:"crr" bson:"-" gorm:"-"`
+	CRR              int     `json:"crr_i32" bson:"crr_i32" gorm:"crr_i32"`
 	ReserveBalanceTx string  `json:"reserve_balance" bson:"-" gorm:"-"`
 	ReserveBalance   float32 `json:"reserve_balance_f32" bson:"reserve_balance_f32" gorm:"reserve_balance_f32"`
 	//Creator          string  `json:"creator" bson:"creator" gorm:"creator"` // TODO: del, нету
@@ -44,6 +46,11 @@ func (c *SDK) GetCoinInfo(coinSmbl string) (CoinInfoResponse, error) {
 
 	data.Result.Volume = pipStr2bip_f32(data.Result.VolumeTx)
 	data.Result.ReserveBalance = pipStr2bip_f32(data.Result.ReserveBalanceTx)
+
+	data.Result.CRR, err = strconv.Atoi(data.Result.CRRTx)
+	if err != nil {
+		data.Result.CRR = 0
+	}
 
 	return data.Result, nil
 }

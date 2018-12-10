@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 )
 
 // запрос по валидаторам
@@ -17,13 +18,10 @@ type node_validators struct {
 
 // результат по валидаторам
 type result_valid struct {
-	AccumulatedRewardTx string        `json:"accumulated_reward" bson:"-" gorm:"-"`
-	AccumulatedReward   float32       `json:"accumulated_reward_f32" bson:"accumulated_reward_f32" gorm:"accumulated_reward_f32"`
-	AbsentTimes         int           `json:"absent_times" bson:"absent_times" gorm:"absent_times"`
-	Candidate           CandidateInfo `json:"candidate" bson:"candidate" gorm:"candidate"`
+	PubKey        string `json:"pubkey" bson:"pub_key" gorm:"pub_key"`
+	VotingPowerTx string `json:"voting_power" bson:"-" gorm:"-"`
+	VotingPower   uint64 `json:"voting_power_u32" bson:"voting_power_u32" gorm:"voting_power_u32"`
 }
-
-// type CandidateInfo struct --- в apiGetCandidates.go
 
 // Возвращает список валидаторов по номеру блока (у мастерноды должен быть включен keep_state_history)
 func (c *SDK) GetValidatorsBlock(blockN int) ([]result_valid, error) {
@@ -43,8 +41,12 @@ func (c *SDK) GetValidatorsBlock(blockN int) ([]result_valid, error) {
 	json.Unmarshal(body, &data)
 
 	for i1, _ := range data.Result {
-		data.Result[i1].AccumulatedReward = pipStr2bip_f32(data.Result[i1].AccumulatedRewardTx)
-		data.Result[i1].Candidate.TotalStake = pipStr2bip_f32(data.Result[i1].Candidate.TotalStakeTx)
+		VotingPower_i32, err := strconv.Atoi(data.Result[i1].VotingPowerTx)
+		if err != nil {
+			data.Result[i1].VotingPower = 0
+		} else {
+			data.Result[i1].VotingPower = uint64(VotingPower_i32)
+		}
 	}
 
 	return data.Result, nil
@@ -68,9 +70,12 @@ func (c *SDK) GetValidators() ([]result_valid, error) {
 	json.Unmarshal(body, &data)
 
 	for i1, _ := range data.Result {
-		data.Result[i1].AccumulatedReward = pipStr2bip_f32(data.Result[i1].AccumulatedRewardTx)
-		data.Result[i1].Candidate.TotalStake = pipStr2bip_f32(data.Result[i1].Candidate.TotalStakeTx)
-		// В новом API нет у "candidates" Стэка!!!
+		VotingPower_i32, err := strconv.Atoi(data.Result[i1].VotingPowerTx)
+		if err != nil {
+			data.Result[i1].VotingPower = 0
+		} else {
+			data.Result[i1].VotingPower = uint64(VotingPower_i32)
+		}
 	}
 
 	return data.Result, nil

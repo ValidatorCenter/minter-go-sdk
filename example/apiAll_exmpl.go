@@ -13,11 +13,11 @@ func main() {
 	}
 
 	fmt.Println("##  1/10 ##")
-	blnc, lastNmb, err := sdk.Address("Mxdc7fcc63930bf81ebdce12b3bcef57b93e99a157")
+	blnc, lastNmb, err := sdk.GetAddress("Mxdc7fcc63930bf81ebdce12b3bcef57b93e99a157")
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("Balance= %#v\nNonce=%d\n", blnc, lastNmb)
+	fmt.Printf("Balance= %#v\nNonce=%d\n", blnc, lastNmb)
 
 	fmt.Println("##  2/10 ##")
 	blk, err := sdk.GetBlock(199)
@@ -27,7 +27,7 @@ func main() {
 	fmt.Printf("GetBlock= %#v\n", blk)
 
 	fmt.Println("##  3/10 ##")
-	cnd1, err := sdk.GetCandidate("Mp5c87d35a7adb055f54140ba03c0eed418ddc7c52ff7a63fc37a0e85611388610")
+	cnd1, err := sdk.GetCandidate("Mp7555e8a7b2fea6e0c45dd92075338076dc330a6b3e09130720d9946a4421a97a")
 	if err != nil {
 		panic(err)
 	}
@@ -41,7 +41,7 @@ func main() {
 	fmt.Printf("GetCandidates= %#v\n", cndAll)
 
 	fmt.Println("##  5/10 ##")
-	coinInf, err := sdk.GetCoinInfo("ABCDEF23")
+	coinInf, err := sdk.GetCoinInfo("VALIDATOR")
 	if err != nil {
 		panic(err)
 	}
@@ -55,7 +55,7 @@ func main() {
 	fmt.Printf("GetStatus= %#v\n", stMn)
 
 	fmt.Println("##  7/10 ##")
-	trns, err := sdk.GetTransaction("Mt8e091163d410fb34c621ed3f30b38192b36de836")
+	trns, err := sdk.GetTransaction("1cf90de029603448ddbc0808d32bbaf7fca802ef82ce9f05fdbe33ff1dbb9b4d")
 	if err != nil {
 		panic(err)
 	}
