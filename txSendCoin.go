@@ -1,7 +1,6 @@
 package mintersdk
 
 import (
-	b64 "encoding/base64"
 	"math/big"
 
 	tr "github.com/MinterTeam/minter-go-node/core/transaction"
@@ -34,11 +33,6 @@ func (c *SDK) TxSendCoin(t *TxSendCoinData) (string, error) {
 		return "", err
 	}
 
-	payComment := ""
-	if t.Payload != "" {
-		payComment = b64.StdEncoding.EncodeToString([]byte(t.Payload))
-	}
-
 	data := tr.SendData{
 		Coin:  coin,
 		To:    to,
@@ -61,7 +55,7 @@ func (c *SDK) TxSendCoin(t *TxSendCoinData) (string, error) {
 		GasCoin:       coinGas,
 		Type:          tr.TypeSend,
 		Data:          encodedData,
-		Payload:       []byte(payComment),
+		Payload:       []byte(t.Payload),
 		SignatureType: tr.SigTypeSingle,
 	}
 
