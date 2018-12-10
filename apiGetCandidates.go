@@ -11,6 +11,7 @@ import (
 type node_candidates struct {
 	Code   int
 	Result []CandidateInfo
+	Error  ErrorStruct
 }
 
 // структура кандидата/валидатора (экспортная)
@@ -37,7 +38,7 @@ type stakes_info struct {
 
 // Возвращает список нод валидаторов и кандидатов
 func (c *SDK) GetCandidates() ([]CandidateInfo, error) {
-	url := fmt.Sprintf("%s/api/candidates", c.MnAddress)
+	url := fmt.Sprintf("%s/candidates", c.MnAddress)
 	res, err := http.Get(url)
 	if err != nil {
 		return []CandidateInfo{}, err

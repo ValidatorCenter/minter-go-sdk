@@ -9,8 +9,10 @@ import (
 
 // запрос по кандидату (curl -s 'localhost:8841/api/candidate/{public_key}')
 type node_candidate struct {
-	Code   int
-	Result result_candidate
+	JSONRPC string `json:"jsonrpc"`
+	ID      string `json:"id"`
+	Result  result_candidate
+	Error   ErrorStruct
 }
 
 type result_candidate struct {
@@ -20,7 +22,7 @@ type result_candidate struct {
 // type CandidateInfo struct --- в apiGetCandidates.go
 
 func (c *SDK) GetCandidate(candidateHash string) (CandidateInfo, error) {
-	url := fmt.Sprintf("%s/api/candidate/%s", c.MnAddress, candidateHash)
+	url := fmt.Sprintf("%s/candidate?pubkey=%s", c.MnAddress, candidateHash)
 	res, err := http.Get(url)
 	if err != nil {
 		return CandidateInfo{}, err

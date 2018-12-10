@@ -11,36 +11,51 @@ import (
 
 // Содержимое блока
 type node_block struct {
-	Code   int
-	Result BlockResponse
+	JSONRPC string `json:"jsonrpc"`
+	ID      string `json:"id"`
+	Result  BlockResponse
+	Error   ErrorStruct
+}
+
+type ErrorStruct struct {
+	Code    int
+	Message string
+	Data    string
 }
 
 type BlockResponse struct {
-	Hash          string                     `json:"hash" bson:"hash" gorm:"hash"`
-	Height        int64                      `json:"height" bson:"height" gorm:"height"`
-	Time          time.Time                  `json:"time" bson:"time" gorm:"time"`
-	NumTxs        int64                      `json:"num_txs" bson:"num_txs" gorm:"num_txs"`
-	TotalTxs      int64                      `json:"total_txs" bson:"total_txs" gorm:"total_txs"`
-	Transactions  []BlockTransactionResponse `json:"transactions" bson:"transactions" gorm:"transactions"`
-	Events        []BlockEventsResponse      `json:"events" bson:"events" gorm:"events"`
-	Precommits    []BlockPrecommitResponse   `json:"precommits" bson:"precommits" gorm:"precommits"`
-	BlockRewardTx string                     `json:"block_reward" bson:"-" gorm:"-"`
-	BlockReward   float32                    `json:"block_reward_f32" bson:"block_reward_f32" gorm:"block_reward_f32"`
-	Size          int                        `json:"size" bson:"size" gorm:"size"`
+	Hash         string                     `json:"hash" bson:"hash" gorm:"hash"`
+	Height       int64                      `json:"height" bson:"height" gorm:"height"`
+	Time         time.Time                  `json:"time" bson:"time" gorm:"time"`
+	NumTxs       int64                      `json:"num_txs" bson:"num_txs" gorm:"num_txs"`
+	TotalTxs     int64                      `json:"total_txs" bson:"total_txs" gorm:"total_txs"`
+	Transactions []BlockTransactionResponse `json:"transactions" bson:"transactions" gorm:"transactions"`
+	//Precommits    []BlockPrecommitResponse   `json:"precommits" bson:"precommits" gorm:"precommits"` //TODO: будет или нет в новой версии?
+	BlockRewardTx string                    `json:"block_reward" bson:"-" gorm:"-"`
+	BlockReward   float32                   `json:"block_reward_f32" bson:"block_reward_f32" gorm:"block_reward_f32"`
+	Size          int                       `json:"size" bson:"size" gorm:"size"`
+	Validators    []BlockValidatorsResponse `json:"validators" bson:"validators" gorm:"validators"`
+	Proposer      string                    `json:"proposer" bson:"proposer" gorm:"proposer"` // PubKey пропозер блока
 }
 
-type BlockPrecommitResponse struct {
-	ValidatorAddress string      `json:"validator_address" bson:"validator_address" gorm:"validator_address"`
-	ValidatorIndexTx string      `json:"validator_index" bson:"-" gorm:"-"`
-	ValidatorIndex   int         `json:"validator_index_i32" bson:"validator_index_i32" gorm:"validator_index_i32"`
+type BlockValidatorsResponse struct {
+	PubKey string `json:"pubkey" bson:"pubkey" gorm:"pubkey"`
+	Signed bool   `json:"signed" bson:"signed" gorm:"signed"` // подписал-true, или пропустил false
+}
+
+//TODO: del
+/*type BlockPrecommitResponse struct {
+	Type             int         `json:"type" bson:"type" gorm:"type"`
 	HeightTx         string      `json:"height" bson:"-" gorm:"-"`
 	Height           int         `json:"height_i32" bson:"height_i32" gorm:"height_i32"`
 	RoundTx          string      `json:"round" bson:"-" gorm:"-"`
 	Round            int         `json:"round_i32" bson:"round_i32" gorm:"round_i32"`
 	Timestamp        time.Time   `json:"timestamp" bson:"timestamp" gorm:"timestamp"`
-	Type             int         `json:"type" bson:"type" gorm:"type"`
-	Signature        string      `json:"signature" bson:"signature" gorm:"signature"`
 	BlockID          BlockIDData `json:"block_id" bson:"block_id" gorm:"block_id"`
+	ValidatorAddress string      `json:"validator_address" bson:"validator_address" gorm:"validator_address"`
+	ValidatorIndexTx string      `json:"validator_index" bson:"-" gorm:"-"`
+	ValidatorIndex   int         `json:"validator_index_i32" bson:"validator_index_i32" gorm:"validator_index_i32"`
+	Signature        string      `json:"signature" bson:"signature" gorm:"signature"`
 }
 
 type BlockIDData struct {
@@ -52,20 +67,7 @@ type PartsData struct {
 	TotalTx string `json:"total" bson:"" gorm:""`
 	Total   int    `json:"total_i32" bson:"total_i32" gorm:"total_i32"`
 	Hash    string `json:"hash" bson:"hash" gorm:"hash"`
-}
-
-type BlockEventsResponse struct {
-	Type  string         `json:"type" bson:"type" gorm:"type"`
-	Value EventValueData `json:"value" bson:"value" gorm:"value"`
-}
-
-type EventValueData struct {
-	Role            string  `json:"role" bson:"role" gorm:"role"` //DAO,Developers,Validator,Delegator
-	Address         string  `json:"address" bson:"address" gorm:"address"`
-	AmountTx        string  `json:"amount" bson:"-" gorm:"-"`
-	Amount          float32 `json:"amount_f32" bson:"amount_f32" gorm:"amount_f32"`
-	ValidatorPubKey string  `json:"validator_pub_key" bson:"validator_pub_key" gorm:"validator_pub_key"`
-}
+}*/
 
 type BlockTransactionResponse struct {
 	Hash        string      `json:"hash" bson:"hash" gorm:"hash"`
@@ -83,6 +85,8 @@ type BlockTransactionResponse struct {
 	GasUsed     int         `json:"gas_used" bson:"gas_used" gorm:"gas_used"`
 	//TxResult    ResponseDeliverTx `json:"tx_result"` // TODO: del
 	//Tags    TagKeyValue2 `json:"tags" bson:"tags" gorm:"tags"` // TODO: нет необходимости в нём
+	Code int    `json:"code" bson:"code" gorm:"code"` // если не 0, то ОШИБКА, читаем лог(Log)
+	Log  string `json:"log" bson:"log" gorm:"log"`
 }
 
 // type TransData struct --- в apiGetTransaction.go
@@ -91,7 +95,7 @@ type BlockTransactionResponse struct {
 
 // получаем содержимое блока по его ID
 func (c *SDK) GetBlock(id int) (BlockResponse, error) {
-	url := fmt.Sprintf("%s/api/block/%d", c.MnAddress, id)
+	url := fmt.Sprintf("%s/block?height=%d", c.MnAddress, id)
 	res, err := http.Get(url)
 	if err != nil {
 		return BlockResponse{}, err
@@ -182,7 +186,7 @@ func (c *SDK) GetBlock(id int) (BlockResponse, error) {
 			}
 		} //else if data.Result.Transactions[iStep].Type == TX_CreateMultisigData {}
 	}
-	for iStep, _ := range data.Result.Events {
+	/*for iStep, _ := range data.Result.Events {
 		data.Result.Events[iStep].Value.Amount = pipStr2bip_f32(data.Result.Events[iStep].Value.AmountTx)
 	}
 	for iStep, _ := range data.Result.Precommits {
@@ -198,7 +202,7 @@ func (c *SDK) GetBlock(id int) (BlockResponse, error) {
 		if err != nil {
 			data.Result.Precommits[iStep].Round = 0
 		}
-	}
+	}*/
 
 	return data.Result, nil
 }

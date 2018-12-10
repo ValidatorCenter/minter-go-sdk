@@ -1,6 +1,7 @@
 package mintersdk
 
 import (
+	b64 "encoding/base64"
 	"math/big"
 
 	tr "github.com/MinterTeam/minter-go-node/core/transaction"
@@ -13,6 +14,8 @@ type TxCreateCoinData struct {
 	InitialAmount        int64
 	InitialReserve       int64
 	ConstantReserveRatio uint
+	// Other
+	Payload string
 	// Gas
 	GasCoin  string
 	GasPrice int64
@@ -31,6 +34,11 @@ func (c *SDK) TxCreateCoin(t *TxCreateCoinData) (string, error) {
 		return "", err
 	}
 
+	payComment := ""
+	if t.Payload != "" {
+		payComment = b64.StdEncoding.EncodeToString([]byte(t.Payload))
+	}
+
 	data := tr.CreateCoinData{
 		Name:                 t.Name,
 		Symbol:               toCreate,
@@ -44,7 +52,7 @@ func (c *SDK) TxCreateCoin(t *TxCreateCoinData) (string, error) {
 		return "", err
 	}
 
-	nowNonce, err := c.GetNonce(c.AccAddress)
+	_, nowNonce, err := c.Address(c.AccAddress)
 	if err != nil {
 		return "", err
 	}
@@ -55,6 +63,7 @@ func (c *SDK) TxCreateCoin(t *TxCreateCoinData) (string, error) {
 		GasCoin:       coinGas,
 		Type:          tr.TypeCreateCoin,
 		Data:          encodedData,
+		Payload:       payComment,
 		SignatureType: tr.SigTypeSingle,
 	}
 
