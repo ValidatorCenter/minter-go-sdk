@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 )
 
 // запрос на всех кандидатов (curl -s 'localhost:8841/api/candidates')
@@ -37,11 +38,8 @@ func (c *SDK) GetCandidates() ([]CandidateInfo, error) {
 
 	for i1, _ := range data.Result {
 		data.Result[i1].TotalStake = pipStr2bip_f32(data.Result[i1].TotalStakeTx)
-		// В новом API нет у "candidates" Стэка!!!
-		/*for i2, _ := range data.Result[i1].Stakes {
-			data.Result[i1].Stakes[i2].Value = pipStr2bip_f32(data.Result[i1].Stakes[i2].ValueTx)
-			data.Result[i1].Stakes[i2].BipValue = pipStr2bip_f32(data.Result[i1].Stakes[i2].BipValueTx)
-		}*/
+		data.Result[i1].Commission, _ = strconv.Atoi(data.Result[i1].CommissionTx)
+		data.Result[i1].CreatedAtBlock, _ = strconv.Atoi(data.Result[i1].CreatedAtBlockTx)
 	}
 	return data.Result, nil
 }

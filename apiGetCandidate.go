@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 )
 
 // запрос по кандидату (curl -s 'localhost:8841/api/candidate/{public_key}')
@@ -21,8 +22,10 @@ type CandidateInfo struct {
 	TotalStakeTx     string        `json:"total_stake" bson:"-" gorm:"-"`
 	TotalStake       float32       `json:"total_stake_f32" bson:"total_stake_f32" gorm:"total_stake_f32"`
 	PubKey           string        `json:"pubkey" bson:"pubkey" gorm:"pubkey"`
-	Commission       int           `json:"commission" bson:"commission" gorm:"commission"`
-	CreatedAtBlock   int           `json:"created_at_block" bson:"created_at_block" gorm:"created_at_block"`
+	CommissionTx     string        `json:"commission" bson:"-" gorm:"-"`
+	CreatedAtBlockTx string        `json:"created_at_block" bson:"-" gorm:"-"`
+	Commission       int           `json:"commission_i32" bson:"commission_i32" gorm:"commission_i32"`
+	CreatedAtBlock   int           `json:"created_at_block_i32" bson:"created_at_block_i32" gorm:"created_at_block_i32"`
 	StatusInt        int           `json:"status" bson:"status" gorm:"status"` // числовое значение статуса: 1 - Offline, 2 - Online
 	Stakes           []stakes_info `json:"stakes" bson:"stakes" gorm:"stakes"` // Только у: Candidate(по PubKey)
 }
@@ -53,6 +56,9 @@ func (c *SDK) GetCandidate(candidateHash string) (CandidateInfo, error) {
 
 	var data node_candidate
 	json.Unmarshal(body, &data)
+
+	data.Result.Commission, _ = strconv.Atoi(data.Result.CommissionTx)
+	data.Result.CreatedAtBlock, _ = strconv.Atoi(data.Result.CreatedAtBlockTx)
 
 	data.Result.TotalStake = pipStr2bip_f32(data.Result.TotalStakeTx)
 	for i2, _ := range data.Result.Stakes {
