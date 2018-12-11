@@ -182,7 +182,13 @@ type TransData struct {
 
 // получаем содержимое транзакции по её хэшу
 func (c *SDK) GetTransaction(hash string) (TransResponse, error) {
-	url := fmt.Sprintf("%s/transaction?hash=0x%s", c.MnAddress, hash)
+	// 0x.. или Mt..
+	prefixTx := ""
+	if hash[0:2] == "Mt" || hash[0:2] == "0x" {
+	} else {
+		prefixTx = "0x"
+	}
+	url := fmt.Sprintf("%s/transaction?hash=%s%s", c.MnAddress, prefixTx, hash)
 	res, err := http.Get(url)
 	if err != nil {
 		return TransResponse{}, err
