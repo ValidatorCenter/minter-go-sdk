@@ -18,7 +18,7 @@ type node_validators struct {
 
 // результат по валидаторам
 type result_valid struct {
-	PubKey        string `json:"pubkey" bson:"pub_key" gorm:"pub_key"`
+	PubKey        string `json:"pubkey" bson:"pubkey" gorm:"pubkey"`
 	VotingPowerTx string `json:"voting_power" bson:"-" gorm:"-"`
 	VotingPower   uint64 `json:"voting_power_u32" bson:"voting_power_u32" gorm:"voting_power_u32"`
 }

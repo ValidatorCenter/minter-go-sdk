@@ -20,7 +20,7 @@ type CandidateInfo struct {
 	CandidateAddress string        `json:"candidate_address" bson:"candidate_address" gorm:"candidate_address"`
 	TotalStakeTx     string        `json:"total_stake" bson:"-" gorm:"-"`
 	TotalStake       float32       `json:"total_stake_f32" bson:"total_stake_f32" gorm:"total_stake_f32"`
-	PubKey           string        `json:"pub_key" bson:"pub_key" gorm:"pub_key"`
+	PubKey           string        `json:"pubkey" bson:"pubkey" gorm:"pubkey"`
 	Commission       int           `json:"commission" bson:"commission" gorm:"commission"`
 	CreatedAtBlock   int           `json:"created_at_block" bson:"created_at_block" gorm:"created_at_block"`
 	StatusInt        int           `json:"status" bson:"status" gorm:"status"` // числовое значение статуса: 1 - Offline, 2 - Online
