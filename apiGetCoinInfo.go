@@ -29,7 +29,7 @@ type CoinInfoResponse struct {
 
 // получение доп.данных о монете: volume, reserve_balance
 func (c *SDK) GetCoinInfo(coinSmbl string) (CoinInfoResponse, error) {
-	url := fmt.Sprintf("%s/coin_info?symbol=\"%s\"", c.MnAddress, coinSmbl)
+	url := fmt.Sprintf("%s/coin_info?symbol=%s", c.MnAddress, coinSmbl)
 	res, err := http.Get(url)
 	if err != nil {
 		return CoinInfoResponse{}, err
