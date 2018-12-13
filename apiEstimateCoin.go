@@ -30,7 +30,7 @@ type EstimateResponse struct {
 // Стоимость покупки value монет
 func (c *SDK) EstimateCoinBuy(coinBuy string, coinSell string, valueBuy int64) (EstimateResponse, error) {
 	pip18 := bip2pip_i64(valueBuy).String() // монета в pip
-	urlB := fmt.Sprintf("%s/estimate_coin_buy?coin_to_sell=\"%s\"&value_to_buy=\"%s\"&coin_to_buy=\"%s\"", c.MnAddress, coinSell, pip18, coinBuy)
+	urlB := fmt.Sprintf("%s/estimate_coin_buy?coin_to_sell=%s&value_to_buy=%s&coin_to_buy=%s", c.MnAddress, coinSell, pip18, coinBuy)
 
 	resB, err := http.Get(urlB)
 	if err != nil {
@@ -56,7 +56,7 @@ func (c *SDK) EstimateCoinBuy(coinBuy string, coinSell string, valueBuy int64) (
 // Стоимость продажи value монет
 func (c *SDK) EstimateCoinSell(coinSell string, coinBuy string, valueSell int64) (EstimateResponse, error) {
 	pip18 := bip2pip_i64(valueSell).String() // монета в pip
-	urlS := fmt.Sprintf("%s/estimate_coin_sell?coin_to_sell=\"%s\"&value_to_sell=\"%s\"&coin_to_buy=\"%s\"", c.MnAddress, coinSell, pip18, coinBuy)
+	urlS := fmt.Sprintf("%s/estimate_coin_sell?coin_to_sell=%s&value_to_sell=%s&coin_to_buy=%s", c.MnAddress, coinSell, pip18, coinBuy)
 
 	resS, err := http.Get(urlS)
 	if err != nil {

@@ -5,36 +5,18 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 )
 
 // запрос на всех кандидатов (curl -s 'localhost:8841/api/candidates')
 type node_candidates struct {
-	Code   int
-	Result []CandidateInfo
-	Error  ErrorStruct
+	JSONRPC string `json:"jsonrpc"`
+	ID      string `json:"id"`
+	Result  []CandidateInfo
+	Error   ErrorStruct
 }
 
-// структура кандидата/валидатора (экспортная)
-type CandidateInfo struct {
-	CandidateAddress string        `json:"candidate_address" bson:"candidate_address" gorm:"candidate_address"`
-	TotalStakeTx     string        `json:"total_stake" bson:"-" gorm:"-"`
-	TotalStake       float32       `json:"total_stake_f32" bson:"total_stake_f32" gorm:"total_stake_f32"`
-	PubKey           string        `json:"pub_key" bson:"pub_key" gorm:"pub_key"`
-	Commission       int           `json:"commission" bson:"commission" gorm:"commission"`
-	CreatedAtBlock   int           `json:"created_at_block" bson:"created_at_block" gorm:"created_at_block"`
-	StatusInt        int           `json:"status" bson:"status" gorm:"status"` // числовое значение статуса: 1 - Offline, 2 - Online
-	Stakes           []stakes_info `json:"stakes" bson:"stakes" gorm:"stakes"` // Только у: Candidate(по PubKey)
-}
-
-// стэк кандидата/валидатора в каких монетах
-type stakes_info struct {
-	Owner      string  `json:"owner" bson:"owner" gorm:"owner"`
-	Coin       string  `json:"coin" bson:"coin" gorm:"coin"`
-	ValueTx    string  `json:"value" bson:"-" gorm:"-"`
-	BipValueTx string  `json:"bip_value" bson:"-" gorm:"-"`
-	Value      float32 `json:"value_f32" bson:"value_f32" gorm:"value_f32"`
-	BipValue   float32 `json:"bip_value_f32" bson:"bip_value_f32" gorm:"bip_value_f32"`
-}
+// type CandidateInfo struct --- в apiGetCandidate.go
 
 // Возвращает список нод валидаторов и кандидатов
 func (c *SDK) GetCandidates() ([]CandidateInfo, error) {
@@ -56,11 +38,8 @@ func (c *SDK) GetCandidates() ([]CandidateInfo, error) {
 
 	for i1, _ := range data.Result {
 		data.Result[i1].TotalStake = pipStr2bip_f32(data.Result[i1].TotalStakeTx)
-		// В новом API нет у "candidates" Стэка!!!
-		/*for i2, _ := range data.Result[i1].Stakes {
-			data.Result[i1].Stakes[i2].Value = pipStr2bip_f32(data.Result[i1].Stakes[i2].ValueTx)
-			data.Result[i1].Stakes[i2].BipValue = pipStr2bip_f32(data.Result[i1].Stakes[i2].BipValueTx)
-		}*/
+		data.Result[i1].Commission, _ = strconv.Atoi(data.Result[i1].CommissionTx)
+		data.Result[i1].CreatedAtBlock, _ = strconv.Atoi(data.Result[i1].CreatedAtBlockTx)
 	}
 	return data.Result, nil
 }

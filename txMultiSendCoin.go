@@ -1,7 +1,6 @@
 package mintersdk
 
 import (
-	b64 "encoding/base64"
 	"math/big"
 
 	tr "github.com/MinterTeam/minter-go-node/core/transaction"
@@ -31,11 +30,6 @@ func (c *SDK) TxMultiSendCoin(t *TxMultiSendCoinData) (string, error) {
 	privateKey, err := h2ECDSA(c.AccPrivateKey)
 	if err != nil {
 		return "", err
-	}
-
-	payComment := ""
-	if t.Payload != "" {
-		payComment = b64.StdEncoding.EncodeToString([]byte(t.Payload))
 	}
 
 	listAddrs := []tr.MultisendDataItem{}
@@ -71,7 +65,7 @@ func (c *SDK) TxMultiSendCoin(t *TxMultiSendCoinData) (string, error) {
 		GasCoin:       coinGas,
 		Type:          tr.TypeMultisend,
 		Data:          encodedData,
-		Payload:       []byte(payComment),
+		Payload:       []byte(t.Payload),
 		SignatureType: tr.SigTypeSingle,
 	}
 

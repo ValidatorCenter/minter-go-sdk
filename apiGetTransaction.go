@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 )
 
 type node_transaction struct {
@@ -16,22 +17,27 @@ type node_transaction struct {
 }
 
 type TransResponse struct {
-	Hash     string       `json:"hash" bson:"hash" gorm:"hash"`
-	RawTx    string       `json:"raw_tx" bson:"raw_tx" gorm:"raw_tx"`
-	Height   int          `json:"height" bson:"height" gorm:"height"`
-	Index    int          `json:"index" bson:"index" gorm:"index"`
-	From     string       `json:"from" bson:"from" gorm:"from"`
-	Nonce    int          `json:"nonce" bson:"nonce" gorm:"nonce"`
-	GasPrice int          `json:"gas_price" bson:"gas_price" gorm:"gas_price"`
-	GasCoin  string       `json:"gas_coin" bson:"gas_coin" gorm:"gas_coin"`
-	GasUsed  int          `json:"gas_used" bson:"gas_used" gorm:"gas_used"`
-	Type     int          `json:"type" bson:"type" gorm:"type"`
-	DataTx   TransData    `json:"data" bson:"-" gorm:"-"`
-	Data     interface{}  `json:"-" bson:"data" gorm:"data"`
-	Payload  string       `json:"payload" bson:"payload" gorm:"payload"`
-	Tags     tagKeyValue2 `json:"tags" bson:"tags" gorm:"tags"` // TODO: нет необходимости в нём, пока из Покупки/Продажи результат обмена tx.return не вынесут на уровень выше
-	Code     int          `json:"code" bson:"code" gorm:"code"` // если не 0, то ОШИБКА, читаем лог(Log)
-	Log      string       `json:"log" bson:"log" gorm:"log"`
+	Hash        string       `json:"hash" bson:"hash" gorm:"hash"`
+	RawTx       string       `json:"raw_tx" bson:"raw_tx" gorm:"raw_tx"`
+	HeightTx    string       `json:"height" bson:"-" gorm:"-"`
+	Height      int          `json:"height_i32" bson:"height_i32" gorm:"height_i32"` //(!) В блоке у транзакции нет HEIGHT блока
+	Index       int          `json:"index" bson:"index" gorm:"index"`
+	From        string       `json:"from" bson:"from" gorm:"from"`
+	NonceTx     string       `json:"nonce" bson:"-" gorm:"-"`
+	Nonce       int          `json:"nonce_i32" bson:"nonce_i32" gorm:"nonce_i32"`
+	GasPriceTx  string       `json:"gas_price" bson:"-" gorm:"-"`
+	GasPrice    int          `json:"gas_price_i32" bson:"gas_price_i32" gorm:"gas_price_i32"`
+	GasCoin     string       `json:"gas_coin" bson:"gas_coin" gorm:"gas_coin"`
+	GasUsedTx   string       `json:"gas_used" bson:"-" gorm:"-"`
+	GasUsed     int          `json:"gas_used_i32" bson:"gas_used_i32" gorm:"gas_used_i32"`
+	Type        int          `json:"type" bson:"type" gorm:"type"`
+	DataTx      TransData    `json:"data" bson:"-" gorm:"-"`
+	Data        interface{}  `json:"-" bson:"data" gorm:"data"`
+	Payload     string       `json:"payload" bson:"payload" gorm:"payload"`
+	Tags        tagKeyValue2 `json:"tags" bson:"tags" gorm:"tags"` // TODO: нет необходимости в нём, пока из Покупки/Продажи результат обмена tx.return не вынесут на уровень выше
+	Code        int          `json:"code" bson:"code" gorm:"code"` // если не 0, то ОШИБКА, читаем лог(Log)
+	Log         string       `json:"log" bson:"log" gorm:"log"`
+	ServiceData []byte       `json:"service_data" bson:"service_data" gorm:"service_data"` //TODO: ?
 }
 
 // УБРАЛ:
@@ -182,7 +188,13 @@ type TransData struct {
 
 // получаем содержимое транзакции по её хэшу
 func (c *SDK) GetTransaction(hash string) (TransResponse, error) {
-	url := fmt.Sprintf("%s/transaction?hash=%s", c.MnAddress, hash)
+	// 0x.. или Mt..
+	prefixTx := ""
+	if hash[0:2] == "Mt" || hash[0:2] == "0x" {
+	} else {
+		prefixTx = "0x"
+	}
+	url := fmt.Sprintf("%s/transaction?hash=%s%s", c.MnAddress, prefixTx, hash)
 	res, err := http.Get(url)
 	if err != nil {
 		return TransResponse{}, err
@@ -196,7 +208,28 @@ func (c *SDK) GetTransaction(hash string) (TransResponse, error) {
 
 	var data node_transaction
 	json.Unmarshal(body, &data)
-	fmt.Println(string(body))
+	//fmt.Println(string(body))
+
+	data.Result.Height, err = strconv.Atoi(data.Result.HeightTx)
+	if err != nil {
+		c.DebugLog("ERROR", "GetTransaction-> strconv.Atoi(data.Result.HeightTx)", data.Result.HeightTx)
+		return TransResponse{}, err
+	}
+	data.Result.Nonce, err = strconv.Atoi(data.Result.NonceTx)
+	if err != nil {
+		c.DebugLog("ERROR", "GetTransaction-> strconv.Atoi(data.Result.NonceTx)", data.Result.NonceTx)
+		return TransResponse{}, err
+	}
+	data.Result.GasPrice, err = strconv.Atoi(data.Result.GasPriceTx)
+	if err != nil {
+		c.DebugLog("ERROR", "GetTransaction-> strconv.Atoi(data.Result.GasPriceTx)", data.Result.GasPriceTx)
+		return TransResponse{}, err
+	}
+	data.Result.GasUsed, err = strconv.Atoi(data.Result.GasUsedTx)
+	if err != nil {
+		c.DebugLog("ERROR", "GetTransaction-> strconv.Atoi(data.Result.GasUsedTx)", data.Result.GasUsedTx)
+		return TransResponse{}, err
+	}
 
 	if data.Result.Type == TX_SendData {
 		data.Result.Data = tx1SendData{

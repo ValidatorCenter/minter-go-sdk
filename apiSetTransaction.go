@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strings"
 
 	tr "github.com/MinterTeam/minter-go-node/core/transaction"
 )
@@ -58,7 +59,7 @@ func (c *SDK) SetTransaction(tx *tr.Transaction) (string, error) {
 	json.Unmarshal(body, &data)
 
 	if data.Result.Code == 0 {
-		return data.Result.Hash, nil
+		return fmt.Sprintf("Mt%s", strings.ToLower(data.Result.Hash)), nil
 	} else {
 		fmt.Printf("ERROR: TxSign: %#v\n", data)
 		return data.Result.Log, errors.New(fmt.Sprintf("Err:%d-%s", data.Result.Code, data.Result.Log))
