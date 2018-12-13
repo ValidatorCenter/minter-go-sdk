@@ -186,6 +186,113 @@ type TransData struct {
 	//=== type11 - TYPE_SET_CANDIDATE_OFFLINE
 }
 
+// обработка данных транзакции
+func manipulationTransaction(c *SDK, tr *TransResponse) error {
+	var err error
+	tr.Height, err = strconv.Atoi(tr.HeightTx)
+	if err != nil {
+		c.DebugLog("ERROR", "GetTransaction-> strconv.Atoi(tr.HeightTx)", tr.HeightTx)
+		return err
+	}
+	tr.Nonce, err = strconv.Atoi(tr.NonceTx)
+	if err != nil {
+		c.DebugLog("ERROR", "GetTransaction-> strconv.Atoi(tr.NonceTx)", tr.NonceTx)
+		return err
+	}
+	tr.GasPrice, err = strconv.Atoi(tr.GasPriceTx)
+	if err != nil {
+		c.DebugLog("ERROR", "GetTransaction-> strconv.Atoi(tr.GasPriceTx)", tr.GasPriceTx)
+		return err
+	}
+	tr.GasUsed, err = strconv.Atoi(tr.GasUsedTx)
+	if err != nil {
+		c.DebugLog("ERROR", "GetTransaction-> strconv.Atoi(tr.GasUsedTx)", tr.GasUsedTx)
+		return err
+	}
+
+	if tr.Type == TX_SendData {
+		tr.Data = tx1SendData{
+			Coin:  tr.DataTx.Coin,
+			To:    tr.DataTx.To,
+			Value: pipStr2bip_f32(tr.DataTx.Value),
+		}
+	} else if tr.Type == TX_SellCoinData {
+		tr.Data = tx2SellCoinData{
+			CoinToSell:  tr.DataTx.CoinToSell,
+			ValueToSell: pipStr2bip_f32(tr.DataTx.ValueToSell),
+			CoinToBuy:   tr.DataTx.CoinToBuy,
+		}
+		tr.Tags.TxReturn = pipStr2bip_f32(tr.Tags.TxReturnTx)
+		tr.Tags.TxSellAmount = pipStr2bip_f32(tr.Tags.TxSellAmountTx)
+	} else if tr.Type == TX_SellAllCoinData {
+		tr.Data = tx3SellAllCoinData{
+			CoinToSell: tr.DataTx.CoinToSell,
+			CoinToBuy:  tr.DataTx.CoinToBuy,
+		}
+		tr.Tags.TxReturn = pipStr2bip_f32(tr.Tags.TxReturnTx)
+		tr.Tags.TxSellAmount = pipStr2bip_f32(tr.Tags.TxSellAmountTx)
+	} else if tr.Type == TX_BuyCoinData {
+		tr.Data = tx4BuyCoinData{
+			CoinToBuy:  tr.DataTx.CoinToBuy,
+			ValueToBuy: pipStr2bip_f32(tr.DataTx.ValueToBuy),
+			CoinToSell: tr.DataTx.CoinToSell,
+		}
+		tr.Tags.TxReturn = pipStr2bip_f32(tr.Tags.TxReturnTx)
+		tr.Tags.TxSellAmount = pipStr2bip_f32(tr.Tags.TxSellAmountTx)
+	} else if tr.Type == TX_CreateCoinData {
+		tr.Data = tx5CreateCoinData{
+			Name:                 tr.DataTx.Name,
+			CoinSymbol:           tr.DataTx.CoinSymbol,
+			InitialAmount:        pipStr2bip_f32(tr.DataTx.InitialAmount),
+			InitialReserve:       pipStr2bip_f32(tr.DataTx.InitialReserve),
+			ConstantReserveRatio: tr.DataTx.ConstantReserveRatio,
+		}
+	} else if tr.Type == TX_DeclareCandidacyData {
+		tr.Data = tx6DeclareCandidacyData{
+			Address:    tr.DataTx.Address,
+			PubKey:     tr.DataTx.PubKey,
+			Commission: tr.DataTx.Commission,
+			Coin:       tr.DataTx.Coin,
+			Stake:      pipStr2bip_f32(tr.DataTx.Stake),
+		}
+	} else if tr.Type == TX_DelegateDate {
+		tr.Data = tx7DelegateDate{
+			PubKey: tr.DataTx.PubKey,
+			Coin:   tr.DataTx.Coin,
+			Stake:  pipStr2bip_f32(tr.DataTx.Stake),
+		}
+	} else if tr.Type == TX_UnbondData {
+		tr.Data = tx8UnbondData{
+			PubKey: tr.DataTx.PubKey,
+			Coin:   tr.DataTx.Coin,
+			Value:  pipStr2bip_f32(tr.DataTx.Value),
+		}
+	} else if tr.Type == TX_RedeemCheckData {
+		tr.Data = tx9RedeemCheckData{
+			RawCheck: tr.DataTx.RawCheck,
+			Proof:    tr.DataTx.Proof,
+		}
+	} else if tr.Type == TX_SetCandidateOnData {
+		tr.Data = tx10SetCandidateOnData{
+			PubKey: tr.DataTx.PubKey,
+		}
+	} else if tr.Type == TX_SetCandidateOffData {
+		tr.Data = tx11SetCandidateOffData{
+			PubKey: tr.DataTx.PubKey,
+		}
+	} else if tr.Type == TX_CreateMultisigData {
+		// TODO: реализовать
+	}
+
+	// Расшифровываем сообщение
+	if tr.Payload != "" {
+		// комментарий, расшифровать base64
+		sDec, _ := b64.StdEncoding.DecodeString(tr.Payload)
+		tr.Payload = string(sDec)
+	}
+	return nil
+}
+
 // получаем содержимое транзакции по её хэшу
 func (c *SDK) GetTransaction(hash string) (TransResponse, error) {
 	// 0x.. или Mt..
@@ -210,106 +317,9 @@ func (c *SDK) GetTransaction(hash string) (TransResponse, error) {
 	json.Unmarshal(body, &data)
 	//fmt.Println(string(body))
 
-	data.Result.Height, err = strconv.Atoi(data.Result.HeightTx)
+	err = manipulationTransaction(c, &data.Result)
 	if err != nil {
-		c.DebugLog("ERROR", "GetTransaction-> strconv.Atoi(data.Result.HeightTx)", data.Result.HeightTx)
 		return TransResponse{}, err
-	}
-	data.Result.Nonce, err = strconv.Atoi(data.Result.NonceTx)
-	if err != nil {
-		c.DebugLog("ERROR", "GetTransaction-> strconv.Atoi(data.Result.NonceTx)", data.Result.NonceTx)
-		return TransResponse{}, err
-	}
-	data.Result.GasPrice, err = strconv.Atoi(data.Result.GasPriceTx)
-	if err != nil {
-		c.DebugLog("ERROR", "GetTransaction-> strconv.Atoi(data.Result.GasPriceTx)", data.Result.GasPriceTx)
-		return TransResponse{}, err
-	}
-	data.Result.GasUsed, err = strconv.Atoi(data.Result.GasUsedTx)
-	if err != nil {
-		c.DebugLog("ERROR", "GetTransaction-> strconv.Atoi(data.Result.GasUsedTx)", data.Result.GasUsedTx)
-		return TransResponse{}, err
-	}
-
-	if data.Result.Type == TX_SendData {
-		data.Result.Data = tx1SendData{
-			Coin:  data.Result.DataTx.Coin,
-			To:    data.Result.DataTx.To,
-			Value: pipStr2bip_f32(data.Result.DataTx.Value),
-		}
-	} else if data.Result.Type == TX_SellCoinData {
-		data.Result.Data = tx2SellCoinData{
-			CoinToSell:  data.Result.DataTx.CoinToSell,
-			ValueToSell: pipStr2bip_f32(data.Result.DataTx.ValueToSell),
-			CoinToBuy:   data.Result.DataTx.CoinToBuy,
-		}
-		data.Result.Tags.TxReturn = pipStr2bip_f32(data.Result.Tags.TxReturnTx)
-		data.Result.Tags.TxSellAmount = pipStr2bip_f32(data.Result.Tags.TxSellAmountTx)
-	} else if data.Result.Type == TX_SellAllCoinData {
-		data.Result.Data = tx3SellAllCoinData{
-			CoinToSell: data.Result.DataTx.CoinToSell,
-			CoinToBuy:  data.Result.DataTx.CoinToBuy,
-		}
-		data.Result.Tags.TxReturn = pipStr2bip_f32(data.Result.Tags.TxReturnTx)
-		data.Result.Tags.TxSellAmount = pipStr2bip_f32(data.Result.Tags.TxSellAmountTx)
-	} else if data.Result.Type == TX_BuyCoinData {
-		data.Result.Data = tx4BuyCoinData{
-			CoinToBuy:  data.Result.DataTx.CoinToBuy,
-			ValueToBuy: pipStr2bip_f32(data.Result.DataTx.ValueToBuy),
-			CoinToSell: data.Result.DataTx.CoinToSell,
-		}
-		data.Result.Tags.TxReturn = pipStr2bip_f32(data.Result.Tags.TxReturnTx)
-		data.Result.Tags.TxSellAmount = pipStr2bip_f32(data.Result.Tags.TxSellAmountTx)
-	} else if data.Result.Type == TX_CreateCoinData {
-		data.Result.Data = tx5CreateCoinData{
-			Name:                 data.Result.DataTx.Name,
-			CoinSymbol:           data.Result.DataTx.CoinSymbol,
-			InitialAmount:        pipStr2bip_f32(data.Result.DataTx.InitialAmount),
-			InitialReserve:       pipStr2bip_f32(data.Result.DataTx.InitialReserve),
-			ConstantReserveRatio: data.Result.DataTx.ConstantReserveRatio,
-		}
-	} else if data.Result.Type == TX_DeclareCandidacyData {
-		data.Result.Data = tx6DeclareCandidacyData{
-			Address:    data.Result.DataTx.Address,
-			PubKey:     data.Result.DataTx.PubKey,
-			Commission: data.Result.DataTx.Commission,
-			Coin:       data.Result.DataTx.Coin,
-			Stake:      pipStr2bip_f32(data.Result.DataTx.Stake),
-		}
-	} else if data.Result.Type == TX_DelegateDate {
-		data.Result.Data = tx7DelegateDate{
-			PubKey: data.Result.DataTx.PubKey,
-			Coin:   data.Result.DataTx.Coin,
-			Stake:  pipStr2bip_f32(data.Result.DataTx.Stake),
-		}
-	} else if data.Result.Type == TX_UnbondData {
-		data.Result.Data = tx8UnbondData{
-			PubKey: data.Result.DataTx.PubKey,
-			Coin:   data.Result.DataTx.Coin,
-			Value:  pipStr2bip_f32(data.Result.DataTx.Value),
-		}
-	} else if data.Result.Type == TX_RedeemCheckData {
-		data.Result.Data = tx9RedeemCheckData{
-			RawCheck: data.Result.DataTx.RawCheck,
-			Proof:    data.Result.DataTx.Proof,
-		}
-	} else if data.Result.Type == TX_SetCandidateOnData {
-		data.Result.Data = tx10SetCandidateOnData{
-			PubKey: data.Result.DataTx.PubKey,
-		}
-	} else if data.Result.Type == TX_SetCandidateOffData {
-		data.Result.Data = tx11SetCandidateOffData{
-			PubKey: data.Result.DataTx.PubKey,
-		}
-	} else if data.Result.Type == TX_CreateMultisigData {
-		// TODO: реализовать
-	}
-
-	// Расшифровываем сообщение
-	if data.Result.Payload != "" {
-		// комментарий, расшифровать base64
-		sDec, _ := b64.StdEncoding.DecodeString(data.Result.Payload)
-		data.Result.Payload = string(sDec)
 	}
 
 	return data.Result, nil

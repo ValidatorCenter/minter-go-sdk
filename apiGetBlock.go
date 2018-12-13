@@ -84,94 +84,12 @@ func (c *SDK) GetBlock(id int) (BlockResponse, error) {
 	}
 
 	for iStep, _ := range data.Result.Transactions {
-		data.Result.Transactions[iStep].Height = data.Result.Height
-		data.Result.Transactions[iStep].Nonce, err = strconv.Atoi(data.Result.Transactions[iStep].NonceTx)
-		if err != nil {
-			c.DebugLog("ERROR", "GetBlock-> strconv.Atoi(data.Result.Transactions[iStep].NonceTx)", data.Result.Transactions[iStep].NonceTx)
-			return data.Result, err
-		}
-		data.Result.Transactions[iStep].GasPrice, err = strconv.Atoi(data.Result.Transactions[iStep].GasPriceTx)
-		if err != nil {
-			c.DebugLog("ERROR", "GetBlock-> strconv.Atoi(data.Result.Transactions[iStep].GasPriceTx)", data.Result.Transactions[iStep].GasPriceTx)
-			return data.Result, err
-		}
-		data.Result.Transactions[iStep].GasUsed, err = strconv.Atoi(data.Result.Transactions[iStep].GasUsedTx)
-		if err != nil {
-			c.DebugLog("ERROR", "GetBlock-> strconv.Atoi(data.Result.Transactions[iStep].GasUsedTx)", data.Result.Transactions[iStep].GasUsedTx)
-			return data.Result, err
-		}
+		data.Result.Transactions[iStep].HeightTx = data.Result.HeightTx
 
-		if data.Result.Transactions[iStep].Type == TX_SendData {
-			data.Result.Transactions[iStep].Data = tx1SendData{
-				Coin:  data.Result.Transactions[iStep].DataTx.Coin,
-				To:    data.Result.Transactions[iStep].DataTx.To,
-				Value: pipStr2bip_f32(data.Result.Transactions[iStep].DataTx.Value),
-			}
-		} else if data.Result.Transactions[iStep].Type == TX_SellCoinData {
-			data.Result.Transactions[iStep].Data = tx2SellCoinData{
-				CoinToSell:  data.Result.Transactions[iStep].DataTx.CoinToSell,
-				ValueToSell: pipStr2bip_f32(data.Result.Transactions[iStep].DataTx.ValueToSell),
-				CoinToBuy:   data.Result.Transactions[iStep].DataTx.CoinToBuy,
-			}
-			// TODO: Будет-ли в блоке инфа о результате выполнения транзакции Buy/Sell?
-			//data.Result.Tags.TxReturn = pipStr2bip_f32(data.Result.Tags.TxReturnTx)
-		} else if data.Result.Transactions[iStep].Type == TX_SellAllCoinData {
-			data.Result.Transactions[iStep].Data = tx3SellAllCoinData{
-				CoinToSell: data.Result.Transactions[iStep].DataTx.CoinToSell,
-				CoinToBuy:  data.Result.Transactions[iStep].DataTx.CoinToBuy,
-			}
-			// TODO: Будет-ли в блоке инфа о результате выполнения транзакции Buy/Sell?
-			//data.Result.Tags.TxReturn = pipStr2bip_f32(data.Result.Tags.TxReturnTx)
-		} else if data.Result.Transactions[iStep].Type == TX_BuyCoinData {
-			data.Result.Transactions[iStep].Data = tx4BuyCoinData{
-				CoinToBuy:  data.Result.Transactions[iStep].DataTx.CoinToBuy,
-				ValueToBuy: pipStr2bip_f32(data.Result.Transactions[iStep].DataTx.ValueToBuy),
-				CoinToSell: data.Result.Transactions[iStep].DataTx.CoinToSell,
-			}
-			// TODO: Будет-ли в блоке инфа о результате выполнения транзакции Buy/Sell?
-			//data.Result.Tags.TxReturn = pipStr2bip_f32(data.Result.Tags.TxReturnTx)
-		} else if data.Result.Transactions[iStep].Type == TX_CreateCoinData {
-			data.Result.Transactions[iStep].Data = tx5CreateCoinData{
-				Name:                 data.Result.Transactions[iStep].DataTx.Name,
-				CoinSymbol:           data.Result.Transactions[iStep].DataTx.CoinSymbol,
-				InitialAmount:        pipStr2bip_f32(data.Result.Transactions[iStep].DataTx.InitialAmount),
-				InitialReserve:       pipStr2bip_f32(data.Result.Transactions[iStep].DataTx.InitialReserve),
-				ConstantReserveRatio: data.Result.Transactions[iStep].DataTx.ConstantReserveRatio,
-			}
-		} else if data.Result.Transactions[iStep].Type == TX_DeclareCandidacyData {
-			data.Result.Transactions[iStep].Data = tx6DeclareCandidacyData{
-				Address:    data.Result.Transactions[iStep].DataTx.Address,
-				PubKey:     data.Result.Transactions[iStep].DataTx.PubKey,
-				Commission: data.Result.Transactions[iStep].DataTx.Commission,
-				Coin:       data.Result.Transactions[iStep].DataTx.Coin,
-				Stake:      pipStr2bip_f32(data.Result.Transactions[iStep].DataTx.Stake),
-			}
-		} else if data.Result.Transactions[iStep].Type == TX_DelegateDate {
-			data.Result.Transactions[iStep].Data = tx7DelegateDate{
-				PubKey: data.Result.Transactions[iStep].DataTx.PubKey,
-				Coin:   data.Result.Transactions[iStep].DataTx.Coin,
-				Stake:  pipStr2bip_f32(data.Result.Transactions[iStep].DataTx.Stake),
-			}
-		} else if data.Result.Transactions[iStep].Type == TX_UnbondData {
-			data.Result.Transactions[iStep].Data = tx8UnbondData{
-				PubKey: data.Result.Transactions[iStep].DataTx.PubKey,
-				Coin:   data.Result.Transactions[iStep].DataTx.Coin,
-				Value:  pipStr2bip_f32(data.Result.Transactions[iStep].DataTx.Value),
-			}
-		} else if data.Result.Transactions[iStep].Type == TX_RedeemCheckData {
-			data.Result.Transactions[iStep].Data = tx9RedeemCheckData{
-				RawCheck: data.Result.Transactions[iStep].DataTx.RawCheck,
-				Proof:    data.Result.Transactions[iStep].DataTx.Proof,
-			}
-		} else if data.Result.Transactions[iStep].Type == TX_SetCandidateOnData {
-			data.Result.Transactions[iStep].Data = tx10SetCandidateOnData{
-				PubKey: data.Result.Transactions[iStep].DataTx.PubKey,
-			}
-		} else if data.Result.Transactions[iStep].Type == TX_SetCandidateOffData {
-			data.Result.Transactions[iStep].Data = tx11SetCandidateOffData{
-				PubKey: data.Result.Transactions[iStep].DataTx.PubKey,
-			}
-		} //else if data.Result.Transactions[iStep].Type == TX_CreateMultisigData {}
+		err = manipulationTransaction(c, &data.Result.Transactions[iStep])
+		if err != nil {
+			return BlockResponse{}, err
+		}
 	}
 
 	return data.Result, nil
