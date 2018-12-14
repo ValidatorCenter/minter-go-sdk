@@ -5,23 +5,53 @@ import (
 	"math/big"
 
 	tr "github.com/MinterTeam/minter-go-node/core/transaction"
-	sdk "github.com/ValidatorCenter/minter-go-sdk"
+	m "github.com/ValidatorCenter/minter-go-sdk"
+
+	"crypto/ecdsa"
+
+	"github.com/MinterTeam/minter-go-node/core/types"
+	"github.com/MinterTeam/minter-go-node/crypto"
+	"github.com/MinterTeam/minter-go-node/rlp"
 )
 
-func main() {
-	sdk.SetAddressMn("https://minter-node-1.testnet.minter.network")
+func _h2ECDSA(AccPrivateKey string) (*ecdsa.PrivateKey, error) {
+	return crypto.HexToECDSA(AccPrivateKey)
+}
 
-	AccAddress := "Mx..."
-	AccPrivateKey := "..."
+// Преобразует строку в монету
+func _getStrCoin(coin string) types.CoinSymbol {
+	var mntV types.CoinSymbol
+	copy(mntV[:], []byte(coin))
+	return mntV
+}
+
+func _serializeData(data interface{}) ([]byte, error) {
+	return rlp.EncodeToBytes(data)
+}
+
+func main() {
+	var err error
+	sdk := m.SDK{
+		MnAddress:     "https://minter-node-1.testnet.minter.network",
+		AccPrivateKey: "...",
+	}
 	passphrase := "password"
 
-	coin := sdk.GetBaseCoin()
-	privateKey, err := sdk.H2ECDSA(AccPrivateKey) // FIXME: rename H2ECDSA->h2ECDSA
+	sdk.AccAddress, err = m.GetAddressPrivateKey(sdk.AccPrivateKey)
+	if err != nil {
+		panic(err)
+	} else {
+		fmt.Println(sdk.AccAddress)
+	}
+
+	coin := m.GetBaseCoin()
+	privateKey, err := _h2ECDSA(sdk.AccPrivateKey)
 	if err != nil {
 		panic(err)
 	}
 
-	rawCheck, proof, err := sdk.CreateCheck(passphrase, 10, coin.String(), privateKey)
+	//FIXME: Проблема в toolsFuncCheck.go
+	rawCheck, proof, err := m.CreateCheck(passphrase, 10, coin, privateKey)
 	if err != nil {
 		panic(err)
 	}
@@ -32,15 +62,20 @@ func main() {
 	}
 	fmt.Println(data.String())
 
-	encodedData, err := sdk.SerializeData(data)
+	encodedData, err := _serializeData(data)
+	if err != nil {
+		panic(err)
+	}
+
+	_, nowNonce, err := sdk.GetAddress(sdk.AccAddress)
 	if err != nil {
 		panic(err)
 	}
 
 	tx := tr.Transaction{
-		Nonce:         uint64(sdk.GetNonce(AccAddress) + 1),
+		Nonce:         uint64(nowNonce + 1),
 		GasPrice:      big.NewInt(1),
-		GasCoin:       coin,
+		GasCoin:       _getStrCoin(coin),
 		Type:          tr.TypeRedeemCheck,
 		Data:          encodedData,
 		SignatureType: tr.SigTypeSingle,
