@@ -90,7 +90,7 @@ type tx4BuyCoinData struct {
 
 type tx5CreateCoinData struct {
 	Name       string `json:"name" bson:"name" gorm:"name"`
-	CoinSymbol string `json:"coin_symbol" bson:"coin_symbol" gorm:"coin_symbol"`
+	CoinSymbol string `json:"symbol" bson:"symbol" gorm:"symbol"`
 	//InitialAmountTx      string  `json:"initial_amount" bson:"-" gorm:"-"`
 	//InitialReserveTx     string  `json:"initial_reserve" bson:"-" gorm:"-"`
 	ConstantReserveRatio int     `json:"constant_reserve_ratio" bson:"constant_reserve_ratio" gorm:"constant_reserve_ratio"`
@@ -161,10 +161,10 @@ type TransData struct {
 	CoinToSell string `json:"coin_to_sell"`
 	//=== type5 - TYPE_CREATE_COIN
 	Name                 string `json:"name"`                   // название монеты
-	CoinSymbol           string `json:"coin_symbol"`            // символ монеты
+	CoinSymbol           string `json:"symbol"`                 // символ монеты
 	InitialAmount        string `json:"initial_amount"`         //  Amount of coins to issue. Issued coins will be available to sender account.
 	InitialReserve       string `json:"initial_reserve"`        // Initial reserve in base coin.
-	ConstantReserveRatio int    `json:"constant_reserve_ratio"` // uint, should be from 10 to 100 (в %).
+	ConstantReserveRatio string `json:"constant_reserve_ratio"` // should be from 10 to 100 (в %).
 	//=== type6 - TYPE_DECLARE_CANDIDACY
 	Address    string `json:"address"`
 	Commission int    `json:"commission"`
@@ -240,12 +240,17 @@ func manipulationTransaction(c *SDK, tr *TransResponse) error {
 		tr.Tags.TxReturn = pipStr2bip_f32(tr.Tags.TxReturnTx)
 		tr.Tags.TxSellAmount = pipStr2bip_f32(tr.Tags.TxSellAmountTx)
 	} else if tr.Type == TX_CreateCoinData {
+		crrInt, err := strconv.Atoi(tr.DataTx.ConstantReserveRatio)
+		if err != nil {
+			c.DebugLog("ERROR", "GetTransaction-> strconv.Atoi(tr.DataTx.ConstantReserveRatio)", tr.DataTx.ConstantReserveRatio)
+			crrInt = 0
+		}
 		tr.Data = tx5CreateCoinData{
 			Name:                 tr.DataTx.Name,
 			CoinSymbol:           tr.DataTx.CoinSymbol,
 			InitialAmount:        pipStr2bip_f32(tr.DataTx.InitialAmount),
 			InitialReserve:       pipStr2bip_f32(tr.DataTx.InitialReserve),
-			ConstantReserveRatio: tr.DataTx.ConstantReserveRatio,
+			ConstantReserveRatio: crrInt,
 		}
 	} else if tr.Type == TX_DeclareCandidacyData {
 		tr.Data = tx6DeclareCandidacyData{
