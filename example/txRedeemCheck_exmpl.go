@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"math/big"
+	//"math/big"
 
 	tr "github.com/MinterTeam/minter-go-node/core/transaction"
 	m "github.com/ValidatorCenter/minter-go-sdk"
@@ -12,6 +12,8 @@ import (
 	"github.com/MinterTeam/minter-go-node/core/types"
 	"github.com/MinterTeam/minter-go-node/crypto"
 	"github.com/MinterTeam/minter-go-node/rlp"
+
+	"encoding/hex"
 )
 
 func _h2ECDSA(AccPrivateKey string) (*ecdsa.PrivateKey, error) {
@@ -56,13 +58,15 @@ func main() {
 		panic(err)
 	}
 
+	fmt.Printf("-=Mc%s=-\n", string(hex.EncodeToString(rawCheck)))
+
 	data := tr.RedeemCheckData{
 		RawCheck: rawCheck,
 		Proof:    proof,
 	}
 	fmt.Println(data.String())
 
-	encodedData, err := _serializeData(data)
+	/*encodedData, err := _serializeData(data)
 	if err != nil {
 		panic(err)
 	}
@@ -89,5 +93,5 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(resHash)
+	fmt.Println(resHash)*/
 }

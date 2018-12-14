@@ -17,6 +17,8 @@ import (
 
 func CreateCheck(passphrase string, amntMoney int64, coinStr string, privateKey *ecdsa.PrivateKey) ([]byte, [65]byte, error) {
 
+	// Этап 1 - Создание чека
+
 	coin := getStrCoin(coinStr)
 
 	passphraseHash := sha256.Sum256([]byte(passphrase))
@@ -49,6 +51,8 @@ func CreateCheck(passphrase string, amntMoney int64, coinStr string, privateKey 
 	}
 
 	rawCheck, _ := rlp.EncodeToBytes(check)
+
+	// Этап 2 - Обналичивание чека
 
 	/*receiverPrivateKey, _ := crypto.GenerateKey()
 	receiverAddr := crypto.PubkeyToAddress(receiverPrivateKey.PublicKey)*/
