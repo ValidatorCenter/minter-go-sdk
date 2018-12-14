@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	//"math/big"
+	"math/big"
 
 	tr "github.com/MinterTeam/minter-go-node/core/transaction"
 	m "github.com/ValidatorCenter/minter-go-sdk"
@@ -52,13 +52,19 @@ func main() {
 		panic(err)
 	}
 
-	//FIXME: Проблема в toolsFuncCheck.go
-	rawCheck, proof, err := m.CreateCheck(passphrase, 10, coin, privateKey)
+	// СОЗДАНИЕ ЧЕКА
+	rawCheck, err := m.CreateCheck(passphrase, 10, coin, privateKey)
 	if err != nil {
 		panic(err)
 	}
 
 	fmt.Printf("-=Mc%s=-\n", string(hex.EncodeToString(rawCheck)))
+
+	// ОБНАЛИЧИВАЕМ СЕБЕ
+	proof, err := m.CheckCashingProof(passphrase, privateKey)
+	if err != nil {
+		panic(err)
+	}
 
 	data := tr.RedeemCheckData{
 		RawCheck: rawCheck,
@@ -66,7 +72,7 @@ func main() {
 	}
 	fmt.Println(data.String())
 
-	/*encodedData, err := _serializeData(data)
+	encodedData, err := _serializeData(data)
 	if err != nil {
 		panic(err)
 	}
@@ -93,5 +99,5 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(resHash)*/
+	fmt.Println(resHash)
 }
