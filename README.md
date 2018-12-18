@@ -15,7 +15,7 @@ Actual for Minter version 0.8.5.
 	- [GetValidatorsBlock](#getvalidatorsblock)
 	- [EstimateCoinBuy](#estimatecoinbuy)
 	- [EstimateCoinSell](#estimatecoinsell)
-	- [EstimateTxCommission] (#estimatetxcommission)
+	- [EstimateTxCommission](#estimatetxcommission)
 	- [GetCoinInfo](#getcoininfo)
 	- [GetBlock](#getblock)
 	- [GetEvents](#getevents)
