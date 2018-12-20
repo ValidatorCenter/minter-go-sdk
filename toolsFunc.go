@@ -173,3 +173,11 @@ func publicKey2Byte(strPublicKey string) []byte {
 func serializeData(data interface{}) ([]byte, error) {
 	return rlp.EncodeToBytes(data)
 }
+
+//-----------------------------------------------
+
+func (c *SDK) DebugLog(status string, msg string, body interface{}) {
+	if c.Debug == true {
+		fmt.Printf("%s: %s %#v", status, msg, body)
+	}
+}

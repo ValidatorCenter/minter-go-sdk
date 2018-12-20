@@ -35,6 +35,7 @@ Actual for Minter version 0.8.5.
 	- [DeclareCandidacy](#example-8)
 	- [Delegate](#example-9)
 	- [SetCandidate](#example-10)
+	- [Create Minter Check](#create-minter-check)
   
 
 ## Installing
@@ -589,5 +590,73 @@ func main() {
 	}
 	fmt.Println(resHash)
 
+}
+```
+
+### Create Minter Check
+* Create check
+
+```golang
+package main
+
+import (
+	"fmt"
+
+	m "github.com/ValidatorCenter/minter-go-sdk"
+)
+
+func main() {
+	sdk := m.SDK{
+		MnAddress:     "https://minter-node-1.testnet.minter.network",
+		AccAddress:    "Mx...",
+		AccPrivateKey: "...",
+	}
+
+	chDt := m.TxCreateCkeckData{
+		Coin:     "MNT",
+		Stake:    10,
+		Password: "pswrd123",
+		Nonce:    102,
+	}
+
+	resCheck, err := sdk.TxCreateCheck(&chDt)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(resCheck)	
+	// Mc.......
+}
+```
+
+* Redeem check
+
+```golang
+package main
+
+import (
+	"fmt"
+
+	m "github.com/ValidatorCenter/minter-go-sdk"
+)
+
+func main() {
+	sdk := m.SDK{
+		MnAddress:     "https://minter-node-1.testnet.minter.network",
+		AccAddress:    "Mx...",
+		AccPrivateKey: "...",
+	}
+	
+	rchDt := m.TxRedeemCheckData{
+		Check:    "Mc....",
+		Password: "pswrd123",
+		GasCoin:  "MNT",
+		GasPrice: 1,
+	}
+
+	resHash, err := sdk.TxRedeemCheck(&rchDt)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("HashTx:", resHash)
 }
 ```

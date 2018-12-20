@@ -15,7 +15,8 @@ import (
 	"github.com/MinterTeam/minter-go-node/crypto/sha3"
 )
 
-func CreateCheck(passphrase string, amntMoney int64, coinStr string, privateKey *ecdsa.PrivateKey) ([]byte, [65]byte, error) {
+// Этап 1 - Создание чека
+func createCheck(passphrase string, amntMoney float32, coinStr string, privateKey *ecdsa.PrivateKey, nonceID uint64) ([]byte, error) {
 
 	coin := getStrCoin(coinStr)
 
@@ -23,14 +24,14 @@ func CreateCheck(passphrase string, amntMoney int64, coinStr string, privateKey 
 	passphrasePk, err := crypto.ToECDSA(passphraseHash[:])
 	if err != nil {
 		//panic(err)
-		return []byte{}, [65]byte{}, err
+		return []byte{}, err
 	}
 
-	checkValue := bip2pip_i64(amntMoney)
+	checkValue := bip2pip_f64(float64(amntMoney))
 
 	check := c.Check{
-		Nonce:    0,      //uint64(sdk.GetNonce(AccAddress) + 1), // Уникальный ID чека. Используется для выдачи нескольких одинаковых чеков.
-		DueBlock: 999999, // действителен до блока
+		Nonce:    nonceID, //uint64(sdk.GetNonce(AccAddress) + 1), // Уникальный ID чека. Используется для выдачи нескольких одинаковых чеков.
+		DueBlock: 999999,  // действителен до блока
 		Coin:     coin,
 		Value:    checkValue,
 	}
@@ -38,36 +39,47 @@ func CreateCheck(passphrase string, amntMoney int64, coinStr string, privateKey 
 	lock, err := crypto.Sign(check.HashWithoutLock().Bytes(), passphrasePk)
 	if err != nil {
 		//panic(err)
-		return []byte{}, [65]byte{}, err
+		return []byte{}, err
 	}
 
 	check.Lock = big.NewInt(0).SetBytes(lock)
 
 	if err := check.Sign(privateKey); err != nil {
 		//panic(err)
-		return []byte{}, [65]byte{}, err
+		return []byte{}, err
 	}
 
 	rawCheck, _ := rlp.EncodeToBytes(check)
 
-	/*receiverPrivateKey, _ := crypto.GenerateKey()
-	receiverAddr := crypto.PubkeyToAddress(receiverPrivateKey.PublicKey)*/
+	return rawCheck, nil
+
+}
+
+// Этап 2 - Обналичивание чека (точнее proof)
+func checkCashingProof(passphrase string, privateKey *ecdsa.PrivateKey) ([65]byte, error) {
+	receiverAddr := crypto.PubkeyToAddress(privateKey.PublicKey)
+
+	passphraseHash := sha256.Sum256([]byte(passphrase))
+	passphrasePk, err := crypto.ToECDSA(passphraseHash[:])
+	if err != nil {
+		return [65]byte{}, err
+	}
 
 	// На адрес получателя receiverAddr
 	var senderAddressHash types.Hash
 	hw := sha3.NewKeccak256()
 	_ = rlp.Encode(hw, []interface{}{
-		/*receiverAddr,*/
+		receiverAddr,
 	})
 	hw.Sum(senderAddressHash[:0])
 
 	sig, err := crypto.Sign(senderAddressHash.Bytes(), passphrasePk)
 	if err != nil {
-		return []byte{}, [65]byte{}, err
+		return [65]byte{}, err
 	}
 
 	proof := [65]byte{}
 	copy(proof[:], sig)
 
-	return rawCheck, proof, nil
+	return proof, nil
 }
