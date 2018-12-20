@@ -16,7 +16,7 @@ import (
 )
 
 // Этап 1 - Создание чека
-func CreateCheck(passphrase string, amntMoney int64, coinStr string, privateKey *ecdsa.PrivateKey) ([]byte, error) {
+func createCheck(passphrase string, amntMoney float32, coinStr string, privateKey *ecdsa.PrivateKey, nonceID uint64) ([]byte, error) {
 
 	coin := getStrCoin(coinStr)
 
@@ -27,11 +27,11 @@ func CreateCheck(passphrase string, amntMoney int64, coinStr string, privateKey 
 		return []byte{}, err
 	}
 
-	checkValue := bip2pip_i64(amntMoney)
+	checkValue := bip2pip_f64(float64(amntMoney))
 
 	check := c.Check{
-		Nonce:    1,      //uint64(sdk.GetNonce(AccAddress) + 1), // Уникальный ID чека. Используется для выдачи нескольких одинаковых чеков.
-		DueBlock: 999999, // действителен до блока
+		Nonce:    nonceID, //uint64(sdk.GetNonce(AccAddress) + 1), // Уникальный ID чека. Используется для выдачи нескольких одинаковых чеков.
+		DueBlock: 999999,  // действителен до блока
 		Coin:     coin,
 		Value:    checkValue,
 	}
@@ -56,7 +56,7 @@ func CreateCheck(passphrase string, amntMoney int64, coinStr string, privateKey 
 }
 
 // Этап 2 - Обналичивание чека (точнее proof)
-func CheckCashingProof(passphrase string, privateKey *ecdsa.PrivateKey) ([65]byte, error) {
+func checkCashingProof(passphrase string, privateKey *ecdsa.PrivateKey) ([65]byte, error) {
 	receiverAddr := crypto.PubkeyToAddress(privateKey.PublicKey)
 
 	passphraseHash := sha256.Sum256([]byte(passphrase))
