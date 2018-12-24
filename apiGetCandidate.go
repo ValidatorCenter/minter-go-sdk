@@ -18,7 +18,8 @@ type node_candidate struct {
 
 // структура кандидата/валидатора (экспортная)
 type CandidateInfo struct {
-	CandidateAddress string        `json:"candidate_address" bson:"candidate_address" gorm:"candidate_address"`
+	RewardAddress    string        `json:"reward_address" bson:"reward_address" gorm:"reward_address"` // Адрес кошелька "Mx..." вознаграждения
+	OwnerAddress     string        `json:"owner_address" bson:"owner_address" gorm:"owner_address"`    // Адрес кошелька "Mx..." основной
 	TotalStakeTx     string        `json:"total_stake" bson:"-" gorm:"-"`
 	TotalStake       float32       `json:"total_stake_f32" bson:"total_stake_f32" gorm:"total_stake_f32"`
 	PubKey           string        `json:"pubkey" bson:"pubkey" gorm:"pubkey"`

@@ -55,7 +55,7 @@ func main() {
 	fmt.Printf("GetStatus= %#v\n", stMn)
 
 	fmt.Println("##  7/10 ##")
-	trns, err := sdk.GetTransaction("1cf90de029603448ddbc0808d32bbaf7fca802ef82ce9f05fdbe33ff1dbb9b4d")
+	trns, err := sdk.GetTransaction("Mt2220a952f18d3573d1d7c2c59f9969365a88da6a5d29ea960bcb2a17c97c30cc")
 	if err != nil {
 		panic(err)
 	}
