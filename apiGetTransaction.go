@@ -204,11 +204,13 @@ func manipulationTransaction(c *SDK, tr *TransResponse) error {
 		c.DebugLog("ERROR", "GetTransaction-> strconv.Atoi(tr.GasPriceTx)", tr.GasPriceTx)
 		return err
 	}
-	tr.GasUsed, err = strconv.Atoi(tr.GasUsedTx)
-	if err != nil {
-		c.DebugLog("ERROR", "GetTransaction-> strconv.Atoi(tr.GasUsedTx)", tr.GasUsedTx)
-		return err
-	}
+	// TODO: в minter 0.9.x нет
+	/*
+		tr.GasUsed, err = strconv.Atoi(tr.GasUsedTx)
+		if err != nil {
+			c.DebugLog("ERROR", "GetTransaction-> strconv.Atoi(tr.GasUsedTx)", tr.GasUsedTx)
+			return err
+		}*/
 
 	if tr.Type == TX_SendData {
 		tr.Data = tx1SendData{
