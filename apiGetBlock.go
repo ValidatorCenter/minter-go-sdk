@@ -2,6 +2,7 @@ package mintersdk
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -70,17 +71,17 @@ func (c *SDK) GetBlock(id int) (BlockResponse, error) {
 
 	data.Result.Height, err = strconv.Atoi(data.Result.HeightTx)
 	if err != nil {
-		return BlockResponse{}, err
+		return BlockResponse{}, errors.New(fmt.Sprintf("%s - %s", err.Error(), "data.Result.HeightTx"))
 	}
 
 	data.Result.NumTxs, err = strconv.Atoi(data.Result.NumTxsTx)
 	if err != nil {
-		return BlockResponse{}, err
+		return BlockResponse{}, errors.New(fmt.Sprintf("%s - %s", err.Error(), "data.Result.NumTxsTx"))
 	}
 
 	data.Result.Size, err = strconv.Atoi(data.Result.SizeTx)
 	if err != nil {
-		return BlockResponse{}, err
+		return BlockResponse{}, errors.New(fmt.Sprintf("%s - %s", err.Error(), "data.Result.SizeTx"))
 	}
 
 	for iStep, _ := range data.Result.Transactions {
@@ -88,7 +89,7 @@ func (c *SDK) GetBlock(id int) (BlockResponse, error) {
 
 		err = manipulationTransaction(c, &data.Result.Transactions[iStep])
 		if err != nil {
-			return BlockResponse{}, err
+			return BlockResponse{}, errors.New(fmt.Sprintf("%s - %s", err.Error(), "manipulationTransaction"))
 		}
 	}
 
