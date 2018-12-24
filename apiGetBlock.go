@@ -67,6 +67,10 @@ func (c *SDK) GetBlock(id int) (BlockResponse, error) {
 	var data node_block
 	json.Unmarshal(body, &data)
 
+	if c.Debug == true {
+		fmt.Printf("%s\n", string(body))
+	}
+
 	data.Result.BlockReward = pipStr2bip_f32(data.Result.BlockRewardTx) // вознаграждение за блок
 
 	data.Result.Height, err = strconv.Atoi(data.Result.HeightTx)
