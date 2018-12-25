@@ -67,9 +67,9 @@ func (c *SDK) GetBlock(id int) (BlockResponse, error) {
 	var data node_block
 	json.Unmarshal(body, &data)
 
-	if c.Debug == true {
+	/*if c.Debug == true {
 		fmt.Printf("%s\n", string(body))
-	}
+	}*/
 
 	data.Result.BlockReward = pipStr2bip_f32(data.Result.BlockRewardTx) // вознаграждение за блок
 
@@ -91,6 +91,7 @@ func (c *SDK) GetBlock(id int) (BlockResponse, error) {
 	for iStep, _ := range data.Result.Transactions {
 		data.Result.Transactions[iStep].HeightTx = data.Result.HeightTx
 
+		//в apiGetTransaction->manipulationTransaction
 		err = manipulationTransaction(c, &data.Result.Transactions[iStep])
 		if err != nil {
 			return BlockResponse{}, errors.New(fmt.Sprintf("%s - %s", err.Error(), "manipulationTransaction"))
