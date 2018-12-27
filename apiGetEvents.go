@@ -29,6 +29,7 @@ type EventValueData struct {
 	Address         string  `json:"address" bson:"address" gorm:"address"`
 	AmountTx        string  `json:"amount" bson:"-" gorm:"-"`
 	Amount          float32 `json:"amount_f32" bson:"amount_f32" gorm:"amount_f32"`
+	Coin            string  `json:"coin" bson:"coin" gorm:"coin"`
 	ValidatorPubKey string  `json:"validator_pub_key" bson:"validator_pub_key" gorm:"validator_pub_key"`
 }
 
@@ -51,6 +52,11 @@ func (c *SDK) GetEvents(id int) (BlockEvResponse, error) {
 
 	for iStep, _ := range data.Result.Events {
 		data.Result.Events[iStep].Value.Amount = pipStr2bip_f32(data.Result.Events[iStep].Value.AmountTx)
+		if data.Result.Events[iStep].Value.Coin == "" {
+			data.Result.Events[iStep].Value.Coin = GetBaseCoin()
+		}
+		/*fmt.Printf("DEFCOIN: %s\n", GetBaseCoin())
+		fmt.Printf("%#v\n", data.Result.Events[iStep].Value)*/
 	}
 
 	return data.Result, nil

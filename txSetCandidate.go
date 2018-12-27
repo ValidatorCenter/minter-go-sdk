@@ -29,7 +29,7 @@ func (c *SDK) TxSetCandidate(t *TxSetCandidateData) (string, error) {
 		return "", err
 	}
 
-	var typeTx byte
+	var typeTx tr.TxType
 	var data interface{}
 
 	if t.Activate == true {
