@@ -15,7 +15,7 @@ func main() {
 
 	delegDt := m.TxDelegateData{
 		Coin:     "MNT",
-		PubKey:   "Mp7555e8a7b2fea6e0c45dd92075338076dc330a6b3e09130720d9946a4421a97a",
+		PubKey:   "Mp504815c4a47418aa37b17248e359cb5a5272bd8f416eb9d1d3b8ba95b394296f",
 		Stake:    10,
 		GasCoin:  "MNT",
 		GasPrice: 1,
