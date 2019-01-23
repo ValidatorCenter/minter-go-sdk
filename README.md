@@ -252,7 +252,7 @@ func main() {
 
 ###### Example
 
-* Sign the <b>MultiSendCoin</b> transaction.
+* Sign the <b>MultiSendCoin</b> transaction (max=100tx). 
 
 ```golang
 package main
