@@ -16,14 +16,14 @@ func main() {
 	cntList := []m.TxOneSendCoinData{}
 
 	// Первый адресат
-	cntList = append(cntList, TxOneSendCoinData{
+	cntList = append(cntList, m.TxOneSendCoinData{
 		Coin:      "MNT",
 		ToAddress: "Mxe64baa7d71c72e6914566b79ac361d139be22dc7", //Кому переводим
 		Value:     10,
 	})
 
 	// Второй адресат
-	cntList = append(cntList, TxOneSendCoinData{
+	cntList = append(cntList, m.TxOneSendCoinData{
 		Coin:      "MNT",
 		ToAddress: "Mxe64baa7d71c72e6914566b79ac361d139be22dc7", //Кому переводим
 		Value:     10,
