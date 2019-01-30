@@ -303,9 +303,15 @@ func manipulationTransaction(c *SDK, tr *TransResponse) error {
 	} else if tr.Type == TX_CreateMultisigData {
 		// TODO: реализовать
 	} else if tr.Type == TX_MultisendData {
-		tr.Data = tx13MultisendData{
-			List: tr.DataTx.List,
+		tmpTx13 := tx13MultisendData{}
+		for _, itm := range tr.DataTx.List {
+			tmpTx13.List = append(tmpTx13.List, tx1SendData{
+				Coin:  itm.Coin,
+				To:    itm.To,
+				Value: pipStr2bip_f32(itm.Value),
+			})
 		}
+		tr.Data = tmpTx13
 	} else if tr.Type == TX_EditCandidateData {
 		// TODO: реализовать
 	}
