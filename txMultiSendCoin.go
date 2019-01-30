@@ -46,7 +46,7 @@ func (c *SDK) TxMultiSendCoin(t *TxMultiSendCoinData) (string, error) {
 	}
 
 	data := tr.MultisendData{
-		List: listAddrs,
+		List: listAddrs, // max=100 транзакций за 1 раз
 	}
 
 	encodedData, err := serializeData(data)

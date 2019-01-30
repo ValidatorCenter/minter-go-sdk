@@ -4,7 +4,7 @@
 ## About
 Minter Blockchain Golang SDK https://minter.network
 
-Actual for Minter version 0.9.x.
+Actual for Minter version 0.11.x.
 
 * [Installation](#installing)
 * [Updating](#updating)
@@ -252,7 +252,7 @@ func main() {
 
 ###### Example
 
-* Sign the <b>MultiSendCoin</b> transaction.
+* Sign the <b>MultiSendCoin</b> transaction (max=100tx). 
 
 ```golang
 package main

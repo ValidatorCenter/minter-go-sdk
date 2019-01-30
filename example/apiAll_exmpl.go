@@ -27,7 +27,7 @@ func main() {
 	fmt.Printf("GetBlock= %#v\n", blk)
 
 	fmt.Println("##  3/10 ##")
-	cnd1, err := sdk.GetCandidate("Mp7555e8a7b2fea6e0c45dd92075338076dc330a6b3e09130720d9946a4421a97a")
+	cnd1, err := sdk.GetCandidate("Mp504815c4a47418aa37b17248e359cb5a5272bd8f416eb9d1d3b8ba95b394296f")
 	if err != nil {
 		panic(err)
 	}
@@ -55,7 +55,7 @@ func main() {
 	fmt.Printf("GetStatus= %#v\n", stMn)
 
 	fmt.Println("##  7/10 ##")
-	trns, err := sdk.GetTransaction("Mt2220a952f18d3573d1d7c2c59f9969365a88da6a5d29ea960bcb2a17c97c30cc")
+	trns, err := sdk.GetTransaction("Mtdcaf593010c7cfd3b3c17d113c0e30afdb16ad395515a97118b635e2a4ce6b64")
 	if err != nil {
 		panic(err)
 	}

@@ -142,6 +142,17 @@ type tx12CreateMultisigData struct {
 	**/
 }
 
+type tx13MultisendData struct {
+	List []tx1SendData `json:"list" bson:"list" gorm:"list"`
+}
+
+// Не заносится в БД
+type SendOneData struct {
+	To    string `json:"to"`
+	Coin  string `json:"coin"`
+	Value string `json:"value"`
+}
+
 // Не заносится в БД
 type TransData struct {
 	//=== type1 - TYPE_SEND
@@ -184,6 +195,8 @@ type TransData struct {
 	Proof    string `json:"proof"`
 	//=== type10 - TYPE_SET_CANDIDATE_ONLINE
 	//=== type11 - TYPE_SET_CANDIDATE_OFFLINE
+	//=== type13 - TYPE_MULTISEND
+	List []SendOneData `json:"list"`
 }
 
 // обработка данных транзакции
@@ -288,6 +301,18 @@ func manipulationTransaction(c *SDK, tr *TransResponse) error {
 			PubKey: tr.DataTx.PubKey,
 		}
 	} else if tr.Type == TX_CreateMultisigData {
+		// TODO: реализовать
+	} else if tr.Type == TX_MultisendData {
+		tmpTx13 := tx13MultisendData{}
+		for _, itm := range tr.DataTx.List {
+			tmpTx13.List = append(tmpTx13.List, tx1SendData{
+				Coin:  itm.Coin,
+				To:    itm.To,
+				Value: pipStr2bip_f32(itm.Value),
+			})
+		}
+		tr.Data = tmpTx13
+	} else if tr.Type == TX_EditCandidateData {
 		// TODO: реализовать
 	}
 
