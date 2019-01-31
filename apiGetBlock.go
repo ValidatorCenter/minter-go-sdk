@@ -25,26 +25,26 @@ type ErrorStruct struct {
 }
 
 type BlockResponse struct {
-	Hash          string                    `json:"hash" bson:"hash" gorm:"hash"`
-	HeightTx      string                    `json:"height" bson:"-" gorm:"-"`
-	Height        int                       `json:"height_i32" bson:"height_i32" gorm:"height_i32"`
-	Time          time.Time                 `json:"time" bson:"time" gorm:"time"`
-	NumTxsTx      string                    `json:"num_txs" bson:"-" gorm:"-"`
-	NumTxs        int                       `json:"num_txs_i32" bson:"num_txs_i32" gorm:"num_txs_i32"`
-	TotalTxsTx    string                    `json:"total_txs" bson:"-" gorm:"-"`
-	TotalTxs      int                       `json:"total_txs_i32" bson:"total_txs_i32" gorm:"total_txs_i32"`
-	Transactions  []TransResponse           `json:"transactions" bson:"transactions" gorm:"transactions"`
-	BlockRewardTx string                    `json:"block_reward" bson:"-" gorm:"-"`
-	BlockReward   float32                   `json:"block_reward_f32" bson:"block_reward_f32" gorm:"block_reward_f32"`
-	SizeTx        string                    `json:"size" bson:"-" gorm:"-"`
-	Size          int                       `json:"size_i32" bson:"size_i32" gorm:"size_i32"`
-	Validators    []BlockValidatorsResponse `json:"validators" bson:"validators" gorm:"validators"`
-	Proposer      string                    `json:"proposer" bson:"proposer" gorm:"proposer"` // PubKey пропозер блока
+	Hash          string                    `json:"hash" bson:"hash" gorm:"hash" db:"hash"`
+	HeightTx      string                    `json:"height" bson:"-" gorm:"-" db:"-"`
+	Height        int                       `json:"height_i32" bson:"height_i32" gorm:"height_i32" db:"height_i32"`
+	Time          time.Time                 `json:"time" bson:"time" gorm:"time" db:"time"`
+	NumTxsTx      string                    `json:"num_txs" bson:"-" gorm:"-" db:"-"`
+	NumTxs        int                       `json:"num_txs_i32" bson:"num_txs_i32" gorm:"num_txs_i32" db:"num_txs_i32"`
+	TotalTxsTx    string                    `json:"total_txs" bson:"-" gorm:"-" db:"-"`
+	TotalTxs      int                       `json:"total_txs_i32" bson:"total_txs_i32" gorm:"total_txs_i32" db:"total_txs_i32"`
+	Transactions  []TransResponse           `json:"transactions" bson:"transactions" gorm:"transactions" db:"transactions"`
+	BlockRewardTx string                    `json:"block_reward" bson:"-" gorm:"-" db:"-"`
+	BlockReward   float32                   `json:"block_reward_f32" bson:"block_reward_f32" gorm:"block_reward_f32" db:"block_reward_f32"`
+	SizeTx        string                    `json:"size" bson:"-" gorm:"-" db:"-"`
+	Size          int                       `json:"size_i32" bson:"size_i32" gorm:"size_i32" db:"size_i32"`
+	Validators    []BlockValidatorsResponse `json:"validators" bson:"validators" gorm:"validators" db:"validators"`
+	Proposer      string                    `json:"proposer" bson:"proposer" gorm:"proposer" db:"proposer"` // PubKey пропозер блока
 }
 
 type BlockValidatorsResponse struct {
-	PubKey string `json:"pubkey" bson:"pubkey" gorm:"pubkey"`
-	Signed bool   `json:"signed" bson:"signed" gorm:"signed"` // подписал-true, или пропустил false
+	PubKey string `json:"pubkey" bson:"pubkey" gorm:"pubkey" db:"pubkey"`
+	Signed bool   `json:"signed" bson:"signed" gorm:"signed" db:"signed"` // подписал-true, или пропустил false
 }
 
 // type TransResponse struct --- в apiGetTransaction.go

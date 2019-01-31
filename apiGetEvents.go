@@ -16,21 +16,21 @@ type node_block_ev struct {
 }
 
 type BlockEvResponse struct {
-	Events []BlockEventsResponse `json:"events" bson:"events" gorm:"events"`
+	Events []BlockEventsResponse `json:"events" bson:"events" gorm:"events" db:"events"`
 }
 
 type BlockEventsResponse struct {
-	Type  string         `json:"type" bson:"type" gorm:"type"`
-	Value EventValueData `json:"value" bson:"value" gorm:"value"`
+	Type  string         `json:"type" bson:"type" gorm:"type" db:"type"`
+	Value EventValueData `json:"value" bson:"value" gorm:"value" db:"value"`
 }
 
 type EventValueData struct {
-	Role            string  `json:"role" bson:"role" gorm:"role"` //DAO,Developers,Validator,Delegator
-	Address         string  `json:"address" bson:"address" gorm:"address"`
-	AmountTx        string  `json:"amount" bson:"-" gorm:"-"`
-	Amount          float32 `json:"amount_f32" bson:"amount_f32" gorm:"amount_f32"`
-	Coin            string  `json:"coin" bson:"coin" gorm:"coin"`
-	ValidatorPubKey string  `json:"validator_pub_key" bson:"validator_pub_key" gorm:"validator_pub_key"`
+	Role            string  `json:"role" bson:"role" gorm:"role" db:"role"` //DAO,Developers,Validator,Delegator
+	Address         string  `json:"address" bson:"address" gorm:"address" db:"address"`
+	AmountTx        string  `json:"amount" bson:"-" gorm:"-" db:"-"`
+	Amount          float32 `json:"amount_f32" bson:"amount_f32" gorm:"amount_f32" db:"amount_f32"`
+	Coin            string  `json:"coin" bson:"coin" gorm:"coin" db:"coin"`
+	ValidatorPubKey string  `json:"validator_pub_key" bson:"validator_pub_key" gorm:"validator_pub_key" db:"validator_pub_key"`
 }
 
 // получаем содержимое событий блока по его ID

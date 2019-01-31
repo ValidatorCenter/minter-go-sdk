@@ -16,15 +16,15 @@ type node_coininfo struct {
 }
 
 type CoinInfoResponse struct {
-	Name             string  `json:"name" bson:"name" gorm:"name"`
-	Symbol           string  `json:"symbol" bson:"symbol" gorm:"symbol"`
-	VolumeTx         string  `json:"volume" bson:"-" gorm:"-"`
-	Volume           float32 `json:"volume_f32" bson:"volume_f32" gorm:"volume_f32"`
-	CRRTx            string  `json:"crr" bson:"-" gorm:"-"`
-	CRR              int     `json:"crr_i32" bson:"crr_i32" gorm:"crr_i32"`
-	ReserveBalanceTx string  `json:"reserve_balance" bson:"-" gorm:"-"`
-	ReserveBalance   float32 `json:"reserve_balance_f32" bson:"reserve_balance_f32" gorm:"reserve_balance_f32"`
-	//Creator          string  `json:"creator" bson:"creator" gorm:"creator"` // TODO: del, нету
+	Name             string  `json:"name" bson:"name" gorm:"name" db:"name"`
+	Symbol           string  `json:"symbol" bson:"symbol" gorm:"symbol" db:"symbol"`
+	VolumeTx         string  `json:"volume" bson:"-" gorm:"-" db:"-"`
+	Volume           float32 `json:"volume_f32" bson:"volume_f32" gorm:"volume_f32" db:"volume_f32"`
+	CRRTx            string  `json:"crr" bson:"-" gorm:"-" db:"-"`
+	CRR              int     `json:"crr_i32" bson:"crr_i32" gorm:"crr_i32" db:"crr_i32"`
+	ReserveBalanceTx string  `json:"reserve_balance" bson:"-" gorm:"-" db:"-"`
+	ReserveBalance   float32 `json:"reserve_balance_f32" bson:"reserve_balance_f32" gorm:"reserve_balance_f32" db:"reserve_balance_f32"`
+	//Creator          string  `json:"creator" bson:"creator" gorm:"creator" db:"creator"` // TODO: del, нету
 }
 
 // получение доп.данных о монете: volume, reserve_balance
