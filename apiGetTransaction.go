@@ -21,7 +21,7 @@ type TransResponse struct {
 	RawTx       string       `json:"raw_tx" bson:"raw_tx" gorm:"raw_tx" db:"raw_tx"`
 	HeightTx    string       `json:"height" bson:"-" gorm:"-" db:"-"`
 	Height      int          `json:"height_i32" bson:"height_i32" gorm:"height_i32" db:"height_i32"` //(!) В блоке у транзакции нет HEIGHT блока
-	Index       int          `json:"index" bson:"index" gorm:"index" db:"index"`
+	Index       int          `json:"index" bson:"index" gorm:"index" db:"index_i32"`
 	From        string       `json:"from" bson:"from" gorm:"from" db:"from"`
 	NonceTx     string       `json:"nonce" bson:"-" gorm:"-" db:"-"`
 	Nonce       int          `json:"nonce_i32" bson:"nonce_i32" gorm:"nonce_i32" db:"nonce_i32"`
