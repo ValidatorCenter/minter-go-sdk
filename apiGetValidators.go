@@ -18,9 +18,9 @@ type node_validators struct {
 
 // результат по валидаторам
 type result_valid struct {
-	PubKey        string `json:"pubkey" bson:"pubkey" gorm:"pubkey"`
-	VotingPowerTx string `json:"voting_power" bson:"-" gorm:"-"`
-	VotingPower   uint64 `json:"voting_power_u32" bson:"voting_power_u32" gorm:"voting_power_u32"`
+	PubKey        string `json:"pub_key" bson:"pub_key" gorm:"pub_key" db:"pub_key"`
+	VotingPowerTx string `json:"voting_power" bson:"-" gorm:"-" db:"-"`
+	VotingPower   uint64 `json:"voting_power_u32" bson:"voting_power_u32" gorm:"voting_power_u32" db:"voting_power_u32"`
 }
 
 // Возвращает список валидаторов по номеру блока (у мастерноды должен быть включен keep_state_history)

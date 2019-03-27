@@ -17,8 +17,8 @@ type addrss_usr struct {
 }
 
 type AddrssResponse struct {
-	Balance            map[string]string `json:"balance" bson:"balance" gorm:"balance"`
-	TransactionCountTx string            `json:"transaction_count" bson:"-" gorm:"-"`
+	Balance            map[string]string `json:"balance" bson:"balance" gorm:"balance" db:"balance"`
+	TransactionCountTx string            `json:"transaction_count" bson:"-" gorm:"-" db:"-"`
 }
 
 // узнаем баланс и количество транзакций

@@ -22,9 +22,9 @@ type _estimateResponse struct {
 
 // для запроса о стоимости монет
 type EstimateResponse struct {
-	WillPay    float32 `json:"will_pay" bson:"will_pay" gorm:"will_pay"`
-	WillGet    float32 `json:"will_get" bson:"will_get" gorm:"will_get"`
-	Commission float32 `json:"commission" bson:"commission" gorm:"commission"`
+	WillPay    float32 `json:"will_pay" bson:"will_pay" gorm:"will_pay" db:"will_pay"`
+	WillGet    float32 `json:"will_get" bson:"will_get" gorm:"will_get" db:"will_get"`
+	Commission float32 `json:"commission" bson:"commission" gorm:"commission" db:"commission"`
 }
 
 // Стоимость покупки value монет

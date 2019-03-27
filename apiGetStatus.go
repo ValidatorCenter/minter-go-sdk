@@ -17,12 +17,12 @@ type node_status struct {
 }
 
 type ResultNetwork struct {
-	Version             string
-	LatestBlockHash     string    `json:"latest_block_hash" bson:"-" gorm:"-"`
-	LatestAppHash       string    `json:"latest_app_hash" bson:"-" gorm:"-"`
-	LatestBlockHeightTx string    `json:"latest_block_height" bson:"-" gorm:"-"`
-	LatestBlockHeight   int       `json:"latest_block_height_i32" bson:"latest_block_height_i32" gorm:"latest_block_height_i32"`
-	LatestBlockTime     time.Time `json:"latest_block_time" bson:"-" gorm:"-"`
+	Version             string    `json:"version" bson:"version" gorm:"version" db:"version"`
+	LatestBlockHash     string    `json:"latest_block_hash" bson:"-" gorm:"-" db:"-"`
+	LatestAppHash       string    `json:"latest_app_hash" bson:"-" gorm:"-" db:"-"`
+	LatestBlockHeightTx string    `json:"latest_block_height" bson:"-" gorm:"-" db:"-"`
+	LatestBlockHeight   int       `json:"latest_block_height_i32" bson:"latest_block_height_i32" gorm:"latest_block_height_i32" db:"latest_block_height_i32"`
+	LatestBlockTime     time.Time `json:"latest_block_time" bson:"-" gorm:"-" db:"-"`
 	// tm_status {...}
 }
 

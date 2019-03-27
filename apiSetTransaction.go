@@ -21,10 +21,10 @@ type send_transaction struct {
 	Error   ErrorStruct
 }
 type TransSendResponse struct {
-	Code int    `json:"code" bson:"code" gorm:"code"`
-	Log  string `json:"log" bson:"log" gorm:"log"`
-	Data string `json:"data" bson:"data" gorm:"data"`
-	Hash string `json:"hash" bson:"hash" gorm:"hash"`
+	Code int    `json:"code" bson:"code" gorm:"code" db:"code"`
+	Log  string `json:"log" bson:"log" gorm:"log" db:"log"`
+	Data string `json:"data" bson:"data" gorm:"data" db:"data"`
+	Hash string `json:"hash" bson:"hash" gorm:"hash" db:"hash"`
 }
 
 // Исполнение транзакции закодированной RLP
