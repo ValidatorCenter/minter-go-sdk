@@ -22,7 +22,7 @@ type CandidateInfo struct {
 	OwnerAddress     string        `json:"owner_address" bson:"owner_address" gorm:"owner_address" db:"owner_address"`     // Адрес кошелька "Mx..." основной
 	TotalStakeTx     string        `json:"total_stake" bson:"-" gorm:"-" db:"-"`
 	TotalStake       float32       `json:"total_stake_f32" bson:"total_stake_f32" gorm:"total_stake_f32" db:"total_stake_f32"`
-	PubKey           string        `json:"pubkey" bson:"pubkey" gorm:"pubkey" db:"pubkey"`
+	PubKey           string        `json:"pub_key" bson:"pub_key" gorm:"pub_key" db:"pub_key"`
 	CommissionTx     string        `json:"commission" bson:"-" gorm:"-" db:"-"`
 	CreatedAtBlockTx string        `json:"created_at_block" bson:"-" gorm:"-" db:"-"`
 	Commission       int           `json:"commission_i32" bson:"commission_i32" gorm:"commission_i32" db:"commission_i32"`

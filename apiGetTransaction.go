@@ -183,7 +183,7 @@ type TransData struct {
 	//PubKey  string `json:"pub_key"`
 	//Coin    string `json:"coin"`
 	//=== type7 - TYPE_DELEGATE
-	Stake string `json:"stake"`
+	Stake string `json:"stake"` // УДАЛИТЬ: с 0.15.* стало Value  string `json:"value"`
 	//PubKey  string `json:"pub_key"`
 	//Coin    string `json:"coin"`
 	//=== type8 - TYPE_UNBOUND
@@ -279,7 +279,7 @@ func manipulationTransaction(c *SDK, tr *TransResponse) error {
 		tr.Data = tx7DelegateDate{
 			PubKey: tr.DataTx.PubKey,
 			Coin:   tr.DataTx.Coin,
-			Stake:  pipStr2bip_f32(tr.DataTx.Stake),
+			Stake:  pipStr2bip_f32(tr.DataTx.Value),
 		}
 	} else if tr.Type == TX_UnbondData {
 		tr.Data = tx8UnbondData{

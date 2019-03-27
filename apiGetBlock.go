@@ -43,7 +43,7 @@ type BlockResponse struct {
 }
 
 type BlockValidatorsResponse struct {
-	PubKey string `json:"pubkey" bson:"pubkey" gorm:"pubkey" db:"pubkey"`
+	PubKey string `json:"pub_key" bson:"pub_key" gorm:"pub_key" db:"pub_key"`
 	Signed bool   `json:"signed" bson:"signed" gorm:"signed" db:"signed"` // подписал-true, или пропустил false
 }
 
