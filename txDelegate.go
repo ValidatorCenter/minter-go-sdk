@@ -33,7 +33,7 @@ func (c *SDK) TxDelegate(t *TxDelegateData) (string, error) {
 	data := tr.DelegateData{
 		PubKey: pubkey,
 		Coin:   coin,
-		Stake:  value,
+		Value:  value,
 	}
 
 	encodedData, err := serializeData(data)
