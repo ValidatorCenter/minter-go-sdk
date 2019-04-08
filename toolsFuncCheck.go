@@ -28,9 +28,6 @@ func createCheck(passphrase string, amntMoney float32, coinStr string, privateKe
 		return []byte{}, err
 	}
 
-	nonceIDb := make([]byte, 8)
-	binary.LittleEndian.PutUint64(nonceIDb, nonceID)
-
 	buf := make([]byte, binary.MaxVarintLen64)
 	n := binary.PutUvarint(buf, nonceID)
 	nonceIDb := buf[:n]
