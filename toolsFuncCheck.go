@@ -5,6 +5,7 @@ import (
 	"crypto/sha256"
 
 	//"fmt"
+	"encoding/binary"
 	"math/big"
 
 	c "github.com/MinterTeam/minter-go-node/core/check"
@@ -27,11 +28,18 @@ func createCheck(passphrase string, amntMoney float32, coinStr string, privateKe
 		return []byte{}, err
 	}
 
+	nonceIDb := make([]byte, 8)
+	binary.LittleEndian.PutUint64(nonceIDb, nonceID)
+
+	buf := make([]byte, binary.MaxVarintLen64)
+	n := binary.PutUvarint(buf, nonceID)
+	nonceIDb := buf[:n]
+
 	checkValue := bip2pip_f64(float64(amntMoney))
 
 	check := c.Check{
-		Nonce:    nonceID, //uint64(sdk.GetNonce(AccAddress) + 1), // Уникальный ID чека. Используется для выдачи нескольких одинаковых чеков.
-		DueBlock: 999999,  // действителен до блока
+		Nonce:    nonceIDb, //uint64(sdk.GetNonce(AccAddress) + 1), // Уникальный ID чека. Используется для выдачи нескольких одинаковых чеков.
+		DueBlock: 999999,   // действителен до блока
 		Coin:     coin,
 		Value:    checkValue,
 	}
