@@ -16,8 +16,10 @@ import (
 	"github.com/MinterTeam/minter-go-node/helpers"
 	"github.com/MinterTeam/minter-go-node/rlp"
 
+	//"github.com/ethereum/go-ethereum/crypto"
+
 	// для авторизации/регистрации
-	"github.com/miguelmota/go-ethereum-hdwallet"
+	//"github.com/miguelmota/go-ethereum-hdwallet"
 	"github.com/tyler-smith/go-bip39"
 )
 
@@ -36,7 +38,7 @@ func NewMnemonic() string {
 
 // Авторизация по Seed-фразе
 func AuthMnemonic(seedPhr string) (string, string, error) {
-	wallet, err := hdwallet.NewFromMnemonic(seedPhr)
+	/*wallet, err := hdwallet.NewFromMnemonic(seedPhr)
 	if err != nil {
 		//panic(err)
 		return "", "", err
@@ -56,6 +58,8 @@ func AuthMnemonic(seedPhr string) (string, string, error) {
 		return "", "", err
 	}
 	return addrss, privKeyStr, nil
+	*/
+	return "", "", nil
 }
 
 // Получение адреса по приватному ключу
