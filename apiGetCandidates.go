@@ -2,6 +2,7 @@ package mintersdk
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -35,6 +36,11 @@ func (c *SDK) GetCandidates() ([]CandidateInfo, error) {
 
 	var data node_candidates
 	json.Unmarshal(body, &data)
+
+	if data.Error.Code != 0 {
+		err = errors.New(fmt.Sprint(data.Error.Code, " - ", data.Error.Message))
+		return []CandidateInfo{}, err
+	}
 
 	for i1, _ := range data.Result {
 		data.Result[i1].TotalStake = pipStr2bip_f32(data.Result[i1].TotalStakeTx)

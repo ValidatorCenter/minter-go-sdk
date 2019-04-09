@@ -2,6 +2,7 @@ package mintersdk
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -38,6 +39,11 @@ func (c *SDK) GetAddress(usrAddr string) (map[string]float32, uint32, error) {
 
 	var data addrss_usr
 	json.Unmarshal(body, &data)
+
+	if data.Error.Code != 0 {
+		err = errors.New(fmt.Sprint(data.Error.Code, " - ", data.Error.Message))
+		return retDt, 0, err
+	}
 
 	for iS, vD := range data.Result.Balance {
 		retDt[iS] = pipStr2bip_f32(vD)

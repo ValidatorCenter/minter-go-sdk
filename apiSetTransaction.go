@@ -58,6 +58,11 @@ func (c *SDK) SetTransaction(tx *tr.Transaction) (string, error) {
 	var data send_transaction
 	json.Unmarshal(body, &data)
 
+	if data.Error.Code != 0 {
+		err = errors.New(fmt.Sprint(data.Error.Code, " - ", data.Error.Message))
+		return "", err
+	}
+
 	if data.Result.Code == 0 {
 		return fmt.Sprintf("Mt%s", strings.ToLower(data.Result.Hash)), nil
 	} else {

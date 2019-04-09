@@ -9,7 +9,7 @@ import (
 func main() {
 	// Инициализация параметров
 	sdk := m.SDK{
-		MnAddress: "https://minter-node-1.testnet.minter.network",
+		MnAddress: "https://minter-node-1.testnet.minter.network:8841",
 	}
 
 	fmt.Println("##  1/10 ##")
@@ -27,7 +27,7 @@ func main() {
 	fmt.Printf("GetBlock= %#v\n", blk)
 
 	fmt.Println("##  3/10 ##")
-	cnd1, err := sdk.GetCandidate("Mp504815c4a47418aa37b17248e359cb5a5272bd8f416eb9d1d3b8ba95b394296f")
+	cnd1, err := sdk.GetCandidate("Mp09f3548f7f4fc38ad2d0d8f805ec2cc1e35696012f95b8c6f2749e304a91efa2")
 	if err != nil {
 		panic(err)
 	}
@@ -55,7 +55,7 @@ func main() {
 	fmt.Printf("GetStatus= %#v\n", stMn)
 
 	fmt.Println("##  7/10 ##")
-	trns, err := sdk.GetTransaction("Mtdcaf593010c7cfd3b3c17d113c0e30afdb16ad395515a97118b635e2a4ce6b64")
+	trns, err := sdk.GetTransaction("Mt9ab102356d566c2df94274da49bd83fdcebdd055b322714d7e5fcb4f0b13b303")
 	if err != nil {
 		panic(err)
 	}

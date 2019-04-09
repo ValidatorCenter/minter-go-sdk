@@ -2,6 +2,7 @@ package mintersdk
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -46,6 +47,10 @@ func (c *SDK) EstimateCoinBuy(coinBuy string, coinSell string, valueBuy int64) (
 	var dataB node_estimate
 	json.Unmarshal(bodyB, &dataB)
 
+	if dataB.Error.Code != 0 {
+		return EstimateResponse{}, errors.New(fmt.Sprint(dataB.Error.Code, " - ", dataB.Error.Message))
+	}
+
 	return EstimateResponse{
 		WillPay:    pipStr2bip_f32(dataB.Result.WillPay),
 		WillGet:    pipStr2bip_f32(dataB.Result.WillGet),
@@ -72,6 +77,10 @@ func (c *SDK) EstimateCoinSell(coinSell string, coinBuy string, valueSell int64)
 	var dataS node_estimate
 	json.Unmarshal(bodyS, &dataS)
 
+	if dataS.Error.Code != 0 {
+		return EstimateResponse{}, errors.New(fmt.Sprint(dataS.Error.Code, " - ", dataS.Error.Message))
+	}
+
 	return EstimateResponse{
 		WillPay:    pipStr2bip_f32(dataS.Result.WillPay),
 		WillGet:    pipStr2bip_f32(dataS.Result.WillGet),
@@ -96,6 +105,10 @@ func (c *SDK) EstimateTxCommission(tx string) (float32, error) {
 
 	var dataS node_estimate
 	json.Unmarshal(bodyS, &dataS)
+
+	if dataS.Error.Code != 0 {
+		return 0, errors.New(fmt.Sprint(dataS.Error.Code, " - ", dataS.Error.Message))
+	}
 
 	return pipStr2bip_f32(dataS.Result.Commission), nil
 }

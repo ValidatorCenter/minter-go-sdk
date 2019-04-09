@@ -67,6 +67,11 @@ func (c *SDK) GetBlock(id int) (BlockResponse, error) {
 	var data node_block
 	json.Unmarshal(body, &data)
 
+	if data.Error.Code != 0 {
+		err = errors.New(fmt.Sprint(data.Error.Code, " - ", data.Error.Message))
+		return BlockResponse{}, err
+	}
+
 	/*if c.Debug == true {
 		fmt.Printf("%s\n", string(body))
 	}*/

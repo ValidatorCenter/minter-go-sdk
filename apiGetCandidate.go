@@ -2,6 +2,7 @@ package mintersdk
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -42,7 +43,7 @@ type stakes_info struct {
 }
 
 func (c *SDK) GetCandidate(candidateHash string) (CandidateInfo, error) {
-	url := fmt.Sprintf("%s/candidate?pubkey=%s", c.MnAddress, candidateHash)
+	url := fmt.Sprintf("%s/candidate?pub_key=%s", c.MnAddress, candidateHash)
 	res, err := http.Get(url)
 	if err != nil {
 		return CandidateInfo{}, err
@@ -57,6 +58,11 @@ func (c *SDK) GetCandidate(candidateHash string) (CandidateInfo, error) {
 
 	var data node_candidate
 	json.Unmarshal(body, &data)
+
+	if data.Error.Code != 0 {
+		err = errors.New(fmt.Sprint(data.Error.Code, " - ", data.Error.Message))
+		return CandidateInfo{}, err
+	}
 
 	data.Result.Commission, _ = strconv.Atoi(data.Result.CommissionTx)
 	data.Result.CreatedAtBlock, _ = strconv.Atoi(data.Result.CreatedAtBlockTx)
