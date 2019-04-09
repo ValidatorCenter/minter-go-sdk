@@ -3,6 +3,7 @@ package mintersdk
 import (
 	b64 "encoding/base64"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -347,7 +348,11 @@ func (c *SDK) GetTransaction(hash string) (TransResponse, error) {
 
 	var data node_transaction
 	json.Unmarshal(body, &data)
-	//fmt.Println(string(body))
+
+	if data.Error.Code != 0 {
+		err = errors.New(fmt.Sprint(data.Error.Code, " - ", data.Error.Message))
+		return TransResponse{}, err
+	}
 
 	err = manipulationTransaction(c, &data.Result)
 	if err != nil {

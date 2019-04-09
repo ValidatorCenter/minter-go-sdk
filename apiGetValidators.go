@@ -2,6 +2,7 @@ package mintersdk
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -40,6 +41,11 @@ func (c *SDK) GetValidatorsBlock(blockN int) ([]result_valid, error) {
 	var data node_validators
 	json.Unmarshal(body, &data)
 
+	if data.Error.Code != 0 {
+		err = errors.New(fmt.Sprint(data.Error.Code, " - ", data.Error.Message))
+		return []result_valid{}, err
+	}
+
 	for i1, _ := range data.Result {
 		VotingPower_i32, err := strconv.Atoi(data.Result[i1].VotingPowerTx)
 		if err != nil {
@@ -68,6 +74,11 @@ func (c *SDK) GetValidators() ([]result_valid, error) {
 
 	var data node_validators
 	json.Unmarshal(body, &data)
+
+	if data.Error.Code != 0 {
+		err = errors.New(fmt.Sprint(data.Error.Code, " - ", data.Error.Message))
+		return []result_valid{}, err
+	}
 
 	for i1, _ := range data.Result {
 		VotingPower_i32, err := strconv.Atoi(data.Result[i1].VotingPowerTx)

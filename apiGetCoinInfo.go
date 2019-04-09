@@ -2,6 +2,7 @@ package mintersdk
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -43,6 +44,11 @@ func (c *SDK) GetCoinInfo(coinSmbl string) (CoinInfoResponse, error) {
 
 	var data node_coininfo
 	json.Unmarshal(body, &data)
+
+	if data.Error.Code != 0 {
+		err = errors.New(fmt.Sprint(data.Error.Code, " - ", data.Error.Message))
+		return CoinInfoResponse{}, err
+	}
 
 	data.Result.Volume = pipStr2bip_f32(data.Result.VolumeTx)
 	data.Result.ReserveBalance = pipStr2bip_f32(data.Result.ReserveBalanceTx)

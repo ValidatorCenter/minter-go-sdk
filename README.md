@@ -4,7 +4,7 @@
 ## About
 Minter Blockchain Golang SDK https://minter.network
 
-Actual for Minter version 0.11.x.
+Actual for Minter version 0.17.x.
 
 * [Installation](#installing)
 * [Updating](#updating)
@@ -187,7 +187,7 @@ NewMnemonic(): string, error
 
 ### AuthMnemonic
 
-Authorization by seed-phrase.
+CLOSED: Authorization by seed-phrase.
 
 ``
 AuthMnemonic("seed-phrase" string): "address" string, "private-key" string, error

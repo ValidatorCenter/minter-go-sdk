@@ -2,6 +2,7 @@ package mintersdk
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -49,6 +50,11 @@ func (c *SDK) GetEvents(id int) (BlockEvResponse, error) {
 
 	var data node_block_ev
 	json.Unmarshal(body, &data)
+
+	if data.Error.Code != 0 {
+		err = errors.New(fmt.Sprint(data.Error.Code, " - ", data.Error.Message))
+		return BlockEvResponse{}, err
+	}
 
 	for iStep, _ := range data.Result.Events {
 		data.Result.Events[iStep].Value.Amount = pipStr2bip_f32(data.Result.Events[iStep].Value.AmountTx)
