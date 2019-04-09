@@ -16,11 +16,11 @@ import (
 	"github.com/MinterTeam/minter-go-node/helpers"
 	"github.com/MinterTeam/minter-go-node/rlp"
 
-	//"github.com/ethereum/go-ethereum/crypto"
-
+	// новая seed-фраза
+	"github.com/tyler-smith/go-bip39"
 	// для авторизации/регистрации
 	//"github.com/miguelmota/go-ethereum-hdwallet"
-	"github.com/tyler-smith/go-bip39"
+	//"github.com/ethereum/go-ethereum/crypto"
 )
 
 //////////////////////////////
