@@ -1,7 +1,7 @@
 package mintersdk
 
 import (
-	"encoding/json"
+	//"encoding/json" -- переход на easyjson
 	"errors"
 	"fmt"
 	"io/ioutil"
@@ -11,6 +11,8 @@ import (
 )
 
 // Содержимое блока
+
+//easyjson:json
 type node_block struct {
 	JSONRPC string `json:"jsonrpc"`
 	ID      string `json:"id"`
@@ -65,7 +67,12 @@ func (c *SDK) GetBlock(id int) (BlockResponse, error) {
 	}
 
 	var data node_block
-	json.Unmarshal(body, &data)
+	//json.Unmarshal(body, &data) -- переход на easyjson
+
+	err = data.UnmarshalJSON(body)
+	if err != nil {
+		panic(err)
+	}
 
 	if data.Error.Code != 0 {
 		err = errors.New(fmt.Sprint(data.Error.Code, " - ", data.Error.Message))
