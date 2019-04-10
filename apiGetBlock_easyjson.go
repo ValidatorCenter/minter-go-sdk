@@ -1048,7 +1048,7 @@ func easyjson73feee59DecodeMinterGoSdk4(in *jlexer.Lexer, out *TransData) {
 		case "address":
 			out.Address = string(in.String())
 		case "commission":
-			out.Commission = int(in.Int())
+			out.Commission = int(in.IntStr())
 		case "stake":
 			out.Stake = string(in.String())
 		case "pub_key":
@@ -1216,7 +1216,7 @@ func easyjson73feee59EncodeMinterGoSdk4(out *jwriter.Writer, in TransData) {
 		} else {
 			out.RawString(prefix)
 		}
-		out.Int(int(in.Commission))
+		out.IntStr(int(in.Commission))
 	}
 	{
 		const prefix string = ",\"stake\":"

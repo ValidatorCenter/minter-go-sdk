@@ -179,7 +179,7 @@ type TransData struct {
 	ConstantReserveRatio string `json:"constant_reserve_ratio"` // should be from 10 to 100 (в %).
 	//=== type6 - TYPE_DECLARE_CANDIDACY
 	Address    string `json:"address"`
-	Commission int    `json:"commission"`
+	Commission int    `json:"commission,string"`
 	//Stake	string `json:"stake"`
 	//PubKey  string `json:"pub_key"`
 	//Coin    string `json:"coin"`
