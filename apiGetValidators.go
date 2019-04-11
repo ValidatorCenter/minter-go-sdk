@@ -1,7 +1,7 @@
 package mintersdk
 
 import (
-	"encoding/json"
+	//"encoding/json" -- переход на easyjson
 	"errors"
 	"fmt"
 	"io/ioutil"
@@ -10,11 +10,13 @@ import (
 )
 
 // запрос по валидаторам
+
+//easyjson:json
 type node_validators struct {
-	JSONRPC string `json:"jsonrpc"`
-	ID      string `json:"id"`
-	Result  []result_valid
-	Error   ErrorStruct
+	JSONRPC string         `json:"jsonrpc"`
+	ID      string         `json:"id"`
+	Result  []result_valid `json:"result"`
+	Error   ErrorStruct    `json:"error"`
 }
 
 // результат по валидаторам
@@ -39,7 +41,12 @@ func (c *SDK) GetValidatorsBlock(blockN int) ([]result_valid, error) {
 	}
 
 	var data node_validators
-	json.Unmarshal(body, &data)
+	//json.Unmarshal(body, &data) -- переход на easyjson
+
+	err = data.UnmarshalJSON(body)
+	if err != nil {
+		panic(err)
+	}
 
 	if data.Error.Code != 0 {
 		err = errors.New(fmt.Sprint(data.Error.Code, " - ", data.Error.Message))
@@ -73,7 +80,12 @@ func (c *SDK) GetValidators() ([]result_valid, error) {
 	}
 
 	var data node_validators
-	json.Unmarshal(body, &data)
+	//json.Unmarshal(body, &data) -- переход на easyjson
+
+	err = data.UnmarshalJSON(body)
+	if err != nil {
+		panic(err)
+	}
 
 	if data.Error.Code != 0 {
 		err = errors.New(fmt.Sprint(data.Error.Code, " - ", data.Error.Message))

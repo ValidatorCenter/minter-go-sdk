@@ -1,7 +1,7 @@
 package mintersdk
 
 import (
-	"encoding/json"
+	//"encoding/json" -- переход на easyjson
 	"errors"
 	"fmt"
 	"io/ioutil"
@@ -10,11 +10,13 @@ import (
 )
 
 // запрос на всех кандидатов (curl -s 'localhost:8841/api/candidates')
+
+//easyjson:json
 type node_candidates struct {
-	JSONRPC string `json:"jsonrpc"`
-	ID      string `json:"id"`
-	Result  []CandidateInfo
-	Error   ErrorStruct
+	JSONRPC string          `json:"jsonrpc"`
+	ID      string          `json:"id"`
+	Result  []CandidateInfo `json:"result"`
+	Error   ErrorStruct     `json:"error"`
 }
 
 // type CandidateInfo struct --- в apiGetCandidate.go
@@ -35,7 +37,12 @@ func (c *SDK) GetCandidates() ([]CandidateInfo, error) {
 	}
 
 	var data node_candidates
-	json.Unmarshal(body, &data)
+	//json.Unmarshal(body, &data) -- переход на easyjson
+
+	err = data.UnmarshalJSON(body)
+	if err != nil {
+		panic(err)
+	}
 
 	if data.Error.Code != 0 {
 		err = errors.New(fmt.Sprint(data.Error.Code, " - ", data.Error.Message))

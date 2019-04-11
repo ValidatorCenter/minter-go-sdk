@@ -17,7 +17,7 @@ var (
 	_ easyjson.Marshaler
 )
 
-func easyjson73feee59DecodeMinterGoSdkNode(in *jlexer.Lexer, out *node_block) {
+func easyjson73feee59DecodeGithubComValidatorCenterMinterGoSdkNode(in *jlexer.Lexer, out *node_block) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -40,9 +40,9 @@ func easyjson73feee59DecodeMinterGoSdkNode(in *jlexer.Lexer, out *node_block) {
 			out.JSONRPC = string(in.String())
 		case "id":
 			out.ID = string(in.String())
-		case "Result":
+		case "result":
 			(out.Result).UnmarshalEasyJSON(in)
-		case "Error":
+		case "error":
 			(out.Error).UnmarshalEasyJSON(in)
 		default:
 			in.SkipRecursive()
@@ -54,7 +54,7 @@ func easyjson73feee59DecodeMinterGoSdkNode(in *jlexer.Lexer, out *node_block) {
 		in.Consumed()
 	}
 }
-func easyjson73feee59EncodeMinterGoSdkNode(out *jwriter.Writer, in node_block) {
+func easyjson73feee59EncodeGithubComValidatorCenterMinterGoSdkNode(out *jwriter.Writer, in node_block) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -79,7 +79,7 @@ func easyjson73feee59EncodeMinterGoSdkNode(out *jwriter.Writer, in node_block) {
 		out.String(string(in.ID))
 	}
 	{
-		const prefix string = ",\"Result\":"
+		const prefix string = ",\"result\":"
 		if first {
 			first = false
 			out.RawString(prefix[1:])
@@ -89,7 +89,7 @@ func easyjson73feee59EncodeMinterGoSdkNode(out *jwriter.Writer, in node_block) {
 		(in.Result).MarshalEasyJSON(out)
 	}
 	{
-		const prefix string = ",\"Error\":"
+		const prefix string = ",\"error\":"
 		if first {
 			first = false
 			out.RawString(prefix[1:])
@@ -104,27 +104,27 @@ func easyjson73feee59EncodeMinterGoSdkNode(out *jwriter.Writer, in node_block) {
 // MarshalJSON supports json.Marshaler interface
 func (v node_block) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson73feee59EncodeMinterGoSdkNode(&w, v)
+	easyjson73feee59EncodeGithubComValidatorCenterMinterGoSdkNode(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v node_block) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson73feee59EncodeMinterGoSdkNode(w, v)
+	easyjson73feee59EncodeGithubComValidatorCenterMinterGoSdkNode(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *node_block) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson73feee59DecodeMinterGoSdkNode(&r, v)
+	easyjson73feee59DecodeGithubComValidatorCenterMinterGoSdkNode(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *node_block) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson73feee59DecodeMinterGoSdkNode(l, v)
+	easyjson73feee59DecodeGithubComValidatorCenterMinterGoSdkNode(l, v)
 }
-func easyjson73feee59DecodeMinterGoSdk(in *jlexer.Lexer, out *ErrorStruct) {
+func easyjson73feee59DecodeGithubComValidatorCenterMinterGoSdk(in *jlexer.Lexer, out *ErrorStruct) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -143,11 +143,11 @@ func easyjson73feee59DecodeMinterGoSdk(in *jlexer.Lexer, out *ErrorStruct) {
 			continue
 		}
 		switch key {
-		case "Code":
+		case "code":
 			out.Code = int(in.Int())
-		case "Message":
+		case "message":
 			out.Message = string(in.String())
-		case "Data":
+		case "data":
 			out.Data = string(in.String())
 		default:
 			in.SkipRecursive()
@@ -159,12 +159,12 @@ func easyjson73feee59DecodeMinterGoSdk(in *jlexer.Lexer, out *ErrorStruct) {
 		in.Consumed()
 	}
 }
-func easyjson73feee59EncodeMinterGoSdk(out *jwriter.Writer, in ErrorStruct) {
+func easyjson73feee59EncodeGithubComValidatorCenterMinterGoSdk(out *jwriter.Writer, in ErrorStruct) {
 	out.RawByte('{')
 	first := true
 	_ = first
 	{
-		const prefix string = ",\"Code\":"
+		const prefix string = ",\"code\":"
 		if first {
 			first = false
 			out.RawString(prefix[1:])
@@ -174,7 +174,7 @@ func easyjson73feee59EncodeMinterGoSdk(out *jwriter.Writer, in ErrorStruct) {
 		out.Int(int(in.Code))
 	}
 	{
-		const prefix string = ",\"Message\":"
+		const prefix string = ",\"message\":"
 		if first {
 			first = false
 			out.RawString(prefix[1:])
@@ -184,7 +184,7 @@ func easyjson73feee59EncodeMinterGoSdk(out *jwriter.Writer, in ErrorStruct) {
 		out.String(string(in.Message))
 	}
 	{
-		const prefix string = ",\"Data\":"
+		const prefix string = ",\"data\":"
 		if first {
 			first = false
 			out.RawString(prefix[1:])
@@ -199,27 +199,27 @@ func easyjson73feee59EncodeMinterGoSdk(out *jwriter.Writer, in ErrorStruct) {
 // MarshalJSON supports json.Marshaler interface
 func (v ErrorStruct) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson73feee59EncodeMinterGoSdk(&w, v)
+	easyjson73feee59EncodeGithubComValidatorCenterMinterGoSdk(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v ErrorStruct) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson73feee59EncodeMinterGoSdk(w, v)
+	easyjson73feee59EncodeGithubComValidatorCenterMinterGoSdk(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *ErrorStruct) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson73feee59DecodeMinterGoSdk(&r, v)
+	easyjson73feee59DecodeGithubComValidatorCenterMinterGoSdk(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *ErrorStruct) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson73feee59DecodeMinterGoSdk(l, v)
+	easyjson73feee59DecodeGithubComValidatorCenterMinterGoSdk(l, v)
 }
-func easyjson73feee59DecodeMinterGoSdk1(in *jlexer.Lexer, out *BlockValidatorsResponse) {
+func easyjson73feee59DecodeGithubComValidatorCenterMinterGoSdk1(in *jlexer.Lexer, out *BlockValidatorsResponse) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -252,7 +252,7 @@ func easyjson73feee59DecodeMinterGoSdk1(in *jlexer.Lexer, out *BlockValidatorsRe
 		in.Consumed()
 	}
 }
-func easyjson73feee59EncodeMinterGoSdk1(out *jwriter.Writer, in BlockValidatorsResponse) {
+func easyjson73feee59EncodeGithubComValidatorCenterMinterGoSdk1(out *jwriter.Writer, in BlockValidatorsResponse) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -282,27 +282,27 @@ func easyjson73feee59EncodeMinterGoSdk1(out *jwriter.Writer, in BlockValidatorsR
 // MarshalJSON supports json.Marshaler interface
 func (v BlockValidatorsResponse) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson73feee59EncodeMinterGoSdk1(&w, v)
+	easyjson73feee59EncodeGithubComValidatorCenterMinterGoSdk1(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v BlockValidatorsResponse) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson73feee59EncodeMinterGoSdk1(w, v)
+	easyjson73feee59EncodeGithubComValidatorCenterMinterGoSdk1(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *BlockValidatorsResponse) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson73feee59DecodeMinterGoSdk1(&r, v)
+	easyjson73feee59DecodeGithubComValidatorCenterMinterGoSdk1(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *BlockValidatorsResponse) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson73feee59DecodeMinterGoSdk1(l, v)
+	easyjson73feee59DecodeGithubComValidatorCenterMinterGoSdk1(l, v)
 }
-func easyjson73feee59DecodeMinterGoSdk2(in *jlexer.Lexer, out *BlockResponse) {
+func easyjson73feee59DecodeGithubComValidatorCenterMinterGoSdk2(in *jlexer.Lexer, out *BlockResponse) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -356,7 +356,7 @@ func easyjson73feee59DecodeMinterGoSdk2(in *jlexer.Lexer, out *BlockResponse) {
 				}
 				for !in.IsDelim(']') {
 					var v1 TransResponse
-					easyjson73feee59DecodeMinterGoSdk3(in, &v1)
+					(v1).UnmarshalEasyJSON(in)
 					out.Transactions = append(out.Transactions, v1)
 					in.WantComma()
 				}
@@ -405,7 +405,7 @@ func easyjson73feee59DecodeMinterGoSdk2(in *jlexer.Lexer, out *BlockResponse) {
 		in.Consumed()
 	}
 }
-func easyjson73feee59EncodeMinterGoSdk2(out *jwriter.Writer, in BlockResponse) {
+func easyjson73feee59EncodeGithubComValidatorCenterMinterGoSdk2(out *jwriter.Writer, in BlockResponse) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -505,7 +505,7 @@ func easyjson73feee59EncodeMinterGoSdk2(out *jwriter.Writer, in BlockResponse) {
 				if v3 > 0 {
 					out.RawByte(',')
 				}
-				easyjson73feee59EncodeMinterGoSdk3(out, v4)
+				(v4).MarshalEasyJSON(out)
 			}
 			out.RawByte(']')
 		}
@@ -587,788 +587,23 @@ func easyjson73feee59EncodeMinterGoSdk2(out *jwriter.Writer, in BlockResponse) {
 // MarshalJSON supports json.Marshaler interface
 func (v BlockResponse) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson73feee59EncodeMinterGoSdk2(&w, v)
+	easyjson73feee59EncodeGithubComValidatorCenterMinterGoSdk2(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v BlockResponse) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson73feee59EncodeMinterGoSdk2(w, v)
+	easyjson73feee59EncodeGithubComValidatorCenterMinterGoSdk2(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *BlockResponse) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson73feee59DecodeMinterGoSdk2(&r, v)
+	easyjson73feee59DecodeGithubComValidatorCenterMinterGoSdk2(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *BlockResponse) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson73feee59DecodeMinterGoSdk2(l, v)
-}
-func easyjson73feee59DecodeMinterGoSdk3(in *jlexer.Lexer, out *TransResponse) {
-	isTopLevel := in.IsStart()
-	if in.IsNull() {
-		if isTopLevel {
-			in.Consumed()
-		}
-		in.Skip()
-		return
-	}
-	in.Delim('{')
-	for !in.IsDelim('}') {
-		key := in.UnsafeString()
-		in.WantColon()
-		if in.IsNull() {
-			in.Skip()
-			in.WantComma()
-			continue
-		}
-		switch key {
-		case "hash":
-			out.Hash = string(in.String())
-		case "raw_tx":
-			out.RawTx = string(in.String())
-		case "height":
-			out.HeightTx = string(in.String())
-		case "height_i32":
-			out.Height = int(in.Int())
-		case "index":
-			out.Index = int(in.Int())
-		case "from":
-			out.From = string(in.String())
-		case "nonce":
-			out.NonceTx = string(in.String())
-		case "nonce_i32":
-			out.Nonce = int(in.Int())
-		case "gas_price":
-			out.GasPriceTx = string(in.String())
-		case "gas_price_i32":
-			out.GasPrice = int(in.Int())
-		case "gas_coin":
-			out.GasCoin = string(in.String())
-		case "gas_used":
-			out.GasUsedTx = string(in.String())
-		case "gas_used_i32":
-			out.GasUsed = int(in.Int())
-		case "type":
-			out.Type = int(in.Int())
-		case "data":
-			easyjson73feee59DecodeMinterGoSdk4(in, &out.DataTx)
-		case "payload":
-			out.Payload = string(in.String())
-		case "tags":
-			easyjson73feee59DecodeMinterGoSdk5(in, &out.Tags)
-		case "code":
-			out.Code = int(in.Int())
-		case "log":
-			out.Log = string(in.String())
-		case "service_data":
-			if in.IsNull() {
-				in.Skip()
-				out.ServiceData = nil
-			} else {
-				out.ServiceData = in.Bytes()
-			}
-		default:
-			in.SkipRecursive()
-		}
-		in.WantComma()
-	}
-	in.Delim('}')
-	if isTopLevel {
-		in.Consumed()
-	}
-}
-func easyjson73feee59EncodeMinterGoSdk3(out *jwriter.Writer, in TransResponse) {
-	out.RawByte('{')
-	first := true
-	_ = first
-	{
-		const prefix string = ",\"hash\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
-		out.String(string(in.Hash))
-	}
-	{
-		const prefix string = ",\"raw_tx\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
-		out.String(string(in.RawTx))
-	}
-	{
-		const prefix string = ",\"height\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
-		out.String(string(in.HeightTx))
-	}
-	{
-		const prefix string = ",\"height_i32\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
-		out.Int(int(in.Height))
-	}
-	{
-		const prefix string = ",\"index\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
-		out.Int(int(in.Index))
-	}
-	{
-		const prefix string = ",\"from\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
-		out.String(string(in.From))
-	}
-	{
-		const prefix string = ",\"nonce\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
-		out.String(string(in.NonceTx))
-	}
-	{
-		const prefix string = ",\"nonce_i32\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
-		out.Int(int(in.Nonce))
-	}
-	{
-		const prefix string = ",\"gas_price\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
-		out.String(string(in.GasPriceTx))
-	}
-	{
-		const prefix string = ",\"gas_price_i32\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
-		out.Int(int(in.GasPrice))
-	}
-	{
-		const prefix string = ",\"gas_coin\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
-		out.String(string(in.GasCoin))
-	}
-	{
-		const prefix string = ",\"gas_used\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
-		out.String(string(in.GasUsedTx))
-	}
-	{
-		const prefix string = ",\"gas_used_i32\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
-		out.Int(int(in.GasUsed))
-	}
-	{
-		const prefix string = ",\"type\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
-		out.Int(int(in.Type))
-	}
-	{
-		const prefix string = ",\"data\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
-		easyjson73feee59EncodeMinterGoSdk4(out, in.DataTx)
-	}
-	{
-		const prefix string = ",\"payload\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
-		out.String(string(in.Payload))
-	}
-	{
-		const prefix string = ",\"tags\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
-		easyjson73feee59EncodeMinterGoSdk5(out, in.Tags)
-	}
-	{
-		const prefix string = ",\"code\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
-		out.Int(int(in.Code))
-	}
-	{
-		const prefix string = ",\"log\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
-		out.String(string(in.Log))
-	}
-	{
-		const prefix string = ",\"service_data\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
-		out.Base64Bytes(in.ServiceData)
-	}
-	out.RawByte('}')
-}
-func easyjson73feee59DecodeMinterGoSdk5(in *jlexer.Lexer, out *tagKeyValue2) {
-	isTopLevel := in.IsStart()
-	if in.IsNull() {
-		if isTopLevel {
-			in.Consumed()
-		}
-		in.Skip()
-		return
-	}
-	in.Delim('{')
-	for !in.IsDelim('}') {
-		key := in.UnsafeString()
-		in.WantColon()
-		if in.IsNull() {
-			in.Skip()
-			in.WantComma()
-			continue
-		}
-		switch key {
-		case "tx.coin_to_buy":
-			out.TxCoinToBuy = string(in.String())
-		case "tx.coin_to_sell":
-			out.TxCoinToSell = string(in.String())
-		case "tx.from":
-			out.TxFrom = string(in.String())
-		case "tx.return":
-			out.TxReturnTx = string(in.String())
-		case "tx.return_f32":
-			out.TxReturn = float32(in.Float32())
-		case "tx.sell_amount":
-			out.TxSellAmountTx = string(in.String())
-		case "tx.sell_amount_f32":
-			out.TxSellAmount = float32(in.Float32())
-		default:
-			in.SkipRecursive()
-		}
-		in.WantComma()
-	}
-	in.Delim('}')
-	if isTopLevel {
-		in.Consumed()
-	}
-}
-func easyjson73feee59EncodeMinterGoSdk5(out *jwriter.Writer, in tagKeyValue2) {
-	out.RawByte('{')
-	first := true
-	_ = first
-	{
-		const prefix string = ",\"tx.coin_to_buy\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
-		out.String(string(in.TxCoinToBuy))
-	}
-	{
-		const prefix string = ",\"tx.coin_to_sell\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
-		out.String(string(in.TxCoinToSell))
-	}
-	{
-		const prefix string = ",\"tx.from\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
-		out.String(string(in.TxFrom))
-	}
-	{
-		const prefix string = ",\"tx.return\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
-		out.String(string(in.TxReturnTx))
-	}
-	{
-		const prefix string = ",\"tx.return_f32\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
-		out.Float32(float32(in.TxReturn))
-	}
-	{
-		const prefix string = ",\"tx.sell_amount\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
-		out.String(string(in.TxSellAmountTx))
-	}
-	{
-		const prefix string = ",\"tx.sell_amount_f32\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
-		out.Float32(float32(in.TxSellAmount))
-	}
-	out.RawByte('}')
-}
-func easyjson73feee59DecodeMinterGoSdk4(in *jlexer.Lexer, out *TransData) {
-	isTopLevel := in.IsStart()
-	if in.IsNull() {
-		if isTopLevel {
-			in.Consumed()
-		}
-		in.Skip()
-		return
-	}
-	in.Delim('{')
-	for !in.IsDelim('}') {
-		key := in.UnsafeString()
-		in.WantColon()
-		if in.IsNull() {
-			in.Skip()
-			in.WantComma()
-			continue
-		}
-		switch key {
-		case "to":
-			out.To = string(in.String())
-		case "value_to_sell":
-			out.ValueToSell = string(in.String())
-		case "coin_to_buy":
-			out.CoinToBuy = string(in.String())
-		case "value_to_buy":
-			out.ValueToBuy = string(in.String())
-		case "coin_to_sell":
-			out.CoinToSell = string(in.String())
-		case "name":
-			out.Name = string(in.String())
-		case "symbol":
-			out.CoinSymbol = string(in.String())
-		case "initial_amount":
-			out.InitialAmount = string(in.String())
-		case "initial_reserve":
-			out.InitialReserve = string(in.String())
-		case "constant_reserve_ratio":
-			out.ConstantReserveRatio = string(in.String())
-		case "address":
-			out.Address = string(in.String())
-		case "commission":
-			out.Commission = int(in.IntStr())
-		case "stake":
-			out.Stake = string(in.String())
-		case "pub_key":
-			out.PubKey = string(in.String())
-		case "coin":
-			out.Coin = string(in.String())
-		case "value":
-			out.Value = string(in.String())
-		case "raw_check":
-			out.RawCheck = string(in.String())
-		case "proof":
-			out.Proof = string(in.String())
-		case "list":
-			if in.IsNull() {
-				in.Skip()
-				out.List = nil
-			} else {
-				in.Delim('[')
-				if out.List == nil {
-					if !in.IsDelim(']') {
-						out.List = make([]SendOneData, 0, 1)
-					} else {
-						out.List = []SendOneData{}
-					}
-				} else {
-					out.List = (out.List)[:0]
-				}
-				for !in.IsDelim(']') {
-					var v10 SendOneData
-					easyjson73feee59DecodeMinterGoSdk6(in, &v10)
-					out.List = append(out.List, v10)
-					in.WantComma()
-				}
-				in.Delim(']')
-			}
-		default:
-			in.SkipRecursive()
-		}
-		in.WantComma()
-	}
-	in.Delim('}')
-	if isTopLevel {
-		in.Consumed()
-	}
-}
-func easyjson73feee59EncodeMinterGoSdk4(out *jwriter.Writer, in TransData) {
-	out.RawByte('{')
-	first := true
-	_ = first
-	{
-		const prefix string = ",\"to\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
-		out.String(string(in.To))
-	}
-	{
-		const prefix string = ",\"value_to_sell\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
-		out.String(string(in.ValueToSell))
-	}
-	{
-		const prefix string = ",\"coin_to_buy\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
-		out.String(string(in.CoinToBuy))
-	}
-	{
-		const prefix string = ",\"value_to_buy\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
-		out.String(string(in.ValueToBuy))
-	}
-	{
-		const prefix string = ",\"coin_to_sell\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
-		out.String(string(in.CoinToSell))
-	}
-	{
-		const prefix string = ",\"name\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
-		out.String(string(in.Name))
-	}
-	{
-		const prefix string = ",\"symbol\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
-		out.String(string(in.CoinSymbol))
-	}
-	{
-		const prefix string = ",\"initial_amount\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
-		out.String(string(in.InitialAmount))
-	}
-	{
-		const prefix string = ",\"initial_reserve\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
-		out.String(string(in.InitialReserve))
-	}
-	{
-		const prefix string = ",\"constant_reserve_ratio\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
-		out.String(string(in.ConstantReserveRatio))
-	}
-	{
-		const prefix string = ",\"address\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
-		out.String(string(in.Address))
-	}
-	{
-		const prefix string = ",\"commission\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
-		out.IntStr(int(in.Commission))
-	}
-	{
-		const prefix string = ",\"stake\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
-		out.String(string(in.Stake))
-	}
-	{
-		const prefix string = ",\"pub_key\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
-		out.String(string(in.PubKey))
-	}
-	{
-		const prefix string = ",\"coin\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
-		out.String(string(in.Coin))
-	}
-	{
-		const prefix string = ",\"value\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
-		out.String(string(in.Value))
-	}
-	{
-		const prefix string = ",\"raw_check\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
-		out.String(string(in.RawCheck))
-	}
-	{
-		const prefix string = ",\"proof\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
-		out.String(string(in.Proof))
-	}
-	{
-		const prefix string = ",\"list\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
-		if in.List == nil && (out.Flags&jwriter.NilSliceAsEmpty) == 0 {
-			out.RawString("null")
-		} else {
-			out.RawByte('[')
-			for v11, v12 := range in.List {
-				if v11 > 0 {
-					out.RawByte(',')
-				}
-				easyjson73feee59EncodeMinterGoSdk6(out, v12)
-			}
-			out.RawByte(']')
-		}
-	}
-	out.RawByte('}')
-}
-func easyjson73feee59DecodeMinterGoSdk6(in *jlexer.Lexer, out *SendOneData) {
-	isTopLevel := in.IsStart()
-	if in.IsNull() {
-		if isTopLevel {
-			in.Consumed()
-		}
-		in.Skip()
-		return
-	}
-	in.Delim('{')
-	for !in.IsDelim('}') {
-		key := in.UnsafeString()
-		in.WantColon()
-		if in.IsNull() {
-			in.Skip()
-			in.WantComma()
-			continue
-		}
-		switch key {
-		case "to":
-			out.To = string(in.String())
-		case "coin":
-			out.Coin = string(in.String())
-		case "value":
-			out.Value = string(in.String())
-		default:
-			in.SkipRecursive()
-		}
-		in.WantComma()
-	}
-	in.Delim('}')
-	if isTopLevel {
-		in.Consumed()
-	}
-}
-func easyjson73feee59EncodeMinterGoSdk6(out *jwriter.Writer, in SendOneData) {
-	out.RawByte('{')
-	first := true
-	_ = first
-	{
-		const prefix string = ",\"to\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
-		out.String(string(in.To))
-	}
-	{
-		const prefix string = ",\"coin\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
-		out.String(string(in.Coin))
-	}
-	{
-		const prefix string = ",\"value\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
-		out.String(string(in.Value))
-	}
-	out.RawByte('}')
+	easyjson73feee59DecodeGithubComValidatorCenterMinterGoSdk2(l, v)
 }

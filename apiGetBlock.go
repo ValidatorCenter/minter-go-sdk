@@ -14,16 +14,16 @@ import (
 
 //easyjson:json
 type node_block struct {
-	JSONRPC string `json:"jsonrpc"`
-	ID      string `json:"id"`
-	Result  BlockResponse
-	Error   ErrorStruct
+	JSONRPC string        `json:"jsonrpc"`
+	ID      string        `json:"id"`
+	Result  BlockResponse `json:"result"`
+	Error   ErrorStruct   `json:"error"`
 }
 
 type ErrorStruct struct {
-	Code    int
-	Message string
-	Data    string
+	Code    int    `json:"code"`
+	Message string `json:"message"`
+	Data    string `json:"data"`
 }
 
 type BlockResponse struct {
@@ -78,10 +78,6 @@ func (c *SDK) GetBlock(id int) (BlockResponse, error) {
 		err = errors.New(fmt.Sprint(data.Error.Code, " - ", data.Error.Message))
 		return BlockResponse{}, err
 	}
-
-	/*if c.Debug == true {
-		fmt.Printf("%s\n", string(body))
-	}*/
 
 	data.Result.BlockReward = pipStr2bip_f32(data.Result.BlockRewardTx) // вознаграждение за блок
 
