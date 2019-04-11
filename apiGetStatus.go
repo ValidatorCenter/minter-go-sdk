@@ -1,7 +1,7 @@
 package mintersdk
 
 import (
-	"encoding/json"
+	//"encoding/json" -- переход на easyjson
 	"errors"
 	"fmt"
 	"io/ioutil"
@@ -10,11 +10,12 @@ import (
 	"time"
 )
 
+//easyjson:json
 type node_status struct {
-	JSONRPC string `json:"jsonrpc"`
-	ID      string `json:"id"`
-	Result  ResultNetwork
-	Error   ErrorStruct
+	JSONRPC string        `json:"jsonrpc"`
+	ID      string        `json:"id"`
+	Result  ResultNetwork `json:"result"`
+	Error   ErrorStruct   `json:"error"`
 }
 
 type ResultNetwork struct {
@@ -42,7 +43,12 @@ func (c *SDK) GetStatus() (ResultNetwork, error) {
 	}
 
 	var data node_status
-	json.Unmarshal(body, &data)
+	//json.Unmarshal(body, &data) -- переход на easyjson
+
+	err = data.UnmarshalJSON(body)
+	if err != nil {
+		panic(err)
+	}
 
 	if data.Error.Code != 0 {
 		err = errors.New(fmt.Sprint(data.Error.Code, " - ", data.Error.Message))

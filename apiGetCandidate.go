@@ -1,7 +1,7 @@
 package mintersdk
 
 import (
-	"encoding/json"
+	//"encoding/json" -- переход на easyjson
 	"errors"
 	"fmt"
 	"io/ioutil"
@@ -10,11 +10,13 @@ import (
 )
 
 // запрос по кандидату (curl -s 'localhost:8841/api/candidate/{public_key}')
+
+//easyjson:json
 type node_candidate struct {
-	JSONRPC string `json:"jsonrpc"`
-	ID      string `json:"id"`
-	Result  CandidateInfo
-	Error   ErrorStruct
+	JSONRPC string        `json:"jsonrpc"`
+	ID      string        `json:"id"`
+	Result  CandidateInfo `json:"result"`
+	Error   ErrorStruct   `json:"error"`
 }
 
 // структура кандидата/валидатора (экспортная)
@@ -57,7 +59,12 @@ func (c *SDK) GetCandidate(candidateHash string) (CandidateInfo, error) {
 	}
 
 	var data node_candidate
-	json.Unmarshal(body, &data)
+	//json.Unmarshal(body, &data) -- переход на easyjson
+
+	err = data.UnmarshalJSON(body)
+	if err != nil {
+		panic(err)
+	}
 
 	if data.Error.Code != 0 {
 		err = errors.New(fmt.Sprint(data.Error.Code, " - ", data.Error.Message))
