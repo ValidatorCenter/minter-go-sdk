@@ -1,18 +1,19 @@
 package mintersdk
 
 import (
-	"encoding/json"
+	//"encoding/json" -- переход на easyjson
 	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 )
 
+//easyjson:json
 type node_estimate struct {
-	JSONRPC string `json:"jsonrpc"`
-	ID      string `json:"id"`
-	Result  _estimateResponse
-	Error   ErrorStruct
+	JSONRPC string            `json:"jsonrpc"`
+	ID      string            `json:"id"`
+	Result  _estimateResponse `json:"result"`
+	Error   ErrorStruct       `json:"error"`
 }
 
 type _estimateResponse struct {
@@ -45,7 +46,12 @@ func (c *SDK) EstimateCoinBuy(coinBuy string, coinSell string, valueBuy int64) (
 	}
 
 	var dataB node_estimate
-	json.Unmarshal(bodyB, &dataB)
+	//json.Unmarshal(bodyB, &dataB) -- переход на easyjson
+
+	err = dataB.UnmarshalJSON(bodyB)
+	if err != nil {
+		panic(err)
+	}
 
 	if dataB.Error.Code != 0 {
 		return EstimateResponse{}, errors.New(fmt.Sprint(dataB.Error.Code, " - ", dataB.Error.Message))
@@ -75,7 +81,12 @@ func (c *SDK) EstimateCoinSell(coinSell string, coinBuy string, valueSell int64)
 	}
 
 	var dataS node_estimate
-	json.Unmarshal(bodyS, &dataS)
+	//json.Unmarshal(bodyS, &dataS) -- переход на easyjson
+
+	err = dataS.UnmarshalJSON(bodyS)
+	if err != nil {
+		panic(err)
+	}
 
 	if dataS.Error.Code != 0 {
 		return EstimateResponse{}, errors.New(fmt.Sprint(dataS.Error.Code, " - ", dataS.Error.Message))
@@ -104,7 +115,12 @@ func (c *SDK) EstimateTxCommission(tx string) (float32, error) {
 	}
 
 	var dataS node_estimate
-	json.Unmarshal(bodyS, &dataS)
+	//json.Unmarshal(bodyS, &dataS) -- переход на easyjson
+
+	err = dataS.UnmarshalJSON(bodyS)
+	if err != nil {
+		panic(err)
+	}
 
 	if dataS.Error.Code != 0 {
 		return 0, errors.New(fmt.Sprint(dataS.Error.Code, " - ", dataS.Error.Message))

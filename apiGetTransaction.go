@@ -2,7 +2,7 @@ package mintersdk
 
 import (
 	b64 "encoding/base64"
-	"encoding/json"
+	//"encoding/json" -- переход на easyjson
 	"errors"
 	"fmt"
 	"io/ioutil"
@@ -10,11 +10,12 @@ import (
 	"strconv"
 )
 
+//easyjson:json
 type node_transaction struct {
-	JSONRPC string `json:"jsonrpc"`
-	ID      string `json:"id"`
-	Result  TransResponse
-	Error   ErrorStruct
+	JSONRPC string        `json:"jsonrpc"`
+	ID      string        `json:"id"`
+	Result  TransResponse `json:"result"`
+	Error   ErrorStruct   `json:"error"`
 }
 
 type TransResponse struct {
@@ -179,7 +180,7 @@ type TransData struct {
 	ConstantReserveRatio string `json:"constant_reserve_ratio"` // should be from 10 to 100 (в %).
 	//=== type6 - TYPE_DECLARE_CANDIDACY
 	Address    string `json:"address"`
-	Commission int    `json:"commission"`
+	Commission int    `json:"commission,string"`
 	//Stake	string `json:"stake"`
 	//PubKey  string `json:"pub_key"`
 	//Coin    string `json:"coin"`
@@ -347,7 +348,12 @@ func (c *SDK) GetTransaction(hash string) (TransResponse, error) {
 	}
 
 	var data node_transaction
-	json.Unmarshal(body, &data)
+	//json.Unmarshal(body, &data) -- переход на easyjson
+
+	err = data.UnmarshalJSON(body)
+	if err != nil {
+		panic(err)
+	}
 
 	if data.Error.Code != 0 {
 		err = errors.New(fmt.Sprint(data.Error.Code, " - ", data.Error.Message))

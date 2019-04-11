@@ -3,7 +3,7 @@ package mintersdk
 import (
 	//"bytes"
 	"encoding/hex"
-	"encoding/json"
+	//"encoding/json" -- переход на easyjson
 	"errors"
 	"fmt"
 	"io/ioutil"
@@ -14,11 +14,13 @@ import (
 )
 
 // Ответ транзакции
+
+//easyjson:json
 type send_transaction struct {
-	JSONRPC string `json:"jsonrpc"`
-	ID      string `json:"id"`
-	Result  TransSendResponse
-	Error   ErrorStruct
+	JSONRPC string            `json:"jsonrpc"`
+	ID      string            `json:"id"`
+	Result  TransSendResponse `json:"result"`
+	Error   ErrorStruct       `json:"error"`
 }
 type TransSendResponse struct {
 	Code int    `json:"code" bson:"code" gorm:"code" db:"code"`
@@ -56,7 +58,12 @@ func (c *SDK) SetTransaction(tx *tr.Transaction) (string, error) {
 	}
 
 	var data send_transaction
-	json.Unmarshal(body, &data)
+	//json.Unmarshal(body, &data) -- переход на easyjson
+
+	err = data.UnmarshalJSON(body)
+	if err != nil {
+		panic(err)
+	}
 
 	if data.Error.Code != 0 {
 		err = errors.New(fmt.Sprint(data.Error.Code, " - ", data.Error.Message))

@@ -1,7 +1,7 @@
 package mintersdk
 
 import (
-	"encoding/json"
+	//"encoding/json" -- переход на easyjson
 	"errors"
 	"fmt"
 	"io/ioutil"
@@ -11,17 +11,19 @@ import (
 )
 
 // Содержимое блока
+
+//easyjson:json
 type node_block struct {
-	JSONRPC string `json:"jsonrpc"`
-	ID      string `json:"id"`
-	Result  BlockResponse
-	Error   ErrorStruct
+	JSONRPC string        `json:"jsonrpc"`
+	ID      string        `json:"id"`
+	Result  BlockResponse `json:"result"`
+	Error   ErrorStruct   `json:"error"`
 }
 
 type ErrorStruct struct {
-	Code    int
-	Message string
-	Data    string
+	Code    int    `json:"code"`
+	Message string `json:"message"`
+	Data    string `json:"data"`
 }
 
 type BlockResponse struct {
@@ -44,7 +46,7 @@ type BlockResponse struct {
 
 type BlockValidatorsResponse struct {
 	PubKey string `json:"pub_key" bson:"pub_key" gorm:"pub_key" db:"pub_key"`
-	Signed bool   `json:"signed" bson:"signed" gorm:"signed" db:"signed"` // подписал-true, или пропустил false
+	Signed bool   `json:"signed,bool" bson:"signed" gorm:"signed" db:"signed"` // подписал-true, или пропустил false
 }
 
 // type TransResponse struct --- в apiGetTransaction.go
@@ -65,16 +67,17 @@ func (c *SDK) GetBlock(id int) (BlockResponse, error) {
 	}
 
 	var data node_block
-	json.Unmarshal(body, &data)
+	//json.Unmarshal(body, &data) -- переход на easyjson
+
+	err = data.UnmarshalJSON(body)
+	if err != nil {
+		panic(err)
+	}
 
 	if data.Error.Code != 0 {
 		err = errors.New(fmt.Sprint(data.Error.Code, " - ", data.Error.Message))
 		return BlockResponse{}, err
 	}
-
-	/*if c.Debug == true {
-		fmt.Printf("%s\n", string(body))
-	}*/
 
 	data.Result.BlockReward = pipStr2bip_f32(data.Result.BlockRewardTx) // вознаграждение за блок
 

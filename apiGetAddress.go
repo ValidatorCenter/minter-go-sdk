@@ -1,7 +1,7 @@
 package mintersdk
 
 import (
-	"encoding/json"
+	//"encoding/json" -- переход на easyjson
 	"errors"
 	"fmt"
 	"io/ioutil"
@@ -10,11 +10,13 @@ import (
 )
 
 // Результат выполнения получения баланас пользователя
+
+//easyjson:json
 type addrss_usr struct {
-	JSONRPC string `json:"jsonrpc"`
-	ID      string `json:"id"`
-	Result  AddrssResponse
-	Error   ErrorStruct
+	JSONRPC string         `json:"jsonrpc"`
+	ID      string         `json:"id"`
+	Result  AddrssResponse `json:"result"`
+	Error   ErrorStruct    `json:"error"`
 }
 
 type AddrssResponse struct {
@@ -38,7 +40,12 @@ func (c *SDK) GetAddress(usrAddr string) (map[string]float32, uint32, error) {
 	}
 
 	var data addrss_usr
-	json.Unmarshal(body, &data)
+	//json.Unmarshal(body, &data) -- переход на easyjson
+
+	err = data.UnmarshalJSON(body)
+	if err != nil {
+		panic(err)
+	}
 
 	if data.Error.Code != 0 {
 		err = errors.New(fmt.Sprint(data.Error.Code, " - ", data.Error.Message))

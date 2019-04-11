@@ -1,7 +1,7 @@
 package mintersdk
 
 import (
-	"encoding/json"
+	//"encoding/json" -- переход на easyjson
 	"errors"
 	"fmt"
 	"io/ioutil"
@@ -9,11 +9,13 @@ import (
 )
 
 // Содержимое блока
+
+//easyjson:json
 type node_block_ev struct {
-	JSONRPC string `json:"jsonrpc"`
-	ID      string `json:"id"`
-	Result  BlockEvResponse
-	Error   ErrorStruct
+	JSONRPC string          `json:"jsonrpc"`
+	ID      string          `json:"id"`
+	Result  BlockEvResponse `json:"result"`
+	Error   ErrorStruct     `json:"error"`
 }
 
 type BlockEvResponse struct {
@@ -49,7 +51,12 @@ func (c *SDK) GetEvents(id int) (BlockEvResponse, error) {
 	}
 
 	var data node_block_ev
-	json.Unmarshal(body, &data)
+	//json.Unmarshal(body, &data) -- переход на easyjson
+
+	err = data.UnmarshalJSON(body)
+	if err != nil {
+		panic(err)
+	}
 
 	if data.Error.Code != 0 {
 		err = errors.New(fmt.Sprint(data.Error.Code, " - ", data.Error.Message))
@@ -61,8 +68,6 @@ func (c *SDK) GetEvents(id int) (BlockEvResponse, error) {
 		if data.Result.Events[iStep].Value.Coin == "" {
 			data.Result.Events[iStep].Value.Coin = GetBaseCoin()
 		}
-		/*fmt.Printf("DEFCOIN: %s\n", GetBaseCoin())
-		fmt.Printf("%#v\n", data.Result.Events[iStep].Value)*/
 	}
 
 	return data.Result, nil
