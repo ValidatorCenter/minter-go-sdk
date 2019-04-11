@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# install: EasyJSON
+#go get -u github.com/mailru/easyjson/...
+
 easyjson -all apiEstimateCoin.go
 easyjson -all apiGetAddress.go
 easyjson -all apiGetBlock.go
