@@ -30,6 +30,13 @@ func (c *SDK) TxSellCoin(t *TxSellCoinData) (string, error) {
 		return "", err
 	}
 
+	if c.AccAddress == "" {
+		c.AccAddress, err = GetAddressPrivateKey(c.AccPrivateKey)
+		if err != nil {
+			return "", err
+		}
+	}
+
 	data := tr.SellCoinData{
 		CoinToSell:  coinSell,
 		ValueToSell: value,

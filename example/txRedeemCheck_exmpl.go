@@ -9,9 +9,10 @@ import (
 func main() {
 	sdk := m.SDK{
 		MnAddress:     "https://minter-node-1.testnet.minter.network",
-		AccAddress:    "Mx...",
 		AccPrivateKey: "...",
 	}
+
+	Gas, _ := sdk.GetMinGas()
 
 	chDt := m.TxCreateCkeckData{
 		Coin:     "MNT",
@@ -31,7 +32,7 @@ func main() {
 		Check:    resCheck,
 		Password: "pswrd123",
 		GasCoin:  "MNT",
-		GasPrice: 1,
+		GasPrice: Gas,
 	}
 
 	resHash, err := sdk.TxRedeemCheck(&rchDt)

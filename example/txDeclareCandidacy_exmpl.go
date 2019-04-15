@@ -9,9 +9,10 @@ import (
 func main() {
 	sdk := m.SDK{
 		MnAddress:     "https://minter-node-1.testnet.minter.network",
-		AccAddress:    "Mx...",
 		AccPrivateKey: "...",
 	}
+
+	Gas, _ := sdk.GetMinGas()
 
 	declDt := m.TxDeclareCandidacyData{
 		PubKey:     "Mp2891198c692c351bc55ac60a03c82649fa920f7ad20bd290a0c4e774e916e9de", // "Mp....",
@@ -20,7 +21,7 @@ func main() {
 		Stake:      100,
 		// Gas
 		GasCoin:  "MNT",
-		GasPrice: 1,
+		GasPrice: Gas,
 	}
 
 	resHash, err := sdk.TxDeclareCandidacy(&declDt)

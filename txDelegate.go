@@ -29,6 +29,13 @@ func (c *SDK) TxDelegate(t *TxDelegateData) (string, error) {
 		return "", err
 	}
 
+	if c.AccAddress == "" {
+		c.AccAddress, err = GetAddressPrivateKey(c.AccPrivateKey)
+		if err != nil {
+			return "", err
+		}
+	}
+
 	data := tr.DelegateData{
 		PubKey: pubkey,
 		Coin:   coin,

@@ -32,6 +32,13 @@ func (c *SDK) TxDeclareCandidacy(t *TxDeclareCandidacyData) (string, error) {
 		return "", err
 	}
 
+	if c.AccAddress == "" {
+		c.AccAddress, err = GetAddressPrivateKey(c.AccPrivateKey)
+		if err != nil {
+			return "", err
+		}
+	}
+
 	data := tr.DeclareCandidacyData{
 		Address:    myAddrss,
 		PubKey:     pubkey,

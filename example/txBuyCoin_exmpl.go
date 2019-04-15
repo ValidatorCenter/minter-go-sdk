@@ -9,9 +9,10 @@ import (
 func main() {
 	sdk := m.SDK{
 		MnAddress:     "https://minter-node-1.testnet.minter.network",
-		AccAddress:    "Mx...",
 		AccPrivateKey: "...",
 	}
+
+	Gas, _ := sdk.GetMinGas()
 
 	buyDt := m.TxBuyCoinData{
 		CoinToSell: "ABCDEF23",
@@ -19,7 +20,7 @@ func main() {
 		ValueToBuy: 1,
 		// Gas
 		GasCoin:  "MNT",
-		GasPrice: 1,
+		GasPrice: Gas,
 	}
 
 	resHash, err := sdk.TxBuyCoin(&buyDt)

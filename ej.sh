@@ -10,6 +10,7 @@ easyjson -all apiGetCandidate.go
 easyjson -all apiGetCandidates.go
 easyjson -all apiGetCoinInfo.go
 easyjson -all apiGetEvents.go
+easyjson -all apiGetMinGas.go
 easyjson -all apiGetStatus.go
 easyjson -all apiGetTransaction.go
 easyjson -all apiGetValidators.go

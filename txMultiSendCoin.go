@@ -31,6 +31,13 @@ func (c *SDK) TxMultiSendCoin(t *TxMultiSendCoinData) (string, error) {
 		return "", err
 	}
 
+	if c.AccAddress == "" {
+		c.AccAddress, err = GetAddressPrivateKey(c.AccPrivateKey)
+		if err != nil {
+			return "", err
+		}
+	}
+
 	listAddrs := []tr.MultisendDataItem{}
 
 	for _, dtSend := range t.List {

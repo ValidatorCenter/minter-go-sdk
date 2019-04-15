@@ -66,6 +66,13 @@ func (c *SDK) TxRedeemCheck(t *TxRedeemCheckData) (string, error) {
 		return "", err
 	}
 
+	if c.AccAddress == "" {
+		c.AccAddress, err = GetAddressPrivateKey(c.AccPrivateKey)
+		if err != nil {
+			return "", err
+		}
+	}
+
 	// ОБНАЛИЧИВАЕМ СЕБЕ
 	proof, err := checkCashingProof(t.Password, privateKey)
 	if err != nil {

@@ -32,6 +32,13 @@ func (c *SDK) TxUnbond(t *TxUnbondData) (string, error) {
 		return "", err
 	}
 
+	if c.AccAddress == "" {
+		c.AccAddress, err = GetAddressPrivateKey(c.AccPrivateKey)
+		if err != nil {
+			return "", err
+		}
+	}
+
 	data := tr.UnbondData{
 		PubKey: pubkey,
 		Coin:   coin,

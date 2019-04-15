@@ -11,6 +11,7 @@ Actual for Minter version 0.19.x.
 * [Minter SDK](#using-minter)
 	- [GetAddress](#getaddress)
 	- [GetStatus](#getstatus)
+	- [GetMinGas](#getmingas)
 	- [GetValidators](#getvalidators)
 	- [GetValidatorsBlock](#getvalidatorsblock)
 	- [EstimateCoinBuy](#estimatecoinbuy)
@@ -88,6 +89,14 @@ Returns node status info.
 
 ``
 GetStatus(): struct, error
+``
+
+### GetMinGas
+
+Returns current min gas price.
+
+``
+GetMinGas(): int64, error
 ``
 
 ### GetValidators
