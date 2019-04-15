@@ -4,7 +4,7 @@
 ## About
 Minter Blockchain Golang SDK https://minter.network
 
-Actual for Minter version 0.17.x.
+Actual for Minter version 0.19.x.
 
 * [Installation](#installing)
 * [Updating](#updating)
@@ -59,6 +59,7 @@ import m "github.com/ValidatorCenter/minter-go-sdk"
 
 sdk := m.SDK{
 		MnAddress: "http://156.123.34.5:8841", // example of a node url
+		ChainMainnet: false, // Main=>true, Test=>false
 }
 ```
 
@@ -231,6 +232,7 @@ func main() {
 		MnAddress:     "https://minter-node-1.testnet.minter.network",
 		AccAddress:    "Mx...",
 		AccPrivateKey: "your private key",
+		ChainMainnet: false, // Main=>true, Test=>false
 	}
 
 	sndDt := m.TxSendCoinData{
@@ -268,6 +270,7 @@ func main() {
 		MnAddress:     "https://minter-node-1.testnet.minter.network",
 		AccAddress:    "Mx...",
 		AccPrivateKey: "...",
+		ChainMainnet: false, // Main=>true, Test=>false
 	}
 
 	cntList := []m.TxOneSendCoinData{}
@@ -318,6 +321,7 @@ func main() {
 		MnAddress:     "https://minter-node-1.testnet.minter.network",
 		AccAddress:    "Mx...",
 		AccPrivateKey: "your private key",
+		ChainMainnet: false, // Main=>true, Test=>false
 	}
 
 	slDt := m.TxSellCoinData{
@@ -354,6 +358,7 @@ func main() {
 		MnAddress:     "https://minter-node-1.testnet.minter.network",
 		AccAddress:    "Mx...",
 		AccPrivateKey: "your private key",
+		ChainMainnet: false, // Main=>true, Test=>false
 	}
 
 	slAllDt := m.TxSellAllCoinData{
@@ -389,6 +394,7 @@ func main() {
 		MnAddress:     "https://minter-node-1.testnet.minter.network",
 		AccAddress:    "Mx...",
 		AccPrivateKey: "your private key",
+		ChainMainnet: false, // Main=>true, Test=>false
 	}
 
 	buyDt := m.TxBuyCoinData{
@@ -427,6 +433,7 @@ func main() {
 		MnAddress:     "https://minter-node-1.testnet.minter.network",
 		AccAddress:    "Mx...",
 		AccPrivateKey: "your private key",
+		ChainMainnet: false, // Main=>true, Test=>false
 	}
 
 	creatDt := m.TxCreateCoinData{
@@ -466,6 +473,7 @@ func main() {
 		MnAddress:     "https://minter-node-1.testnet.minter.network",
 		AccAddress:    "Mx...",
 		AccPrivateKey: "your private key",
+		ChainMainnet: false, // Main=>true, Test=>false
 	}
 
 	declDt := m.TxDeclareCandidacyData{
@@ -503,6 +511,7 @@ func main() {
 		MnAddress:     "https://minter-node-1.testnet.minter.network",
 		AccAddress:    "Mx...",
 		AccPrivateKey: "your private key",
+		ChainMainnet: false, // Main=>true, Test=>false
 	}
 
 	delegDt := m.TxDelegateData{
@@ -539,6 +548,7 @@ func main() {
 		MnAddress:     "https://minter-node-1.testnet.minter.network",
 		AccAddress:    "Mx...",
 		AccPrivateKey: "your private key",
+		ChainMainnet: false, // Main=>true, Test=>false
 	}
 
 	sndDt := m.TxSetCandidateData{
@@ -574,6 +584,7 @@ func main() {
 		MnAddress:     "https://minter-node-1.testnet.minter.network",
 		AccAddress:    "Mx...",
 		AccPrivateKey: "your private key",
+		ChainMainnet: false, // Main=>true, Test=>false
 	}
 
 	unbDt := m.TxUnbondData{
@@ -610,6 +621,7 @@ func main() {
 		MnAddress:     "https://minter-node-1.testnet.minter.network",
 		AccAddress:    "Mx...",
 		AccPrivateKey: "...",
+		ChainMainnet: false, // Main=>true, Test=>false
 	}
 
 	chDt := m.TxCreateCkeckData{
@@ -644,6 +656,7 @@ func main() {
 		MnAddress:     "https://minter-node-1.testnet.minter.network",
 		AccAddress:    "Mx...",
 		AccPrivateKey: "...",
+		ChainMainnet: false, // Main=>true, Test=>false
 	}
 	
 	rchDt := m.TxRedeemCheckData{

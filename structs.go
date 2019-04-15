@@ -2,8 +2,11 @@ package mintersdk
 
 const (
 	CoinSymbolLength = 10
+	ChainTestnet     = 0x02
+	ChainMainnet     = 0x01
 )
 
+type ChainID byte
 type CoinSymbol [CoinSymbolLength]byte
 
 type SDK struct {
@@ -11,6 +14,7 @@ type SDK struct {
 	AccAddress    string // адрес кошелька/аккаунта "Mx..."
 	AccPrivateKey string // приватный ключ кошелька/аккаунта
 	Debug         bool   // Режим дебага
+	ChainMainnet  bool   // Main=true, Test=false
 }
 
 const (

@@ -47,8 +47,15 @@ func (c *SDK) TxBuyCoin(t *TxBuyCoinData) (string, error) {
 		return "", err
 	}
 
+	if c.ChainMainnet {
+		ChainID = ChainMainnet
+	} else {
+		ChainID = ChainTestnet
+	}
+
 	tx := tr.Transaction{
 		Nonce:         uint64(nowNonce + 1),
+		ChainID:       ChainID,
 		GasPrice:      valueGas,
 		GasCoin:       coinGas,
 		Type:          tr.TypeBuyCoin,
