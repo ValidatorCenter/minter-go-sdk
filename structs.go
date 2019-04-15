@@ -2,11 +2,8 @@ package mintersdk
 
 const (
 	CoinSymbolLength = 10
-	ChainTestnet     = 0x02
-	ChainMainnet     = 0x01
 )
 
-type ChainID byte
 type CoinSymbol [CoinSymbolLength]byte
 
 type SDK struct {
