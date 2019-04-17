@@ -1,9 +1,8 @@
 package mintersdk
 
 import (
-	"math/big"
-
 	tr "github.com/MinterTeam/minter-go-node/core/transaction"
+	"github.com/MinterTeam/minter-go-node/core/types"
 )
 
 // Структура данных для Покупки монет
@@ -24,11 +23,18 @@ func (c *SDK) TxBuyCoin(t *TxBuyCoinData) (string, error) {
 	coinSell := getStrCoin(t.CoinToSell)
 	coinGas := getStrCoin(t.GasCoin)
 	value := bip2pip_f64(float64(t.ValueToBuy))
-	valueGas := big.NewInt(t.GasPrice)
+	valueGas := uint32(t.GasPrice)
 
 	privateKey, err := h2ECDSA(c.AccPrivateKey)
 	if err != nil {
 		return "", err
+	}
+
+	if c.AccAddress == "" {
+		c.AccAddress, err = GetAddressPrivateKey(c.AccPrivateKey)
+		if err != nil {
+			return "", err
+		}
 	}
 
 	data := tr.BuyCoinData{
@@ -47,8 +53,16 @@ func (c *SDK) TxBuyCoin(t *TxBuyCoinData) (string, error) {
 		return "", err
 	}
 
+	var _ChainID types.ChainID
+	if c.ChainMainnet {
+		_ChainID = types.ChainMainnet
+	} else {
+		_ChainID = types.ChainTestnet
+	}
+
 	tx := tr.Transaction{
 		Nonce:         uint64(nowNonce + 1),
+		ChainID:       _ChainID,
 		GasPrice:      valueGas,
 		GasCoin:       coinGas,
 		Type:          tr.TypeBuyCoin,

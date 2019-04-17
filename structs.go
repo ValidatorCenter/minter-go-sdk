@@ -11,6 +11,7 @@ type SDK struct {
 	AccAddress    string // адрес кошелька/аккаунта "Mx..."
 	AccPrivateKey string // приватный ключ кошелька/аккаунта
 	Debug         bool   // Режим дебага
+	ChainMainnet  bool   // Main=true, Test=false
 }
 
 const (

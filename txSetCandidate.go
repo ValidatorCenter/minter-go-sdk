@@ -1,9 +1,8 @@
 package mintersdk
 
 import (
-	"math/big"
-
 	tr "github.com/MinterTeam/minter-go-node/core/transaction"
+	"github.com/MinterTeam/minter-go-node/core/types"
 )
 
 // Структура данных для Статус кандидата вкл/выкл
@@ -22,7 +21,7 @@ func (c *SDK) TxSetCandidate(t *TxSetCandidateData) (string, error) {
 	pubkey := publicKey2Byte(t.PubKey)
 
 	coinGas := getStrCoin(t.GasCoin)
-	valueGas := big.NewInt(t.GasPrice)
+	valueGas := uint32(t.GasPrice)
 
 	privateKey, err := h2ECDSA(c.AccPrivateKey)
 	if err != nil {
@@ -54,8 +53,16 @@ func (c *SDK) TxSetCandidate(t *TxSetCandidateData) (string, error) {
 		return "", err
 	}
 
+	var _ChainID types.ChainID
+	if c.ChainMainnet {
+		_ChainID = types.ChainMainnet
+	} else {
+		_ChainID = types.ChainTestnet
+	}
+
 	tx := tr.Transaction{
 		Nonce:         uint64(nowNonce + 1),
+		ChainID:       _ChainID,
 		GasPrice:      valueGas,
 		GasCoin:       coinGas,
 		Type:          typeTx,

@@ -21,9 +21,15 @@ type node_block struct {
 }
 
 type ErrorStruct struct {
-	Code    int    `json:"code"`
-	Message string `json:"message"`
-	Data    string `json:"data"`
+	Code     int           `json:"code"`
+	Message  string        `json:"message"`
+	Data     string        `json:"data"`
+	TxResult ErrorTxResult `json:"tx_result"`
+}
+
+type ErrorTxResult struct {
+	Code int    `json:"code"`
+	Log  string `json:"log"`
 }
 
 type BlockResponse struct {

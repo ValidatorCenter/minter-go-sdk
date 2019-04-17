@@ -1,9 +1,8 @@
 package mintersdk
 
 import (
-	"math/big"
-
 	tr "github.com/MinterTeam/minter-go-node/core/transaction"
+	"github.com/MinterTeam/minter-go-node/core/types"
 )
 
 // Структура данных для Передачи монет нескольком адресатам
@@ -25,11 +24,18 @@ type TxOneSendCoinData struct {
 // Транзакция - Передача монет нескольким адресатам
 func (c *SDK) TxMultiSendCoin(t *TxMultiSendCoinData) (string, error) {
 	coinGas := getStrCoin(t.GasCoin)
-	valueGas := big.NewInt(t.GasPrice)
+	valueGas := uint32(t.GasPrice)
 
 	privateKey, err := h2ECDSA(c.AccPrivateKey)
 	if err != nil {
 		return "", err
+	}
+
+	if c.AccAddress == "" {
+		c.AccAddress, err = GetAddressPrivateKey(c.AccPrivateKey)
+		if err != nil {
+			return "", err
+		}
 	}
 
 	listAddrs := []tr.MultisendDataItem{}
@@ -59,8 +65,16 @@ func (c *SDK) TxMultiSendCoin(t *TxMultiSendCoinData) (string, error) {
 		return "", err
 	}
 
+	var _ChainID types.ChainID
+	if c.ChainMainnet {
+		_ChainID = types.ChainMainnet
+	} else {
+		_ChainID = types.ChainTestnet
+	}
+
 	tx := tr.Transaction{
 		Nonce:         uint64(nowNonce + 1),
+		ChainID:       _ChainID,
 		GasPrice:      valueGas,
 		GasCoin:       coinGas,
 		Type:          tr.TypeMultisend,

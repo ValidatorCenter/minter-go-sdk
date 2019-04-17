@@ -66,7 +66,7 @@ func (c *SDK) SetTransaction(tx *tr.Transaction) (string, error) {
 	}
 
 	if data.Error.Code != 0 {
-		err = errors.New(fmt.Sprint(data.Error.Code, " - ", data.Error.Message))
+		err = errors.New(fmt.Sprint(data.Error.Code, " - ", data.Error.Message, " - ", data.Error.TxResult.Log))
 		return "", err
 	}
 
