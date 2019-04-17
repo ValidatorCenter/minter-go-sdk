@@ -15,10 +15,10 @@ func main() {
 	Gas, _ := sdk.GetMinGas()
 
 	declDt := m.TxDeclareCandidacyData{
-		PubKey:     "Mp2891198c692c351bc55ac60a03c82649fa920f7ad20bd290a0c4e774e916e9de", // "Mp....",
+		PubKey:     "Mp09f3548f7f4fc38ad2d0d8f805ec2cc1e35696012f95b8c6f2749e304a91efa2", // "Mp....",
 		Commission: 10,                                                                   // 10%
 		Coin:       "MNT",
-		Stake:      100,
+		Stake:      1000,
 		// Gas
 		GasCoin:  "MNT",
 		GasPrice: Gas,
