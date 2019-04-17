@@ -239,7 +239,6 @@ import (
 func main() {
 	sdk := m.SDK{
 		MnAddress:     "https://minter-node-1.testnet.minter.network",
-		AccAddress:    "Mx...",
 		AccPrivateKey: "your private key",
 		ChainMainnet: false, // Main=>true, Test=>false
 	}
@@ -277,7 +276,6 @@ import (
 func main() {
 	sdk := m.SDK{
 		MnAddress:     "https://minter-node-1.testnet.minter.network",
-		AccAddress:    "Mx...",
 		AccPrivateKey: "...",
 		ChainMainnet: false, // Main=>true, Test=>false
 	}
@@ -328,7 +326,6 @@ import (
 func main() {
 	sdk := m.SDK{
 		MnAddress:     "https://minter-node-1.testnet.minter.network",
-		AccAddress:    "Mx...",
 		AccPrivateKey: "your private key",
 		ChainMainnet: false, // Main=>true, Test=>false
 	}
@@ -365,7 +362,6 @@ import (
 func main() {
 	sdk := m.SDK{
 		MnAddress:     "https://minter-node-1.testnet.minter.network",
-		AccAddress:    "Mx...",
 		AccPrivateKey: "your private key",
 		ChainMainnet: false, // Main=>true, Test=>false
 	}
@@ -401,7 +397,6 @@ import (
 func main() {
 	sdk := m.SDK{
 		MnAddress:     "https://minter-node-1.testnet.minter.network",
-		AccAddress:    "Mx...",
 		AccPrivateKey: "your private key",
 		ChainMainnet: false, // Main=>true, Test=>false
 	}
@@ -440,7 +435,6 @@ import (
 func main() {
 	sdk := m.SDK{
 		MnAddress:     "https://minter-node-1.testnet.minter.network",
-		AccAddress:    "Mx...",
 		AccPrivateKey: "your private key",
 		ChainMainnet: false, // Main=>true, Test=>false
 	}
@@ -480,7 +474,6 @@ import (
 func main() {
 	sdk := m.SDK{
 		MnAddress:     "https://minter-node-1.testnet.minter.network",
-		AccAddress:    "Mx...",
 		AccPrivateKey: "your private key",
 		ChainMainnet: false, // Main=>true, Test=>false
 	}
@@ -518,7 +511,6 @@ import (
 func main() {
 	sdk := m.SDK{
 		MnAddress:     "https://minter-node-1.testnet.minter.network",
-		AccAddress:    "Mx...",
 		AccPrivateKey: "your private key",
 		ChainMainnet: false, // Main=>true, Test=>false
 	}
@@ -555,7 +547,6 @@ import (
 func main() {
 	sdk := m.SDK{
 		MnAddress:     "https://minter-node-1.testnet.minter.network",
-		AccAddress:    "Mx...",
 		AccPrivateKey: "your private key",
 		ChainMainnet: false, // Main=>true, Test=>false
 	}
@@ -591,7 +582,6 @@ import (
 func main() {
 	sdk := m.SDK{
 		MnAddress:     "https://minter-node-1.testnet.minter.network",
-		AccAddress:    "Mx...",
 		AccPrivateKey: "your private key",
 		ChainMainnet: false, // Main=>true, Test=>false
 	}
@@ -628,7 +618,6 @@ import (
 func main() {
 	sdk := m.SDK{
 		MnAddress:     "https://minter-node-1.testnet.minter.network",
-		AccAddress:    "Mx...",
 		AccPrivateKey: "...",
 		ChainMainnet: false, // Main=>true, Test=>false
 	}
@@ -663,7 +652,6 @@ import (
 func main() {
 	sdk := m.SDK{
 		MnAddress:     "https://minter-node-1.testnet.minter.network",
-		AccAddress:    "Mx...",
 		AccPrivateKey: "...",
 		ChainMainnet: false, // Main=>true, Test=>false
 	}
