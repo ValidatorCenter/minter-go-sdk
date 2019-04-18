@@ -15,7 +15,7 @@ func main() {
 	Gas, _ := sdk.GetMinGas()
 
 	sndDt := m.TxSetCandidateData{
-		PubKey:   "Mp2891198c692c351bc55ac60a03c82649fa920f7ad20bd290a0c4e774e916e9de",
+		PubKey:   "Mp09f3548f7f4fc38ad2d0d8f805ec2cc1e35696012f95b8c6f2749e304a91efa2",
 		Activate: true, //true-"on", false-"off"
 		GasCoin:  "MNT",
 		GasPrice: Gas,

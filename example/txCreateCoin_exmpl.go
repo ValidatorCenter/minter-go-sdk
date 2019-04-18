@@ -17,8 +17,8 @@ func main() {
 	creatDt := m.TxCreateCoinData{
 		Name:                 "Test coin 24",
 		Symbol:               "ABCDEF24",
-		InitialAmount:        100,
-		InitialReserve:       100,
+		InitialAmount:        10000,
+		InitialReserve:       1000,
 		ConstantReserveRatio: 50,
 		// Gas
 		GasCoin:  "MNT",
