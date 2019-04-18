@@ -1486,12 +1486,12 @@ func easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk14(in *jlexer.Lexe
 		case "nonce_i32":
 			out.Nonce = int(in.Int())
 		case "gas_price":
-			out.GasPriceTx = string(in.String())
+			out.GasPriceTx = int(in.Int())
 		case "gas_price_i32":
 			out.GasPrice = int(in.Int())
 		case "gas_coin":
 			out.GasCoin = string(in.String())
-		case "gas_used":
+		case "gas":
 			out.GasUsedTx = string(in.String())
 		case "gas_used_i32":
 			out.GasUsed = int(in.Int())
@@ -1616,7 +1616,7 @@ func easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk14(out *jwriter.Wr
 		} else {
 			out.RawString(prefix)
 		}
-		out.String(string(in.GasPriceTx))
+		out.Int(int(in.GasPriceTx))
 	}
 	{
 		const prefix string = ",\"gas_price_i32\":"
@@ -1639,7 +1639,7 @@ func easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk14(out *jwriter.Wr
 		out.String(string(in.GasCoin))
 	}
 	{
-		const prefix string = ",\"gas_used\":"
+		const prefix string = ",\"gas\":"
 		if first {
 			first = false
 			out.RawString(prefix[1:])

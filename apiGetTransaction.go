@@ -21,16 +21,16 @@ type node_transaction struct {
 type TransResponse struct {
 	Hash        string       `json:"hash" bson:"hash" gorm:"hash" db:"hash"`
 	RawTx       string       `json:"raw_tx" bson:"raw_tx" gorm:"raw_tx" db:"raw_tx"`
-	HeightTx    string       `json:"height" bson:"-" gorm:"-" db:"-"`
-	Height      int          `json:"height_i32" bson:"height_i32" gorm:"height_i32" db:"height_i32"` //(!) В блоке у транзакции нет HEIGHT блока
+	HeightTx    string       `json:"height" bson:"-" gorm:"-" db:"-"` //(!) В блоке у транзакции нет HEIGHT блока
+	Height      int          `json:"height_i32" bson:"height_i32" gorm:"height_i32" db:"height_i32"`
 	Index       int          `json:"index" bson:"index" gorm:"index" db:"index_i32"`
 	From        string       `json:"from" bson:"from" gorm:"from" db:"from"`
 	NonceTx     string       `json:"nonce" bson:"-" gorm:"-" db:"-"`
 	Nonce       int          `json:"nonce_i32" bson:"nonce_i32" gorm:"nonce_i32" db:"nonce_i32"`
-	GasPriceTx  string       `json:"gas_price" bson:"-" gorm:"-" db:"-"`
+	GasPriceTx  int          `json:"gas_price" bson:"-" gorm:"-" db:"-"` // TODO: с версии 0.19 стало числом, переписать gas_price_i32!
 	GasPrice    int          `json:"gas_price_i32" bson:"gas_price_i32" gorm:"gas_price_i32" db:"gas_price_i32"`
 	GasCoin     string       `json:"gas_coin" bson:"gas_coin" gorm:"gas_coin" db:"gas_coin"`
-	GasUsedTx   string       `json:"gas_used" bson:"-" gorm:"-" db:"-"`
+	GasUsedTx   string       `json:"gas" bson:"-" gorm:"-" db:"-"`
 	GasUsed     int          `json:"gas_used_i32" bson:"gas_used_i32" gorm:"gas_used_i32" db:"gas_used_i32"`
 	Type        int          `json:"type" bson:"type" gorm:"type" db:"type"`
 	DataTx      TransData    `json:"data" bson:"-" gorm:"-" db:"-"`
@@ -214,11 +214,13 @@ func manipulationTransaction(c *SDK, tr *TransResponse) error {
 		c.DebugLog("ERROR", "GetTransaction-> strconv.Atoi(tr.NonceTx)", tr.NonceTx)
 		return err
 	}
-	tr.GasPrice, err = strconv.Atoi(tr.GasPriceTx)
+	tr.GasPrice = tr.GasPriceTx
+	// TODO: с версии 0.19 стало числом, переписать gas_price_i32!
+	/*tr.GasPrice, err = strconv.Atoi(tr.GasPriceTx)
 	if err != nil {
 		c.DebugLog("ERROR", "GetTransaction-> strconv.Atoi(tr.GasPriceTx)", tr.GasPriceTx)
 		return err
-	}
+	}*/
 	// TODO: в minter 0.9.x нет
 	/*
 		tr.GasUsed, err = strconv.Atoi(tr.GasUsedTx)
