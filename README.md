@@ -36,6 +36,8 @@ Actual for Minter version 0.19.x.
 	- [DeclareCandidacy](#example-8)
 	- [Delegate](#example-9)
 	- [SetCandidate](#example-10)
+	- [Unbound](#example-11)
+	- [EditCandidate](#example-12)
 	- [Create Minter Check](#create-minter-check)
   
 
@@ -595,6 +597,42 @@ func main() {
 	}
 
 	resHash, err := sdk.TxUnbond(&unbDt)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(resHash)
+
+}
+```
+
+###### Example
+* Transaction for editing existing candidate
+
+```golang
+package main
+
+import (
+	"fmt"
+
+	m "github.com/ValidatorCenter/minter-go-sdk"
+)
+
+func main() {
+	sdk := m.SDK{
+		MnAddress:     "https://minter-node-1.testnet.minter.network",
+		AccPrivateKey: "your private key",
+		ChainMainnet: false, // Main=>true, Test=>false
+	}
+
+	edtCDt := m.TxEditCandidateData{
+		PubKey:   "Mp09f3548f7f4fc38ad2d0d8f805ec2cc1e35696012f95b8c6f2749e304a91efa2",
+		RewardAddress: "Mx7a86fb0d770062decdca3dc5fed15800d5a65000",
+		OwnerAddress: "Mx58a1441883708813ba546345a0ed0ce765f1dad1",
+		GasCoin:  "MNT",
+		GasPrice: 1,
+	}
+
+	resHash, err := sdk.TxEditCandidate(&edtCDt)
 	if err != nil {
 		panic(err)
 	}

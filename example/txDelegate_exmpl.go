@@ -10,6 +10,7 @@ func main() {
 	sdk := m.SDK{
 		MnAddress:     "https://minter-node-1.testnet.minter.network",
 		AccPrivateKey: "...",
+		ChainMainnet:  false,
 	}
 
 	Gas, _ := sdk.GetMinGas()
