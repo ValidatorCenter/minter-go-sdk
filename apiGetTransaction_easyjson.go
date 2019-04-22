@@ -896,7 +896,102 @@ func (v *tx1SendData) UnmarshalJSON(data []byte) error {
 func (v *tx1SendData) UnmarshalEasyJSON(l *jlexer.Lexer) {
 	easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk8(l, v)
 }
-func easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk9(in *jlexer.Lexer, out *tx13MultisendData) {
+func easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk9(in *jlexer.Lexer, out *tx14EditCandidateData) {
+	isTopLevel := in.IsStart()
+	if in.IsNull() {
+		if isTopLevel {
+			in.Consumed()
+		}
+		in.Skip()
+		return
+	}
+	in.Delim('{')
+	for !in.IsDelim('}') {
+		key := in.UnsafeString()
+		in.WantColon()
+		if in.IsNull() {
+			in.Skip()
+			in.WantComma()
+			continue
+		}
+		switch key {
+		case "pub_key":
+			out.PubKey = string(in.String())
+		case "reward_address":
+			out.RewardAddress = string(in.String())
+		case "owner_address":
+			out.OwnerAddress = string(in.String())
+		default:
+			in.SkipRecursive()
+		}
+		in.WantComma()
+	}
+	in.Delim('}')
+	if isTopLevel {
+		in.Consumed()
+	}
+}
+func easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk9(out *jwriter.Writer, in tx14EditCandidateData) {
+	out.RawByte('{')
+	first := true
+	_ = first
+	{
+		const prefix string = ",\"pub_key\":"
+		if first {
+			first = false
+			out.RawString(prefix[1:])
+		} else {
+			out.RawString(prefix)
+		}
+		out.String(string(in.PubKey))
+	}
+	{
+		const prefix string = ",\"reward_address\":"
+		if first {
+			first = false
+			out.RawString(prefix[1:])
+		} else {
+			out.RawString(prefix)
+		}
+		out.String(string(in.RewardAddress))
+	}
+	{
+		const prefix string = ",\"owner_address\":"
+		if first {
+			first = false
+			out.RawString(prefix[1:])
+		} else {
+			out.RawString(prefix)
+		}
+		out.String(string(in.OwnerAddress))
+	}
+	out.RawByte('}')
+}
+
+// MarshalJSON supports json.Marshaler interface
+func (v tx14EditCandidateData) MarshalJSON() ([]byte, error) {
+	w := jwriter.Writer{}
+	easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk9(&w, v)
+	return w.Buffer.BuildBytes(), w.Error
+}
+
+// MarshalEasyJSON supports easyjson.Marshaler interface
+func (v tx14EditCandidateData) MarshalEasyJSON(w *jwriter.Writer) {
+	easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk9(w, v)
+}
+
+// UnmarshalJSON supports json.Unmarshaler interface
+func (v *tx14EditCandidateData) UnmarshalJSON(data []byte) error {
+	r := jlexer.Lexer{Data: data}
+	easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk9(&r, v)
+	return r.Error()
+}
+
+// UnmarshalEasyJSON supports easyjson.Unmarshaler interface
+func (v *tx14EditCandidateData) UnmarshalEasyJSON(l *jlexer.Lexer) {
+	easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk9(l, v)
+}
+func easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk10(in *jlexer.Lexer, out *tx13MultisendData) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -948,7 +1043,7 @@ func easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk9(in *jlexer.Lexer
 		in.Consumed()
 	}
 }
-func easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk9(out *jwriter.Writer, in tx13MultisendData) {
+func easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk10(out *jwriter.Writer, in tx13MultisendData) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -979,27 +1074,27 @@ func easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk9(out *jwriter.Wri
 // MarshalJSON supports json.Marshaler interface
 func (v tx13MultisendData) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk9(&w, v)
+	easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk10(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v tx13MultisendData) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk9(w, v)
+	easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk10(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *tx13MultisendData) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk9(&r, v)
+	easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk10(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *tx13MultisendData) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk9(l, v)
+	easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk10(l, v)
 }
-func easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk10(in *jlexer.Lexer, out *tx12CreateMultisigData) {
+func easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk11(in *jlexer.Lexer, out *tx12CreateMultisigData) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -1028,7 +1123,7 @@ func easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk10(in *jlexer.Lexe
 		in.Consumed()
 	}
 }
-func easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk10(out *jwriter.Writer, in tx12CreateMultisigData) {
+func easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk11(out *jwriter.Writer, in tx12CreateMultisigData) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -1038,27 +1133,27 @@ func easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk10(out *jwriter.Wr
 // MarshalJSON supports json.Marshaler interface
 func (v tx12CreateMultisigData) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk10(&w, v)
+	easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk11(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v tx12CreateMultisigData) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk10(w, v)
+	easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk11(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *tx12CreateMultisigData) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk10(&r, v)
+	easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk11(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *tx12CreateMultisigData) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk10(l, v)
+	easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk11(l, v)
 }
-func easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk11(in *jlexer.Lexer, out *tx11SetCandidateOffData) {
+func easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk12(in *jlexer.Lexer, out *tx11SetCandidateOffData) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -1089,7 +1184,7 @@ func easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk11(in *jlexer.Lexe
 		in.Consumed()
 	}
 }
-func easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk11(out *jwriter.Writer, in tx11SetCandidateOffData) {
+func easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk12(out *jwriter.Writer, in tx11SetCandidateOffData) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -1109,27 +1204,27 @@ func easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk11(out *jwriter.Wr
 // MarshalJSON supports json.Marshaler interface
 func (v tx11SetCandidateOffData) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk11(&w, v)
+	easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk12(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v tx11SetCandidateOffData) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk11(w, v)
+	easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk12(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *tx11SetCandidateOffData) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk11(&r, v)
+	easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk12(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *tx11SetCandidateOffData) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk11(l, v)
+	easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk12(l, v)
 }
-func easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk12(in *jlexer.Lexer, out *tx10SetCandidateOnData) {
+func easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk13(in *jlexer.Lexer, out *tx10SetCandidateOnData) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -1160,7 +1255,7 @@ func easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk12(in *jlexer.Lexe
 		in.Consumed()
 	}
 }
-func easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk12(out *jwriter.Writer, in tx10SetCandidateOnData) {
+func easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk13(out *jwriter.Writer, in tx10SetCandidateOnData) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -1180,27 +1275,27 @@ func easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk12(out *jwriter.Wr
 // MarshalJSON supports json.Marshaler interface
 func (v tx10SetCandidateOnData) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk12(&w, v)
+	easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk13(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v tx10SetCandidateOnData) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk12(w, v)
+	easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk13(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *tx10SetCandidateOnData) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk12(&r, v)
+	easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk13(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *tx10SetCandidateOnData) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk12(l, v)
+	easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk13(l, v)
 }
-func easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk13(in *jlexer.Lexer, out *tagKeyValue2) {
+func easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk14(in *jlexer.Lexer, out *tagKeyValue2) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -1243,7 +1338,7 @@ func easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk13(in *jlexer.Lexe
 		in.Consumed()
 	}
 }
-func easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk13(out *jwriter.Writer, in tagKeyValue2) {
+func easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk14(out *jwriter.Writer, in tagKeyValue2) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -1323,25 +1418,25 @@ func easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk13(out *jwriter.Wr
 // MarshalJSON supports json.Marshaler interface
 func (v tagKeyValue2) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk13(&w, v)
+	easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk14(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v tagKeyValue2) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk13(w, v)
+	easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk14(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *tagKeyValue2) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk13(&r, v)
+	easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk14(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *tagKeyValue2) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk13(l, v)
+	easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk14(l, v)
 }
 func easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdkNode(in *jlexer.Lexer, out *node_transaction) {
 	isTopLevel := in.IsStart()
@@ -1450,7 +1545,7 @@ func (v *node_transaction) UnmarshalJSON(data []byte) error {
 func (v *node_transaction) UnmarshalEasyJSON(l *jlexer.Lexer) {
 	easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdkNode(l, v)
 }
-func easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk14(in *jlexer.Lexer, out *TransResponse) {
+func easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk15(in *jlexer.Lexer, out *TransResponse) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -1524,7 +1619,7 @@ func easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk14(in *jlexer.Lexe
 		in.Consumed()
 	}
 }
-func easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk14(out *jwriter.Writer, in TransResponse) {
+func easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk15(out *jwriter.Writer, in TransResponse) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -1734,27 +1829,27 @@ func easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk14(out *jwriter.Wr
 // MarshalJSON supports json.Marshaler interface
 func (v TransResponse) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk14(&w, v)
+	easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk15(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v TransResponse) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk14(w, v)
+	easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk15(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *TransResponse) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk14(&r, v)
+	easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk15(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *TransResponse) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk14(l, v)
+	easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk15(l, v)
 }
-func easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk15(in *jlexer.Lexer, out *TransData) {
+func easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk16(in *jlexer.Lexer, out *TransData) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -1832,6 +1927,10 @@ func easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk15(in *jlexer.Lexe
 				}
 				in.Delim(']')
 			}
+		case "reward_address":
+			out.RewardAddress = string(in.String())
+		case "owner_address":
+			out.OwnerAddress = string(in.String())
 		default:
 			in.SkipRecursive()
 		}
@@ -1842,7 +1941,7 @@ func easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk15(in *jlexer.Lexe
 		in.Consumed()
 	}
 }
-func easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk15(out *jwriter.Writer, in TransData) {
+func easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk16(out *jwriter.Writer, in TransData) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -2047,33 +2146,53 @@ func easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk15(out *jwriter.Wr
 			out.RawByte(']')
 		}
 	}
+	{
+		const prefix string = ",\"reward_address\":"
+		if first {
+			first = false
+			out.RawString(prefix[1:])
+		} else {
+			out.RawString(prefix)
+		}
+		out.String(string(in.RewardAddress))
+	}
+	{
+		const prefix string = ",\"owner_address\":"
+		if first {
+			first = false
+			out.RawString(prefix[1:])
+		} else {
+			out.RawString(prefix)
+		}
+		out.String(string(in.OwnerAddress))
+	}
 	out.RawByte('}')
 }
 
 // MarshalJSON supports json.Marshaler interface
 func (v TransData) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk15(&w, v)
+	easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk16(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v TransData) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk15(w, v)
+	easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk16(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *TransData) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk15(&r, v)
+	easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk16(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *TransData) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk15(l, v)
+	easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk16(l, v)
 }
-func easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk16(in *jlexer.Lexer, out *SendOneData) {
+func easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk17(in *jlexer.Lexer, out *SendOneData) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -2108,7 +2227,7 @@ func easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk16(in *jlexer.Lexe
 		in.Consumed()
 	}
 }
-func easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk16(out *jwriter.Writer, in SendOneData) {
+func easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk17(out *jwriter.Writer, in SendOneData) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -2148,23 +2267,23 @@ func easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk16(out *jwriter.Wr
 // MarshalJSON supports json.Marshaler interface
 func (v SendOneData) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk16(&w, v)
+	easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk17(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v SendOneData) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk16(w, v)
+	easyjsonB2ea0ccaEncodeGithubComValidatorCenterMinterGoSdk17(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *SendOneData) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk16(&r, v)
+	easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk17(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *SendOneData) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk16(l, v)
+	easyjsonB2ea0ccaDecodeGithubComValidatorCenterMinterGoSdk17(l, v)
 }

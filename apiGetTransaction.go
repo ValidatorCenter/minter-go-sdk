@@ -148,6 +148,12 @@ type tx13MultisendData struct {
 	List []tx1SendData `json:"list" bson:"list" gorm:"list" db:"list"`
 }
 
+type tx14EditCandidateData struct {
+	PubKey        string `json:"pub_key" bson:"pub_key" gorm:"pub_key" db:"pub_key"`
+	RewardAddress string `json:"reward_address" bson:"reward_address" gorm:"reward_address" db:"reward_address"`
+	OwnerAddress  string `json:"owner_address" bson:"owner_address" gorm:"owner_address" db:"owner_address"`
+}
+
 // Не заносится в БД
 type SendOneData struct {
 	To    string `json:"to"`
@@ -199,6 +205,9 @@ type TransData struct {
 	//=== type11 - TYPE_SET_CANDIDATE_OFFLINE
 	//=== type13 - TYPE_MULTISEND
 	List []SendOneData `json:"list"`
+	//=== type14 -
+	RewardAddress string `json:"reward_address"`
+	OwnerAddress  string `json:"owner_address"`
 }
 
 // обработка данных транзакции
@@ -317,7 +326,11 @@ func manipulationTransaction(c *SDK, tr *TransResponse) error {
 		}
 		tr.Data = tmpTx13
 	} else if tr.Type == TX_EditCandidateData {
-		// TODO: реализовать
+		tr.Data = tx14EditCandidateData{
+			PubKey:        tr.DataTx.PubKey,
+			OwnerAddress:  tr.DataTx.OwnerAddress,
+			RewardAddress: tr.DataTx.RewardAddress,
+		}
 	}
 
 	// Расшифровываем сообщение
