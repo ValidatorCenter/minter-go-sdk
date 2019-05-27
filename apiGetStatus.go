@@ -47,7 +47,7 @@ func (c *SDK) GetStatus() (ResultNetwork, error) {
 
 	err = data.UnmarshalJSON(body)
 	if err != nil {
-		panic(err)
+		return ResultNetwork{}, err
 	}
 
 	if data.Error.Code != 0 {
