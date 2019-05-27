@@ -84,7 +84,7 @@ func (c *SDK) GetValidators() ([]result_valid, error) {
 
 	err = data.UnmarshalJSON(body)
 	if err != nil {
-		panic(err)
+		return []result_valid{}, err
 	}
 
 	if data.Error.Code != 0 {
