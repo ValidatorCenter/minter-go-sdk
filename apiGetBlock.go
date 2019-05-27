@@ -77,7 +77,7 @@ func (c *SDK) GetBlock(id int) (BlockResponse, error) {
 
 	err = data.UnmarshalJSON(body)
 	if err != nil {
-		panic(err)
+		return BlockResponse{}, err
 	}
 
 	if data.Error.Code != 0 {
