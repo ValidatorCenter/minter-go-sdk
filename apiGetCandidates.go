@@ -41,7 +41,7 @@ func (c *SDK) GetCandidates() ([]CandidateInfo, error) {
 
 	err = data.UnmarshalJSON(body)
 	if err != nil {
-		panic(err)
+		return []CandidateInfo{}, err
 	}
 
 	if data.Error.Code != 0 {
