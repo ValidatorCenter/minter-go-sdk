@@ -17,8 +17,7 @@ type TxEditCandidateData struct {
 	GasPrice int64
 }
 
-// Транзакция - Декларирования мастерноды в кандидаты
-func (c *SDK) TxEditCandidate(t *TxEditCandidateData) (string, error) {
+func (c *SDK) TxEditCandidateRLP(t *TxEditCandidateData) (string, error) {
 	oAddrss := getStrAddress(t.OwnerAddress)
 	rAddrss := getStrAddress(t.RewardAddress)
 	pubkey := publicKey2Byte(t.PubKey)
@@ -75,7 +74,28 @@ func (c *SDK) TxEditCandidate(t *TxEditCandidateData) (string, error) {
 		return "", err
 	}
 
-	resHash, err := c.SetTransaction(&tx)
+	encodedTx, err := tx.Serialize()
+	if err != nil {
+		fmt.Println("ERROR: TxEditCandidate::tx.Serialize")
+		return "", err
+	}
+
+	strTxRPL := hex.EncodeToString(encodedTx)
+
+	strRlpEnc := string(strTxRPL)
+
+	return strRlpEnc, err
+
+}
+
+// Транзакция - Декларирования мастерноды в кандидаты
+func (c *SDK) TxEditCandidate(t *TxEditCandidateData) (string, error) {
+	strRlpEnc, err := TxEditCandidateRLP(t)
+	if err != nil {
+		return "", err
+	}
+
+	resHash, err := c.SetTransaction(strRlpEnc)
 	if err != nil {
 		return "", err
 	}

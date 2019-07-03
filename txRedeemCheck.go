@@ -44,8 +44,7 @@ type TxRedeemCheckData struct {
 	GasPrice int64
 }
 
-// Транзакция - Погашение чека (обналичивание)
-func (c *SDK) TxRedeemCheck(t *TxRedeemCheckData) (string, error) {
+func (c *SDK) TxRedeemCheckRLP(t *TxRedeemCheckData) (string, error) {
 	coinGas := getStrCoin(t.GasCoin)
 	valueGas := uint32(t.GasPrice)
 
@@ -116,7 +115,28 @@ func (c *SDK) TxRedeemCheck(t *TxRedeemCheckData) (string, error) {
 		return "", err
 	}
 
-	resHash, err := c.SetTransaction(&tx)
+	encodedTx, err := tx.Serialize()
+	if err != nil {
+		fmt.Println("ERROR: TxRedeemCheck::tx.Serialize")
+		return "", err
+	}
+
+	strTxRPL := hex.EncodeToString(encodedTx)
+
+	strRlpEnc := string(strTxRPL)
+
+	return strRlpEnc, err
+
+}
+
+// Транзакция - Погашение чека (обналичивание)
+func (c *SDK) TxRedeemCheck(t *TxRedeemCheckData) (string, error) {
+	strRlpEnc, err := TxRedeemCheckRLP(t)
+	if err != nil {
+		return "", err
+	}
+
+	resHash, err := c.SetTransaction(strRlpEnc)
 	if err != nil {
 		return "", err
 	}

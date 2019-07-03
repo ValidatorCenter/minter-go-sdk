@@ -17,8 +17,7 @@ type TxSellCoinData struct {
 	GasPrice int64
 }
 
-// Транзакция - Продажи монет
-func (c *SDK) TxSellCoin(t *TxSellCoinData) (string, error) {
+func (c *SDK) TxSellCoinRLP(t *TxSellCoinData) (string, error) {
 	coinBuy := getStrCoin(t.CoinToBuy)
 	coinSell := getStrCoin(t.CoinToSell)
 	value := bip2pip_f64(float64(t.ValueToSell))
@@ -75,7 +74,28 @@ func (c *SDK) TxSellCoin(t *TxSellCoinData) (string, error) {
 		return "", err
 	}
 
-	resHash, err := c.SetTransaction(&tx)
+	encodedTx, err := tx.Serialize()
+	if err != nil {
+		fmt.Println("ERROR: TxSellCoin::tx.Serialize")
+		return "", err
+	}
+
+	strTxRPL := hex.EncodeToString(encodedTx)
+
+	strRlpEnc := string(strTxRPL)
+
+	return strRlpEnc, err
+
+}
+
+// Транзакция - Продажи монет
+func (c *SDK) TxSellCoin(t *TxSellCoinData) (string, error) {
+	strRlpEnc, err := TxSellCoinRLP(t)
+	if err != nil {
+		return "", err
+	}
+
+	resHash, err := c.SetTransaction(strRlpEnc)
 	if err != nil {
 		return "", err
 	}

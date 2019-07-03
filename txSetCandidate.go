@@ -16,8 +16,7 @@ type TxSetCandidateData struct {
 	GasPrice int64
 }
 
-// Транзакция - Вкл./выкл мастерноду в валидаторы
-func (c *SDK) TxSetCandidate(t *TxSetCandidateData) (string, error) {
+func (c *SDK) TxSetCandidateRLP(t *TxSetCandidateData) (string, error) {
 	pubkey := publicKey2Byte(t.PubKey)
 
 	coinGas := getStrCoin(t.GasCoin)
@@ -75,7 +74,28 @@ func (c *SDK) TxSetCandidate(t *TxSetCandidateData) (string, error) {
 		return "", err
 	}
 
-	resHash, err := c.SetTransaction(&tx)
+	encodedTx, err := tx.Serialize()
+	if err != nil {
+		fmt.Println("ERROR: TxSetCandidate::tx.Serialize")
+		return "", err
+	}
+
+	strTxRPL := hex.EncodeToString(encodedTx)
+
+	strRlpEnc := string(strTxRPL)
+
+	return strRlpEnc, err
+
+}
+
+// Транзакция - Вкл./выкл мастерноду в валидаторы
+func (c *SDK) TxSetCandidate(t *TxSetCandidateData) (string, error) {
+	strRlpEnc, err := TxSetCandidateRLP(t)
+	if err != nil {
+		return "", err
+	}
+
+	resHash, err := c.SetTransaction(strRlpEnc)
 	if err != nil {
 		return "", err
 	}
