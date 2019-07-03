@@ -17,8 +17,7 @@ type TxUnbondData struct {
 	GasPrice int64
 }
 
-// Транзакция - Отозвать монеты из делегированных в валидатора
-func (c *SDK) TxUnbond(t *TxUnbondData) (string, error) {
+func (c *SDK) TxUnbondRLP(t *TxUnbondData) (string, error) {
 
 	pubkey := publicKey2Byte(t.PubKey)
 	coin := getStrCoin(t.Coin)
@@ -77,7 +76,28 @@ func (c *SDK) TxUnbond(t *TxUnbondData) (string, error) {
 		return "", err
 	}
 
-	resHash, err := c.SetTransaction(&tx)
+	encodedTx, err := tx.Serialize()
+	if err != nil {
+		fmt.Println("ERROR: TxUnbond::tx.Serialize")
+		return "", err
+	}
+
+	strTxRPL := hex.EncodeToString(encodedTx)
+
+	strRlpEnc := string(strTxRPL)
+
+	return strRlpEnc, err
+
+}
+
+// Транзакция - Отозвать монеты из делегированных в валидатора
+func (c *SDK) TxUnbond(t *TxUnbondData) (string, error) {
+	strRlpEnc, err := TxUnbondRLP(t)
+	if err != nil {
+		return "", err
+	}
+
+	resHash, err := c.SetTransaction(strRlpEnc)
 	if err != nil {
 		return "", err
 	}

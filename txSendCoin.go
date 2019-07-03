@@ -17,8 +17,7 @@ type TxSendCoinData struct {
 	GasPrice int64
 }
 
-// Транзакция - Передача монет
-func (c *SDK) TxSendCoin(t *TxSendCoinData) (string, error) {
+func (c *SDK) TxSendCoinRLP(t *TxSendCoinData) (string, error) {
 
 	to := getStrAddress(t.ToAddress)
 	coin := getStrCoin(t.Coin)
@@ -77,7 +76,28 @@ func (c *SDK) TxSendCoin(t *TxSendCoinData) (string, error) {
 		return "", err
 	}
 
-	resHash, err := c.SetTransaction(&tx)
+	encodedTx, err := tx.Serialize()
+	if err != nil {
+		fmt.Println("ERROR: TxSendCoin::tx.Serialize")
+		return "", err
+	}
+
+	strTxRPL := hex.EncodeToString(encodedTx)
+
+	strRlpEnc := string(strTxRPL)
+
+	return strRlpEnc, err
+
+}
+
+// Транзакция - Передача монет
+func (c *SDK) TxSendCoin(t *TxSendCoinData) (string, error) {
+	strRlpEnc, err := TxSendCoinRLP(t)
+	if err != nil {
+		return "", err
+	}
+
+	resHash, err := c.SetTransaction(strRlpEnc)
 	if err != nil {
 		return "", err
 	}

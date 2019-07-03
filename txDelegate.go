@@ -17,8 +17,7 @@ type TxDelegateData struct {
 	GasPrice int64
 }
 
-// Транзакция - Делегирование
-func (c *SDK) TxDelegate(t *TxDelegateData) (string, error) {
+func (c *SDK) TxDelegateRLP(t *TxDelegateData) (string, error) {
 	coin := getStrCoin(t.Coin)
 	coinGas := getStrCoin(t.GasCoin)
 	value := bip2pip_f64(float64(t.Stake))
@@ -74,7 +73,27 @@ func (c *SDK) TxDelegate(t *TxDelegateData) (string, error) {
 		return "", err
 	}
 
-	resHash, err := c.SetTransaction(&tx)
+	encodedTx, err := tx.Serialize()
+	if err != nil {
+		fmt.Println("ERROR: TxDelegate::tx.Serialize")
+		return "", err
+	}
+
+	strTxRPL := hex.EncodeToString(encodedTx)
+
+	strRlpEnc := string(strTxRPL)
+
+	return strRlpEnc, err
+}
+
+// Транзакция - Делегирование
+func (c *SDK) TxDelegate(t *TxDelegateData) (string, error) {
+	strRlpEnc, err := TxDelegateRLP(t)
+	if err != nil {
+		return "", err
+	}
+
+	resHash, err := c.SetTransaction(strRlpEnc)
 	if err != nil {
 		return "", err
 	}

@@ -30,18 +30,9 @@ type TransSendResponse struct {
 }
 
 // Исполнение транзакции закодированной RLP
-func (c *SDK) SetTransaction(tx *tr.Transaction) (string, error) {
-
-	encodedTx, err := tx.Serialize()
-	if err != nil {
-		fmt.Println("ERROR: SetCandidateTransaction::tx.Serialize")
-		return "", err
-	}
-
-	strTxRPL := hex.EncodeToString(encodedTx)
-
-	strRlpEnc := string(strTxRPL)
+func (c *SDK) SetTransaction(strRlpEnc string) (string, error) {
 	fmt.Println("TX RLP:", strRlpEnc)
+
 	url := fmt.Sprintf("%s/send_transaction?tx=0x%s", c.MnAddress, strRlpEnc)
 	res, err := http.Get(url)
 	if err != nil {

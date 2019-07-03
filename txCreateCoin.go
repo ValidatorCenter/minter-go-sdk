@@ -19,8 +19,7 @@ type TxCreateCoinData struct {
 	GasPrice int64
 }
 
-// Транзакция - Создание монеты
-func (c *SDK) TxCreateCoin(t *TxCreateCoinData) (string, error) {
+func (c *SDK) TxCreateCoinRLP(t *TxCreateCoinData) (string, error) {
 	toCreate := getStrCoin(t.Symbol)
 	reserve := bip2pip_i64(t.InitialReserve)
 	amount := bip2pip_i64(t.InitialAmount)
@@ -79,7 +78,27 @@ func (c *SDK) TxCreateCoin(t *TxCreateCoinData) (string, error) {
 		return "", err
 	}
 
-	resHash, err := c.SetTransaction(&tx)
+	encodedTx, err := tx.Serialize()
+	if err != nil {
+		fmt.Println("ERROR: TxCreateCoin::tx.Serialize")
+		return "", err
+	}
+
+	strTxRPL := hex.EncodeToString(encodedTx)
+
+	strRlpEnc := string(strTxRPL)
+
+	return strRlpEnc, err
+}
+
+// Транзакция - Создание монеты
+func (c *SDK) TxCreateCoin(t *TxCreateCoinData) (string, error) {
+	strRlpEnc, err := TxCreateCoinRLP(t)
+	if err != nil {
+		return "", err
+	}
+
+	resHash, err := c.SetTransaction(strRlpEnc)
 	if err != nil {
 		return "", err
 	}
