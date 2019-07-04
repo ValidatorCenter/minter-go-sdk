@@ -1,6 +1,8 @@
 package mintersdk
 
 import (
+	"encoding/hex"
+
 	tr "github.com/MinterTeam/minter-go-node/core/transaction"
 	"github.com/MinterTeam/minter-go-node/core/types"
 )
@@ -88,7 +90,6 @@ func (c *SDK) TxMultiSendCoinRLP(t *TxMultiSendCoinData) (string, error) {
 
 	encodedTx, err := tx.Serialize()
 	if err != nil {
-		fmt.Println("ERROR: TxMultiSendCoin::tx.Serialize")
 		return "", err
 	}
 
@@ -102,7 +103,7 @@ func (c *SDK) TxMultiSendCoinRLP(t *TxMultiSendCoinData) (string, error) {
 
 // Транзакция - Передача монет нескольким адресатам
 func (c *SDK) TxMultiSendCoin(t *TxMultiSendCoinData) (string, error) {
-	strRlpEnc, err := TxMultiSendCoinRLP(t)
+	strRlpEnc, err := c.TxMultiSendCoinRLP(t)
 	if err != nil {
 		return "", err
 	}

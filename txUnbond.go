@@ -1,6 +1,8 @@
 package mintersdk
 
 import (
+	"encoding/hex"
+
 	tr "github.com/MinterTeam/minter-go-node/core/transaction"
 	"github.com/MinterTeam/minter-go-node/core/types"
 )
@@ -78,7 +80,6 @@ func (c *SDK) TxUnbondRLP(t *TxUnbondData) (string, error) {
 
 	encodedTx, err := tx.Serialize()
 	if err != nil {
-		fmt.Println("ERROR: TxUnbond::tx.Serialize")
 		return "", err
 	}
 
@@ -92,7 +93,7 @@ func (c *SDK) TxUnbondRLP(t *TxUnbondData) (string, error) {
 
 // Транзакция - Отозвать монеты из делегированных в валидатора
 func (c *SDK) TxUnbond(t *TxUnbondData) (string, error) {
-	strRlpEnc, err := TxUnbondRLP(t)
+	strRlpEnc, err := c.TxUnbondRLP(t)
 	if err != nil {
 		return "", err
 	}

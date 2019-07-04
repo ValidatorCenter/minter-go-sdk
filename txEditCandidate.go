@@ -1,6 +1,8 @@
 package mintersdk
 
 import (
+	"encoding/hex"
+
 	tr "github.com/MinterTeam/minter-go-node/core/transaction"
 	"github.com/MinterTeam/minter-go-node/core/types"
 )
@@ -76,7 +78,6 @@ func (c *SDK) TxEditCandidateRLP(t *TxEditCandidateData) (string, error) {
 
 	encodedTx, err := tx.Serialize()
 	if err != nil {
-		fmt.Println("ERROR: TxEditCandidate::tx.Serialize")
 		return "", err
 	}
 
@@ -90,7 +91,7 @@ func (c *SDK) TxEditCandidateRLP(t *TxEditCandidateData) (string, error) {
 
 // Транзакция - Декларирования мастерноды в кандидаты
 func (c *SDK) TxEditCandidate(t *TxEditCandidateData) (string, error) {
-	strRlpEnc, err := TxEditCandidateRLP(t)
+	strRlpEnc, err := c.TxEditCandidateRLP(t)
 	if err != nil {
 		return "", err
 	}
