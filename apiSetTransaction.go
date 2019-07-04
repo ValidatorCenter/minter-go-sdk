@@ -1,16 +1,11 @@
 package mintersdk
 
 import (
-	//"bytes"
-	"encoding/hex"
-	//"encoding/json" -- переход на easyjson
 	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 	"strings"
-
-	tr "github.com/MinterTeam/minter-go-node/core/transaction"
 )
 
 // Ответ транзакции

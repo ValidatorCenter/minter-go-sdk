@@ -1,6 +1,8 @@
 package mintersdk
 
 import (
+	"encoding/hex"
+
 	tr "github.com/MinterTeam/minter-go-node/core/transaction"
 	"github.com/MinterTeam/minter-go-node/core/types"
 )
@@ -75,7 +77,6 @@ func (c *SDK) TxDelegateRLP(t *TxDelegateData) (string, error) {
 
 	encodedTx, err := tx.Serialize()
 	if err != nil {
-		fmt.Println("ERROR: TxDelegate::tx.Serialize")
 		return "", err
 	}
 
@@ -88,7 +89,7 @@ func (c *SDK) TxDelegateRLP(t *TxDelegateData) (string, error) {
 
 // Транзакция - Делегирование
 func (c *SDK) TxDelegate(t *TxDelegateData) (string, error) {
-	strRlpEnc, err := TxDelegateRLP(t)
+	strRlpEnc, err := c.TxDelegateRLP(t)
 	if err != nil {
 		return "", err
 	}

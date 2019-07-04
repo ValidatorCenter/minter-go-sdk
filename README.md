@@ -4,7 +4,7 @@
 ## About
 Minter Blockchain Golang SDK https://minter.network
 
-Actual for Minter version 0.19.x.
+Actual for Minter version 1.0.x.
 
 * [Installation](#installing)
 * [Updating](#updating)

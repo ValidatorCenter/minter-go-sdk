@@ -1,6 +1,8 @@
 package mintersdk
 
 import (
+	"encoding/hex"
+
 	tr "github.com/MinterTeam/minter-go-node/core/transaction"
 	"github.com/MinterTeam/minter-go-node/core/types"
 )
@@ -76,7 +78,6 @@ func (c *SDK) TxBuyCoinRLP(t *TxBuyCoinData) (string, error) {
 
 	encodedTx, err := tx.Serialize()
 	if err != nil {
-		fmt.Println("ERROR: TxBuyCoin::tx.Serialize")
 		return "", err
 	}
 
@@ -89,7 +90,7 @@ func (c *SDK) TxBuyCoinRLP(t *TxBuyCoinData) (string, error) {
 
 // Транзакция - Купить монету
 func (c *SDK) TxBuyCoin(t *TxBuyCoinData) (string, error) {
-	strRlpEnc, err := TxBuyCoinRLP(t)
+	strRlpEnc, err := c.TxBuyCoinRLP(t)
 	if err != nil {
 		return "", err
 	}

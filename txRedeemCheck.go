@@ -117,7 +117,6 @@ func (c *SDK) TxRedeemCheckRLP(t *TxRedeemCheckData) (string, error) {
 
 	encodedTx, err := tx.Serialize()
 	if err != nil {
-		fmt.Println("ERROR: TxRedeemCheck::tx.Serialize")
 		return "", err
 	}
 
@@ -131,7 +130,7 @@ func (c *SDK) TxRedeemCheckRLP(t *TxRedeemCheckData) (string, error) {
 
 // Транзакция - Погашение чека (обналичивание)
 func (c *SDK) TxRedeemCheck(t *TxRedeemCheckData) (string, error) {
-	strRlpEnc, err := TxRedeemCheckRLP(t)
+	strRlpEnc, err := c.TxRedeemCheckRLP(t)
 	if err != nil {
 		return "", err
 	}
