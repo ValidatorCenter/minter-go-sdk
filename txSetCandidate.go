@@ -29,6 +29,13 @@ func (c *SDK) TxSetCandidateRLP(t *TxSetCandidateData) (string, error) {
 		return "", err
 	}
 
+	if c.AccAddress == "" {
+		c.AccAddress, err = GetAddressPrivateKey(c.AccPrivateKey)
+		if err != nil {
+			return "", err
+		}
+	}
+
 	var typeTx tr.TxType
 	var data interface{}
 
